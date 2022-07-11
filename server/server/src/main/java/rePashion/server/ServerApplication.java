@@ -8,7 +8,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 public class ServerApplication {
   @Bean
@@ -24,6 +23,7 @@ public class ServerApplication {
 				registry.addMapping("/**").allowedOrigins("*");
 			}
 		};
+	}
 	public static void main(String[] args) {
 		SpringApplication.run(ServerApplication.class, args);
 	}
