@@ -25,7 +25,14 @@ public enum ErrorCode {
     HANDLE_ACCESS_DENIED(403, "C006", "Access is Denied"),
 
     //회원가입
-    USER_SIGNUP_ERROR(400, "U001", "회원가입시에 오류가 발생하여 테이블에 저장되지 않았습니다");
+    USER_SIGNUP_ERROR(400, "U001", "회원가입시에 오류가 발생하여 테이블에 저장되지 않았습니다"),
+
+    //개인화 추천
+    STYLE_IMAGE_NOT_EXISTED(400, "U002", "해당 이미지가 존재하지 않습니다"),
+    SIZE_NOT_EXISTED(400, "U003", "해당 사이즈는 존재하지 않습니다"),
+
+    //파일 업로드
+    FILE_CONVERTING_ERROR(400, "F001", "파일 업로드 시에 오류가 발생했습니다");
 
     private final String code;
     private final String message;

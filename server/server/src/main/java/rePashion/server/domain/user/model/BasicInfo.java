@@ -16,28 +16,28 @@ import javax.persistence.Enumerated;
 public class BasicInfo {
 
     public enum Gender{
-        MALE, FEMALE
+        남성, 여성
     }
 
     public enum BodyShape{
-        SKINNY, NORMAL, CHUBBY, FAT
+        마름, 보통, 통통, 뚱뚱
     }
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     Gender gender;
 
-    @Column(nullable = false, length = 6)   //170175, 180185
+    @Column(nullable = false, length = 3)   //170
     String height;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    BodyShape bodyShape = BodyShape.NORMAL;
+    BodyShape bodyShape = BodyShape.보통;
 
-    @Column(length = 4)   //XL, 2XL
-    String topSize = "L";
+    //XL, 2XL
+    String topSize = "XL";
 
-    @Column(length = 2)   //22 ~ 37
+    //22 ~ 37
     String bottomSize = "32";
 
     @Builder

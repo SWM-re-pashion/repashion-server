@@ -12,23 +12,27 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ColorEntity {
 
+    public enum Ctype{
+        TOP, BOT
+    }
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     @Enumerated(EnumType.STRING)
-    Color topColor;
+    Ctype type;
 
     @Enumerated(EnumType.STRING)
-    Color bottomColor;
+    Color color;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "preference_id")
     private Preference preference;
 
     @Builder
-    public ColorEntity(Color topColor, Color bottomColor, Preference preference) {
-        this.topColor = topColor;
-        this.bottomColor = bottomColor;
+    public ColorEntity(Color color, Ctype ctype, Preference preference) {
+        this.color = color;
+        this.type = ctype;
         this.preference = preference;
     }
 }
