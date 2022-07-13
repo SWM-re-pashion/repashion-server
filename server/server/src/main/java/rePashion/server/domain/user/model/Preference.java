@@ -17,16 +17,20 @@ public class Preference {
     @Embedded
     BasicInfo basicInfo;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "preference")
+    @OneToMany(mappedBy = "preference")
     private List<ColorEntity> color = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "preference")
-    private List<Style> style = new ArrayList<>();
+    @OneToMany(mappedBy = "preference")
+    private List<PreferStyle> style = new ArrayList<>();
 
     @Builder
-    public Preference(BasicInfo basicInfo, List<ColorEntity> color, List<Style> style) {
+    public Preference(BasicInfo basicInfo) {
         this.basicInfo = basicInfo;
-        this.color = color;
-        this.style = style;
+    }
+    public void choosePreferStyle(List<PreferStyle> ps){
+        this.style = ps;
+    }
+    public void chooseColorEntity(List<ColorEntity> colorEntities){
+        this.color = colorEntities;
     }
 }
