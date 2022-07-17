@@ -32,7 +32,10 @@ public enum ErrorCode {
     SIZE_NOT_EXISTED(400, "U003", "해당 사이즈는 존재하지 않습니다"),
 
     //파일 업로드
-    FILE_CONVERTING_ERROR(400, "F001", "파일 업로드 시에 오류가 발생했습니다");
+    FILE_CONVERTING_ERROR(400, "F001", "파일 업로드 시에 오류가 발생했습니다"),
+
+    //DB 오류
+    DB_INSERTING_ERROR(400, "DB001", "DB에 데이터 추가 시에 오류가 발생했습니다");
 
     private final String code;
     private final String message;
