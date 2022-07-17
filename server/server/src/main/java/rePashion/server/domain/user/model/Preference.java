@@ -18,9 +18,6 @@ public class Preference {
     BasicInfo basicInfo;
 
     @OneToMany(mappedBy = "preference")
-    private List<ColorEntity> color = new ArrayList<>();
-
-    @OneToMany(mappedBy = "preference")
     private List<PreferStyle> style = new ArrayList<>();
 
     @Builder
@@ -29,8 +26,5 @@ public class Preference {
     }
     public void choosePreferStyle(List<PreferStyle> ps){
         this.style = ps;
-    }
-    public void chooseColorEntity(List<ColorEntity> colorEntities){
-        this.color = colorEntities;
     }
 }

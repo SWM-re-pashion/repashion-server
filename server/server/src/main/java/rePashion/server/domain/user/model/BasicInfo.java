@@ -40,12 +40,18 @@ public class BasicInfo {
     //22 ~ 37
     String bottomSize = "32";
 
+    String topColors = "";
+
+    String bottomColors = "";
+
     @Builder
-    public BasicInfo(Gender gender, String height, BodyShape bodyShape, String topSize, String bottomSize) {
+    public BasicInfo(Gender gender, String height, BodyShape bodyShape, String topSize, String bottomSize, String topColors, String bottomColors) {
         this.gender = gender;
         this.height = height;
         this.bodyShape = bodyShape;
         this.topSize = topSize;
         this.bottomSize = bottomSize;
+        this.topColors = topColors;
+        this.bottomColors = bottomColors;
     }
 }
