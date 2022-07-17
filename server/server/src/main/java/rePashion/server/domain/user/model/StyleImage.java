@@ -21,15 +21,8 @@ public class StyleImage {
     @Column(nullable = false)
     String imageProperties;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "styleImage")
-    private List<PreferStyle> selectedPrefer = new ArrayList<>();
-
     public StyleImage(String imageUrl, String imageProperties) {
         this.imageUrl = imageUrl;
         this.imageProperties = imageProperties;
-    }
-
-    public void addPreference(PreferStyle selectedPrefer) {
-        this.selectedPrefer.add(selectedPrefer);
     }
 }

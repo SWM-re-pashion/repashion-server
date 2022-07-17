@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import rePashion.server.domain.user.dto.PreferenceRequestDto;
 import rePashion.server.domain.user.exception.StyleImageNotExistedException;
 import rePashion.server.domain.user.model.*;
-import rePashion.server.domain.user.repository.ColorEntityRepository;
 import rePashion.server.domain.user.repository.PreferStyleRepository;
 import rePashion.server.domain.user.repository.PreferenceRepository;
 import rePashion.server.domain.user.repository.StyleImageRepository;
@@ -24,7 +23,6 @@ public class PreferenceService {
     private final PreferenceRepository preferenceRepository;
     private final StyleImageRepository styleImageRepository;
     private final PreferStyleRepository preferStyleRepository;
-    private final ColorEntityRepository colorEntityRepository;
 
     /**
      * 모든 색깔 정보 배열을 리턴해주는 함수
@@ -51,37 +49,9 @@ public class PreferenceService {
      * @return  Long    DB에 저장된 preference의 pk
      */
     public Optional<Preference> savePreference(PreferenceRequestDto dto){
-        Preference preference = createPreference(dto.toBasicInfo());
-        insertColorEntities(dto, preference);
+        Preference preference = new Preference(dto.toBasicInfo());
         insertPreferStyle(preference, dto.getStyles());
         return Optional.of(preferenceRepository.save(preference));
-    }
-
-    private Preference createPreference(BasicInfo basicInfo){
-        return new Preference(basicInfo);
-    }
-
-    private void insertColorEntities(PreferenceRequestDto dto, Preference preference){
-        ArrayList<ColorEntity> colorEntities = saveColorEntity(dto.getColors(), preference);
-        preference.chooseColorEntity(colorEntities);
-    }
-
-    private ArrayList<ColorEntity> saveColorEntity(ArrayList<PreferenceRequestDto.SelectedColor> colors, Preference preference){
-        ArrayList<ColorEntity> colorEntities = new ArrayList<>();
-        for(PreferenceRequestDto.SelectedColor color : colors){
-            ColorEntity entity = createColorEntity(preference, color);
-            colorEntityRepository.save(entity);
-            colorEntities.add(entity);
-        }
-        return colorEntities;
-    }
-
-    private ColorEntity createColorEntity(Preference preference, PreferenceRequestDto.SelectedColor color){
-        return ColorEntity.builder()
-                .preference(preference)
-                .color(color.getColor())
-                .ctype(color.getType())
-                .build();
     }
 
     private void insertPreferStyle(Preference preference, ArrayList<Long> style){

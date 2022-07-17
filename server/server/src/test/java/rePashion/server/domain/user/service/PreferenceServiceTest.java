@@ -10,7 +10,6 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import rePashion.server.domain.user.dto.PreferenceRequestDto;
 import rePashion.server.domain.user.model.*;
-import rePashion.server.domain.user.repository.ColorEntityRepository;
 import rePashion.server.domain.user.repository.PreferStyleRepository;
 import rePashion.server.domain.user.repository.PreferenceRepository;
 import rePashion.server.domain.user.repository.StyleImageRepository;

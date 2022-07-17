@@ -20,7 +20,7 @@ public enum Color {
     Brown("Brown", "#967556"),
     Khaki("Khaki", "#848974"),
     Green("Green", "#7db768"),
-    LightGreen("Light Green", "#aae396"),
+    Light_Green("Light Green", "#aae396"),
     Mint("Mint", "#acfbdf"),
     Blue("Blue", "#4bb4ff"),
     Navy("Navy", "#38466c"),
