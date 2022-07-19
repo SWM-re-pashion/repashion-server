@@ -16,13 +16,13 @@ import java.util.ArrayList;
 public class PostPreferenceRequestDto {
 
     @NotNull
-    private String gender;
+    private BasicInfo.Gender gender;
 
     @NotNull
     private String height;
 
     @NotNull
-    private String bodyShape;
+    private BasicInfo.BodyShape bodyShape;
 
     private String topSize;
     private String bottomSize;
@@ -32,9 +32,9 @@ public class PostPreferenceRequestDto {
 
     @Builder
     public PostPreferenceRequestDto(String gender, String height, String bodyShape, String topSize, String bottomSize, ArrayList<Long> styles, String topColors, String bottomColors) {
-        this.gender = gender;
+        this.gender = BasicInfo.Gender.valueOf(gender);
         this.height = height;
-        this.bodyShape = bodyShape;
+        this.bodyShape = BasicInfo.BodyShape.valueOf(bodyShape);
         this.topSize = validateSize(topSize);
         this.bottomSize = validateSize(bottomSize);
         this.styles = styles;
@@ -44,9 +44,9 @@ public class PostPreferenceRequestDto {
 
     public BasicInfo toBasicInfo(){
         return BasicInfo.builder()
-                .gender(BasicInfo.Gender.valueOf(this.getGender()))
+                .gender(this.getGender())
                 .height(this.height)
-                .bodyShape(BasicInfo.BodyShape.valueOf(this.bodyShape))
+                .bodyShape(this.bodyShape)
                 .topSize(this.topSize)
                 .bottomSize(this.bottomSize)
                 .topColors(this.topColors)
