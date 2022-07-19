@@ -3,7 +3,7 @@ package rePashion.server.domain.user.service;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import rePashion.server.domain.user.dto.PreferenceRequestDto;
+import rePashion.server.domain.user.dto.PostPreferenceRequestDto;
 import rePashion.server.domain.user.exception.StyleImageNotExistedException;
 import rePashion.server.domain.user.model.*;
 import rePashion.server.domain.user.repository.PreferStyleRepository;
@@ -48,7 +48,7 @@ public class PreferenceService {
      * @param   dto Controller단에서 넘어오는 dto로 선호정보가 모두 담겨있음
      * @return  Long    DB에 저장된 preference의 pk
      */
-    public Optional<Preference> savePreference(PreferenceRequestDto dto){
+    public Optional<Preference> savePreference(PostPreferenceRequestDto dto){
         Preference preference = new Preference(dto.toBasicInfo());
         insertPreferStyle(preference, dto.getStyles());
         return Optional.of(preferenceRepository.save(preference));
