@@ -7,6 +7,7 @@ public class ProductTest {
     @Test
     public void canCreate(){
         Product.builder()
+                .id(1L)
                 .title("스투시 프린팅 티셔츠")
                 .category("상의")
                 .brand("스투시")
