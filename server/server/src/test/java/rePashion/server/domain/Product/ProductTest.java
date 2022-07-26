@@ -1,14 +1,12 @@
 package rePashion.server.domain.Product;
 
-import org.aspectj.lang.annotation.Before;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import rePashion.server.domain.product.model.Product;
 import rePashion.server.domain.product.model.ProductAdvanceInfo;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class ProductTest {
@@ -34,7 +32,7 @@ public class ProductTest {
                 .bodyShape("뚱뚱")
                 .length("크롭")
                 .fit("타이트")
-                .reason("안 입는데 옷장에 있어서")
+                .opinion("안 입는데 옷장에 있어서")
                 .tag("힙합")
                 .color("블랙")
                 .material("퍼")
@@ -156,10 +154,17 @@ public class ProductTest {
 
     @Test
     public void refreshing_product_cycle(){
-        LocalDate now = LocalDate.now();
+        LocalDateTime now = LocalDateTime.now();
         product.updateTime();
-        LocalDate updatedAt = product.getUpdatedAt();
+        LocalDateTime updatedAt = product.getUpdatedAt();
         Assertions.assertThat(now).isEqualTo(updatedAt);
         System.out.println(updatedAt);
+    }
+
+    @Test
+    public void update_view(){
+        int view = product.getView();
+        product.updateView();
+        Assertions.assertThat(product.getView()).isEqualTo(view+1);
     }
 }
