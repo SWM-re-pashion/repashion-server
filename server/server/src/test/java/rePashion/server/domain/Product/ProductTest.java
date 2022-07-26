@@ -1,15 +1,23 @@
 package rePashion.server.domain.Product;
 
+import org.aspectj.lang.annotation.Before;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import rePashion.server.domain.product.model.Product;
 import rePashion.server.domain.product.model.ProductAdvanceInfo;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class ProductTest {
-    @Test
-    public void canCreate(){
-        Product.builder()
+
+    Product product;
+
+    @BeforeEach
+    public void setUp(){
+        this.product = Product.builder()
                 .id(1L)
                 .title("스투시 프린팅 티셔츠")
                 .category("상의")
@@ -144,5 +152,14 @@ public class ProductTest {
         int insertedHeight = 170;
         String insertedBodyShape = "뚱뚱" ;
         info.enterHeightAndBodyShapeInfo(insertedHeight, insertedBodyShape);
+    }
+
+    @Test
+    public void refreshing_product_cycle(){
+        LocalDate now = LocalDate.now();
+        product.updateTime();
+        LocalDate updatedAt = product.getUpdatedAt();
+        Assertions.assertThat(now).isEqualTo(updatedAt);
+        System.out.println(updatedAt);
     }
 }

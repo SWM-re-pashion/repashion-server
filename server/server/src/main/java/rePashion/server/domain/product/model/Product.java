@@ -1,7 +1,11 @@
 package rePashion.server.domain.product.model;
 
 import lombok.Builder;
+import lombok.Getter;
 
+import java.time.LocalDate;
+
+@Getter
 public class Product {
 
     private Long id;
@@ -32,6 +36,8 @@ public class Product {
     private int bottomSection;
     private int rise;
     private int sleeveLength;
+    private LocalDate updatedAt;
+    private LocalDate createdAt;
 
     @Builder
     public Product(Long id, String title, String category, String brand, int price, boolean isIncludeDelivery, String gender, String size, String purchaseTime, String purchasePlace, String condition, String pollution, int height, String bodyShape, String length, String fit, String reason, String tag, String color, String material, int totalLength, int shoulderWidth, int waistSection, int chestSection, int thighSection, int bottomSection, int rise, int sleeveLength) {
@@ -63,5 +69,11 @@ public class Product {
         this.bottomSection = bottomSection;
         this.rise = rise;
         this.sleeveLength = sleeveLength;
+        this.createdAt = LocalDate.now();
+        this.updatedAt = LocalDate.now();
+    }
+
+    public void updateTime(){
+        this.updatedAt = LocalDate.now();
     }
 }
