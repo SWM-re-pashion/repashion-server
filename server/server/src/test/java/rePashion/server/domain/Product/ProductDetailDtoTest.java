@@ -101,10 +101,10 @@ public class ProductDetailDtoTest {
         String exitstedImage = "";
         
         //when
-        String profileImage = getProfileImage(exitstedImage);
+        String profileImage = ProductDetailDto.determineProfileImage(exitstedImage);
 
         //then
-        Assertions.assertThat(profileImage).isEqualTo("https://webserver0712.s3.ap-northeast-2.amazonaws.com/profile/%EA%B8%B0%EB%B3%B8%ED%94%84%EB%A1%9C%ED%95%84.png");
+        Assertions.assertThat(profileImage).isEqualTo(ProductDetailDto.STANDARD_PROFILE_IMAGE);
     }
 
 
@@ -114,7 +114,7 @@ public class ProductDetailDtoTest {
         String existedImage = "https://webserver0712.s3.ap-northeast-2.amazonaws.com/profile/%EC%9B%B9%EC%97%91%EC%8A%A4_%EC%82%AC%EC%A7%84.png";
 
         //when
-        String profileImage = getProfileImage(existedImage);
+        String profileImage = ProductDetailDto.determineProfileImage(existedImage);
 
         //then
         Assertions.assertThat(profileImage).isEqualTo(existedImage);
@@ -122,7 +122,12 @@ public class ProductDetailDtoTest {
 
     @Test
     public void when_product_gender_is_male(){
+        //given
 
+        String
+        //when
+
+        //then
     }
 
     @Test
@@ -166,12 +171,6 @@ public class ProductDetailDtoTest {
 
     }
 
-    private String getProfileImage(String exitstedImage) {
-        String standardImage = "https://webserver0712.s3.ap-northeast-2.amazonaws.com/profile/%EA%B8%B0%EB%B3%B8%ED%94%84%EB%A1%9C%ED%95%84.png";
-        return exitstedImage.equals("") ? standardImage : exitstedImage;
-    }
-
-
     private int getLikes() {
         int likes = 17;
         return likes;
@@ -200,7 +199,7 @@ public class ProductDetailDtoTest {
 
     private ProductDetailDto.SellerInfo getSellerInfo() {
         ArrayList<String> images = new ArrayList<>();
-        String profileImage = getProfileImage("");
+        String profileImage = ProductDetailDto.determineProfileImage("");
         images.add("https://webserver0712.s3.ap-northeast-2.amazonaws.com/product/KakaoTalk_20220726_150206046_01.jpg");
         images.add("https://webserver0712.s3.ap-northeast-2.amazonaws.com/product/KakaoTalk_20220726_150206046.jpg");
         return new ProductDetailDto.SellerInfo(profileImage, "test01", images);
