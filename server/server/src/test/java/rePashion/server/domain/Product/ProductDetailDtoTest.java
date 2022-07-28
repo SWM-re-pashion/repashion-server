@@ -53,6 +53,7 @@ public class ProductDetailDtoTest {
         ProductDetailDto.Measure measure = getMeasure(product);
 
         this.productDetail = ProductDetailDto.builder()
+                .isMe(determineIsMe(1000L, 1000L))
                 .sellerInfo(sellerInfo)
                 .basic(basic)
                 .sellerNotice(sellerNotice)
@@ -66,7 +67,6 @@ public class ProductDetailDtoTest {
                 .build();
     }
 
-
     @Test
     public void when_isMe_should_true(){
         //given
@@ -74,10 +74,9 @@ public class ProductDetailDtoTest {
         Long productHost = 1000L;
 
         //when
-        Boolean isMe = productDetail.setIsMe(currentAccessedUser, productHost);
+        Boolean isMe = determineIsMe(currentAccessedUser, productHost);
 
         //then
-        Assertions.assertThat(productDetail.getIsMe()).isEqualTo(true);
         Assertions.assertThat(isMe).isEqualTo(true);
     }
 
@@ -88,10 +87,9 @@ public class ProductDetailDtoTest {
         Long productHost = 1001L;
 
         //when
-        Boolean isMe = productDetail.setIsMe(currentAccessedUser, productHost);
+        Boolean isMe = determineIsMe(currentAccessedUser, productHost);
 
         //then
-        Assertions.assertThat(productDetail.getIsMe()).isEqualTo(false);
         Assertions.assertThat(isMe).isEqualTo(false);
     }
 
@@ -101,7 +99,7 @@ public class ProductDetailDtoTest {
         String exitstedImage = "";
         
         //when
-        String profileImage = ProductDetailDto.determineProfileImage(exitstedImage);
+        String profileImage = determineProfileImage(exitstedImage);
 
         //then
         Assertions.assertThat(profileImage).isEqualTo(ProductDetailDto.STANDARD_PROFILE_IMAGE);
@@ -114,7 +112,7 @@ public class ProductDetailDtoTest {
         String existedImage = "https://webserver0712.s3.ap-northeast-2.amazonaws.com/profile/%EC%9B%B9%EC%97%91%EC%8A%A4_%EC%82%AC%EC%A7%84.png";
 
         //when
-        String profileImage = ProductDetailDto.determineProfileImage(existedImage);
+        String profileImage = determineProfileImage(existedImage);
 
         //then
         Assertions.assertThat(profileImage).isEqualTo(existedImage);
@@ -122,12 +120,7 @@ public class ProductDetailDtoTest {
 
     @Test
     public void when_product_gender_is_male(){
-        //given
 
-        String
-        //when
-
-        //then
     }
 
     @Test
@@ -171,6 +164,15 @@ public class ProductDetailDtoTest {
 
     }
 
+    private String determineProfileImage(String exitstedImage) {
+        return exitstedImage.equals("") ? ProductDetailDto.STANDARD_PROFILE_IMAGE : exitstedImage;
+    }
+
+
+    private Boolean determineIsMe(Long currentAccessedUser, Long productHost){
+        return (currentAccessedUser.equals(productHost));
+    }
+
     private int getLikes() {
         int likes = 17;
         return likes;
@@ -199,7 +201,7 @@ public class ProductDetailDtoTest {
 
     private ProductDetailDto.SellerInfo getSellerInfo() {
         ArrayList<String> images = new ArrayList<>();
-        String profileImage = ProductDetailDto.determineProfileImage("");
+        String profileImage = determineProfileImage("");
         images.add("https://webserver0712.s3.ap-northeast-2.amazonaws.com/product/KakaoTalk_20220726_150206046_01.jpg");
         images.add("https://webserver0712.s3.ap-northeast-2.amazonaws.com/product/KakaoTalk_20220726_150206046.jpg");
         return new ProductDetailDto.SellerInfo(profileImage, "test01", images);
