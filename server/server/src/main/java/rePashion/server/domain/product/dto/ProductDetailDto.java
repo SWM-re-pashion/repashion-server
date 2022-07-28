@@ -9,6 +9,7 @@ import java.util.ArrayList;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductDetailDto {
+
     private Boolean isMe;
 
     @Getter
@@ -90,8 +91,7 @@ public class ProductDetailDto {
     private int view;
 
     @Builder
-    public ProductDetailDto(boolean isMe, SellerInfo sellerInfo, Basic basic, SellerNotice sellerNotice, Measure measure, String opinion, int price, boolean isIncludeDelivery, LocalDateTime updatedAt, int like, int view) {
-        this.isMe = isMe;
+    public ProductDetailDto(SellerInfo sellerInfo, Basic basic, SellerNotice sellerNotice, Measure measure, String opinion, int price, boolean isIncludeDelivery, LocalDateTime updatedAt, int like, int view) {
         this.sellerInfo = sellerInfo;
         this.basic = basic;
         this.sellerNotice = sellerNotice;
@@ -102,5 +102,11 @@ public class ProductDetailDto {
         this.updatedAt = updatedAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         this.like = like;
         this.view = view;
+    }
+
+    public Boolean setIsMe(Long currentAccessedUser, Long productHost){
+        boolean equals = currentAccessedUser.equals(productHost);
+        this.isMe = equals;
+        return equals;
     }
 }

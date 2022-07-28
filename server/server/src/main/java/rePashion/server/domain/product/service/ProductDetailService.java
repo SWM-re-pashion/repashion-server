@@ -20,7 +20,6 @@ public class ProductDetailService {
         ProductDetailDto.Measure measure = getMeasure(product);
 
         return ProductDetailDto.builder()
-                .isMe(true)
                 .sellerInfo(sellerInfo)
                 .basic(basic)
                 .sellerNotice(sellerNotice)
