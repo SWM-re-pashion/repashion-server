@@ -119,21 +119,6 @@ public class ProductDetailDtoTest {
     }
 
     @Test
-    public void when_product_gender_is_male(){
-
-    }
-
-    @Test
-    public void when_product_gender_is_female(){
-
-    }
-
-    @Test
-    public void when_product_gender_is_free(){
-
-    }
-
-    @Test
     public void when_product_measure_is_top(){
 
     }
