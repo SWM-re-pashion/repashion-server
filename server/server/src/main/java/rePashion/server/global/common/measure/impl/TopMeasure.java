@@ -19,12 +19,13 @@ public class TopMeasure implements MeasureRepository {
         map.put(kindArray[1], measure.getShoulderWidth());
         map.put(kindArray[2], measure.getChestSection());
         map.put(kindArray[3], measure.getSleeveLength());
-        if(!isValidate(map)) throw new MeasureException(ErrorCode.MEASURE_DATA_ERROR);
+        if(!isValid(map)) throw new MeasureException(ErrorCode.MEASURE_DATA_ERROR);
         return map;
     }
 
-    private boolean isValidate(HashMap<String, Integer> map){
-        if(map.size() != 4) return false;
+    @Override
+    public boolean isValid(HashMap<String, Integer> map) {
+        if(map.size() != kindArray.length) return false;
         for(Integer value : map.values()){
             if(value<=0) return false;
         }

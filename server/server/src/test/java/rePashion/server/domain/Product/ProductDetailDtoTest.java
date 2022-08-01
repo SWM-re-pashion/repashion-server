@@ -189,7 +189,32 @@ public class ProductDetailDtoTest {
     }
 
     @Test
-    public void when_product_measure_is_top_exception_have_incorrect_pramateter(){
+    public void when_product_measure_has_more_parameter_then_expected_but_has_no_problem(){     // measure가 처음에 잘못 들어온 경우, 문제가 발생하지는 않는다
+        Measure measure = Measure.builder()
+                .totalLength(100)
+                .waistSection(200)
+                .chestSection(300)
+                .rise(400)
+                .bottomSection(500)
+                .thighSection(600)
+                .build();
+
+        //when
+        //when
+        MeasureRepository measureRepository = MeasureConfig.determinMeasure(MeasureType.BOTTOM);
+        HashMap<String, Integer> map = measureRepository.getMeasure(MeasureType.BOTTOM, measure);
+
+        //then
+        Assertions.assertThat(map.containsKey("chestSection")).isEqualTo(false);
+        Assertions.assertThat(map.get("totalLength")).isEqualTo(100);
+        Assertions.assertThat(map.get("waistSection")).isEqualTo(200);
+        Assertions.assertThat(map.get("rise")).isEqualTo(400);
+        Assertions.assertThat(map.get("bottomSection")).isEqualTo(500);
+        Assertions.assertThat(map.get("thighSection")).isEqualTo(600);
+    }
+
+    @Test
+    public void when_product_measure_is_top_exception_have_incorrect_parameter(){
         Measure measure = Measure.builder()
                 .totalLength(100)
                 .waistSection(200)
@@ -207,7 +232,7 @@ public class ProductDetailDtoTest {
     }
 
     @Test
-    public void when_product_measure_is_top_exception_have_less_pramateter(){
+    public void when_product_measure_is_top_exception_have_less_parameter(){
         Measure measure = Measure.builder()
                 .totalLength(100)
                 .build();
@@ -222,13 +247,54 @@ public class ProductDetailDtoTest {
     }
 
     @Test
-    public void when_product_measure_is_bottom_exception(){
+    public void when_product_measure_is_bottom_exception_have_incorrect_parameter(){
+        Measure measure = Measure.builder()
+                .totalLength(100)
+                .waistSection(200)
+                .chestSection(300)
+                .rise(400)
+                .bottomSection(500)
+                .build();
 
+        //when
+        Assertions.assertThatThrownBy(() -> {
+                    MeasureRepository measureRepository = MeasureConfig.determinMeasure(MeasureType.BOTTOM);
+                    measureRepository.getMeasure(MeasureType.BOTTOM, measure);
+                })
+                .isInstanceOf(MeasureException.class)
+                .hasMessage(ErrorCode.MEASURE_DATA_ERROR.getMessage());
     }
 
     @Test
-    public void when_product_measure_is_skirt_exception(){
+    public void when_product_measure_is_skirt_exception_have_incorrect_parameter(){
+        Measure measure = Measure.builder()
+                .totalLength(100)
+                .waistSection(200)
+                .thighSection(300)
+                .build();
 
+        //when
+        Assertions.assertThatThrownBy(() -> {
+                    MeasureRepository measureRepository = MeasureConfig.determinMeasure(MeasureType.SKIRT);
+                    measureRepository.getMeasure(MeasureType.SKIRT, measure);
+                })
+                .isInstanceOf(MeasureException.class)
+                .hasMessage(ErrorCode.MEASURE_DATA_ERROR.getMessage());
+    }
+
+    @Test
+    public void when_product_measure_is_skirt_exception_have_less_parameter(){
+        Measure measure = Measure.builder()
+                .totalLength(100)
+                .build();
+
+        //when
+        Assertions.assertThatThrownBy(() -> {
+                    MeasureRepository measureRepository = MeasureConfig.determinMeasure(MeasureType.SKIRT);
+                    measureRepository.getMeasure(MeasureType.SKIRT, measure);
+                })
+                .isInstanceOf(MeasureException.class)
+                .hasMessage(ErrorCode.MEASURE_DATA_ERROR.getMessage());
     }
 
     @Test
