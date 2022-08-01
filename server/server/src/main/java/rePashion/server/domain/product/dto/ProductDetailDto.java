@@ -9,7 +9,9 @@ import java.util.ArrayList;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductDetailDto {
+
     private Boolean isMe;
+    public static final String STANDARD_PROFILE_IMAGE = "https://webserver0712.s3.ap-northeast-2.amazonaws.com/profile/%EA%B8%B0%EB%B3%B8%ED%94%84%EB%A1%9C%ED%95%84.png";
 
     @Getter
     public static class SellerInfo{
@@ -90,7 +92,7 @@ public class ProductDetailDto {
     private int view;
 
     @Builder
-    public ProductDetailDto(boolean isMe, SellerInfo sellerInfo, Basic basic, SellerNotice sellerNotice, Measure measure, String opinion, int price, boolean isIncludeDelivery, LocalDateTime updatedAt, int like, int view) {
+    public ProductDetailDto(Boolean isMe, SellerInfo sellerInfo, Basic basic, SellerNotice sellerNotice, Measure measure, String opinion, int price, boolean isIncludeDelivery, LocalDateTime updatedAt, int like, int view) {
         this.isMe = isMe;
         this.sellerInfo = sellerInfo;
         this.basic = basic;
