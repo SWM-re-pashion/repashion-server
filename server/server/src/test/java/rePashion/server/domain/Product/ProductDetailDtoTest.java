@@ -2,12 +2,18 @@ package rePashion.server.domain.Product;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import rePashion.server.domain.product.model.Measure;
 import rePashion.server.domain.product.model.Product;
 import rePashion.server.domain.product.dto.ProductDetailDto;
+import rePashion.server.global.common.measure.MeasureConfig;
+import rePashion.server.global.common.measure.MeasureRepository;
+import rePashion.server.global.common.measure.MeasureType;
+import rePashion.server.global.common.measure.exception.MeasureException;
+import rePashion.server.global.error.exception.ErrorCode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ProductDetailDtoTest {
 
@@ -121,21 +127,98 @@ public class ProductDetailDtoTest {
     @Test
     public void when_product_measure_is_top(){
 
+        //given
+        Measure measure = Measure.builder()
+                .totalLength(100)
+                .shoulderWidth(200)
+                .chestSection(300)
+                .sleeveLength(400)
+                .build();
+
+        //when
+        MeasureRepository measureRepository = MeasureConfig.determinMeasure(MeasureType.TOP);
+        HashMap<String, Integer> map = measureRepository.getMeasure(MeasureType.TOP, measure);
+
+        //then
+        Assertions.assertThat(map.get("totalLength")).isEqualTo(100);
+        Assertions.assertThat(map.get("shoulderWidth")).isEqualTo(200);
+        Assertions.assertThat(map.get("chestSection")).isEqualTo(300);
+        Assertions.assertThat(map.get("sleeveLength")).isEqualTo(400);
     }
 
     @Test
     public void when_product_measure_is_bottom(){
+        //given
+        Measure measure = Measure.builder()
+                .totalLength(100)
+                .waistSection(200)
+                .thighSection(300)
+                .rise(400)
+                .bottomSection(500)
+                .build();
 
+        //when
+        MeasureRepository measureRepository = MeasureConfig.determinMeasure(MeasureType.BOTTOM);
+        HashMap<String, Integer> map = measureRepository.getMeasure(MeasureType.BOTTOM, measure);
+
+        //then
+        Assertions.assertThat(map.get("totalLength")).isEqualTo(100);
+        Assertions.assertThat(map.get("waistSection")).isEqualTo(200);
+        Assertions.assertThat(map.get("thighSection")).isEqualTo(300);
+        Assertions.assertThat(map.get("rise")).isEqualTo(400);
+        Assertions.assertThat(map.get("bottomSection")).isEqualTo(500);
     }
 
     @Test
     public void when_product_measure_is_skirt(){
+        //given
+        Measure measure = Measure.builder()
+                .totalLength(100)
+                .waistSection(200)
+                .bottomSection(300)
+                .build();
 
+        //when
+        MeasureRepository measureRepository = MeasureConfig.determinMeasure(MeasureType.SKIRT);
+        HashMap<String, Integer> map = measureRepository.getMeasure(MeasureType.SKIRT, measure);
+
+        //then
+        Assertions.assertThat(map.get("totalLength")).isEqualTo(100);
+        Assertions.assertThat(map.get("waistSection")).isEqualTo(200);
+        Assertions.assertThat(map.get("bottomSection")).isEqualTo(300);
     }
 
     @Test
-    public void when_product_measure_is_top_exception(){
+    public void when_product_measure_is_top_exception_have_incorrect_pramateter(){
+        Measure measure = Measure.builder()
+                .totalLength(100)
+                .waistSection(200)
+                .thighSection(300)
+                .rise(400)
+                .build();
 
+        //when
+        Assertions.assertThatThrownBy(() -> {
+                    MeasureRepository measureRepository = MeasureConfig.determinMeasure(MeasureType.TOP);
+                    measureRepository.getMeasure(MeasureType.TOP, measure);
+                })
+                .isInstanceOf(MeasureException.class)
+                .hasMessage(ErrorCode.MEASURE_DATA_ERROR.getMessage());
+    }
+
+    @Test
+    public void when_product_measure_is_top_exception_have_less_pramateter(){
+        Measure measure = Measure.builder()
+                .totalLength(100)
+                .build();
+
+        //when
+        Assertions.assertThatThrownBy(() -> {
+                    MeasureRepository measureRepository = MeasureConfig.determinMeasure(MeasureType.TOP);
+                    measureRepository.getMeasure(MeasureType.TOP, measure);
+                })
+                .isInstanceOf(MeasureException.class)
+                .hasMessage(ErrorCode.MEASURE_DATA_ERROR.getMessage());
     }
 
     @Test
@@ -146,6 +229,25 @@ public class ProductDetailDtoTest {
     @Test
     public void when_product_measure_is_skirt_exception(){
 
+    }
+
+    @Test
+    public void likes_added_when_it_is_first_attempt(){ //Product에 옮기기
+
+    }
+
+    @Test
+    public void likes_not_added_but_exception_when_it_is_not_first_attempt(){   //Product에 옮기기
+
+    }
+
+    @Test
+    public void view_added_when_it_is_first_attempt(){   //Product에 옮기기
+
+    }
+
+    @Test
+    public void view_not_added_but_exception_when_it_is_not_first_attempt(){   //Product에 옮기기
 
     }
 
