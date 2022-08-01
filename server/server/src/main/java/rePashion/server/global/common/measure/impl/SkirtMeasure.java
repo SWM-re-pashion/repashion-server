@@ -24,7 +24,6 @@ public class SkirtMeasure implements MeasureRepository {
 
     @Override
     public boolean isValid(HashMap<String, Integer> map) {
-        if(map.size() != kindArray.length) return false;
         for(Integer value : map.values()){
             if(value<=0) return false;
         }
