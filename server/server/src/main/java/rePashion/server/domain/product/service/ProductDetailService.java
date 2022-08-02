@@ -12,18 +12,12 @@ import java.util.ArrayList;
 public class ProductDetailService {
 
     public ProductDetailDto of(Long id){
-
         Product product = getProduct();
-        ProductDetailDto.SellerInfo sellerInfo = getSellerInfo();
-        ProductDetailDto.Basic basic = getBasic(product);
-        ProductDetailDto.SellerNotice sellerNotice = getSellerNotice(product);
-        ProductDetailDto.Measure measure = getMeasure(product);
-
         return ProductDetailDto.builder()
-                .sellerInfo(sellerInfo)
-                .basic(basic)
-                .sellerNotice(sellerNotice)
-                .measure(measure)
+                .sellerInfo(getSellerInfo())
+                .basic(getBasic(product))
+                .sellerNotice(getSellerNotice(product))
+                .measure(getMeasure(product))
                 .opinion(product.getOpinion())
                 .price(product.getPrice())
                 .isIncludeDelivery(product.isIncludeDelivery())
@@ -33,9 +27,9 @@ public class ProductDetailService {
                 .build();
     }
 
+
     private int getLikes() {
-        int likes = 17;
-        return likes;
+        return 16;
     }
 
     private ProductDetailDto.Measure getMeasure(Product product) {
@@ -50,9 +44,12 @@ public class ProductDetailService {
 
     private ProductDetailDto.SellerNotice getSellerNotice(Product product) {
         return new ProductDetailDto.SellerNotice(product.getCondition(),
-                product.getPollution(), String.valueOf(product.getHeight()),
-                product.getLength(), product.getBodyShape(),
-                product.getFit(), product.getPurchaseTime(),
+                product.getPollution(),
+                String.valueOf(product.getHeight()),
+                product.getLength(),
+                product.getBodyShape(),
+                product.getFit(),
+                product.getPurchaseTime(),
                 product.getPurchasePlace());
     }
 

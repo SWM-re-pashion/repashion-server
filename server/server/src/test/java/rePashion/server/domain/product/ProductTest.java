@@ -1,4 +1,4 @@
-package rePashion.server.domain.Product;
+package rePashion.server.domain.product;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,4 +1,4 @@
-package rePashion.server.domain.Product;
+package rePashion.server.domain.product;
 
 import org.junit.jupiter.api.Test;
 import rePashion.server.domain.product.model.ProductLike;
