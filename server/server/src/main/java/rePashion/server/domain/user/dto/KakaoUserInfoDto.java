@@ -56,7 +56,7 @@ public class KakaoUserInfoDto {
                 .nickName(this.getKakao_account().getProfile().getNickname())
                 .email(this.getKakao_account().getEmail())
                 .ageRange((this.getKakao_account().getAge_range()))
-                .userAgreement(this.toUserAgreementEntity())
+                //.userAgreement(this.toUserAgreementEntity())
                 .build();
     }
 
