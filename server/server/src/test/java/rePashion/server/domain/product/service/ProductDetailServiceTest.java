@@ -42,13 +42,77 @@ class ProductDetailServiceTest {
 
         //given
         Long userId = 10L;
+        User user = getUser(userId);
+        Product product = getProduct(user);
+        ProductDetailDto.SellerInfo sellerInfo = getSellerInfo();
+        ProductDetailDto.Basic basic = getBasic(product);
+        ProductDetailDto.SellerNotice sellerNotice = getSellerNotice(product);
+        ProductDetailDto.Measure measure = getMeasure(product);
+        ProductDetailDto productDetail = getProductDetailDto(sellerInfo, basic, sellerNotice, measure, product);
+        String token = "I*UI#Kfdklsfiouufi";
 
+        //when
+        when(getUserInfoService.getPkOfUserInfo(token)).thenReturn(userId);
+        when(userRepository.findUserById(any())).thenReturn(Optional.of(user));
+        boolean isMe = productDetailService.setIsMe(productDetail, product.getSeller().getId(), token);
+
+        //then
+        Assertions.assertThat(isMe).isEqualTo(true);
+    }
+
+    @Test
+    public void when_isMe_should_false() throws JsonProcessingException {
+
+        //given
+        Long userId = 11L;
+        User user = getUser(10L);
+        Product product = getProduct(user);
+        ProductDetailDto.SellerInfo sellerInfo = getSellerInfo();
+        ProductDetailDto.Basic basic = getBasic(product);
+        ProductDetailDto.SellerNotice sellerNotice = getSellerNotice(product);
+        ProductDetailDto.Measure measure = getMeasure(product);
+        ProductDetailDto productDetailDto = getProductDetailDto(sellerInfo, basic, sellerNotice, measure, product);
+        String token = getToken();
+
+        //when
+        when(getUserInfoService.getPkOfUserInfo(token)).thenReturn(userId);
+        when(userRepository.findUserById(any())).thenReturn(Optional.of(user));
+        boolean isMe = productDetailService.setIsMe(productDetailDto, product.getSeller().getId(), token);
+
+        //then
+        Assertions.assertThat(isMe).isEqualTo(false);
+    }
+
+    private String getToken() {
+        return "I*UI#Kfdklsfiouufi";
+    }
+
+    private ProductDetailDto getProductDetailDto(ProductDetailDto.SellerInfo sellerInfo, ProductDetailDto.Basic basic, ProductDetailDto.SellerNotice sellerNotice, ProductDetailDto.Measure measure, Product product) {
+        ProductDetailDto productDetail = ProductDetailDto.builder()
+                .sellerInfo(sellerInfo)
+                .basic(basic)
+                .sellerNotice(sellerNotice)
+                .measure(measure)
+                .opinion(product.getOpinion())
+                .price(product.getPrice())
+                .isIncludeDelivery(product.isIncludeDelivery())
+                .updatedAt(LocalDateTime.now())
+                .like(getLikes())
+                .view(product.getView())
+                .build();
+        return productDetail;
+    }
+
+    private User getUser(Long userId) {
         User user = User.builder()
                 .id(userId)
                 .nickName("hihi")
                 .email("test@test.com")
                 .build();
+        return user;
+    }
 
+    private Product getProduct(User user) {
         Product product = Product.builder()
                 .title("스투시 프린팅 티셔츠")
                 .category("상의")
@@ -79,38 +143,7 @@ class ProductDetailServiceTest {
                 .sleeveLength(100)
                 .seller(user)
                 .build();
-
-        ProductDetailDto.SellerInfo sellerInfo = getSellerInfo();
-        ProductDetailDto.Basic basic = getBasic(product);
-        ProductDetailDto.SellerNotice sellerNotice = getSellerNotice(product);
-        ProductDetailDto.Measure measure = getMeasure(product);
-
-        ProductDetailDto productDetail = ProductDetailDto.builder()
-                .sellerInfo(sellerInfo)
-                .basic(basic)
-                .sellerNotice(sellerNotice)
-                .measure(measure)
-                .opinion(product.getOpinion())
-                .price(product.getPrice())
-                .isIncludeDelivery(product.isIncludeDelivery())
-                .updatedAt(LocalDateTime.now())
-                .like(getLikes())
-                .view(product.getView())
-                .build();
-
-        String token = "I*UI#Kfdklsfiouufi";
-
-        //when
-        when(getUserInfoService.getPkOfUserInfo(token)).thenReturn(userId);
-        when(userRepository.findUserById(any())).thenReturn(Optional.of(user));
-        boolean isMe = productDetailService.setIsMe(productDetail, product.getSeller().getId(), token);
-
-        //then
-        Assertions.assertThat(isMe).isEqualTo(true);
-    }
-
-    @Test
-    public void when_isMe_should_false(){
+        return product;
     }
 
     private String determineProfileImage(String exitstedImage) {
