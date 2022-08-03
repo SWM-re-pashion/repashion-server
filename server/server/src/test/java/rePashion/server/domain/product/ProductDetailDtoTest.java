@@ -23,7 +23,6 @@ public class ProductDetailDtoTest {
     @BeforeEach
     public void setProduct(){
         this.product = Product.builder()
-                .id(1L)
                 .title("스투시 프린팅 티셔츠")
                 .category("상의")
                 .brand("스투시")

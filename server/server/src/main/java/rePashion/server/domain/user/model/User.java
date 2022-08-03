@@ -4,8 +4,11 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import rePashion.server.domain.product.model.Product;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "USERS")
@@ -26,14 +29,18 @@ public class User {
         M,W
     };
 
-    @Embedded
-    private UserAgreement userAgreement;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "seller")
+    private List<Product> products = new ArrayList<>();
+
+//    @Embedded
+//    private UserAgreement userAgreement;
 
     @Builder
-    public User(String nickName, String email, String ageRange, UserAgreement userAgreement) {
+    public User(Long id, String nickName, String email, String ageRange) {
+        this.id = id;
         this.nickName = nickName;
         this.email = email;
         this.ageRange = ageRange;
-        this.userAgreement = userAgreement;
+        //this.userAgreement = userAgreement;
     }
 }

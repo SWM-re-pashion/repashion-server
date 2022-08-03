@@ -1,15 +1,27 @@
 package rePashion.server.domain.product.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import rePashion.server.domain.product.model.Product;
 import rePashion.server.domain.product.dto.ProductDetailDto;
+import rePashion.server.domain.user.exception.UserNotExistedException;
+import rePashion.server.domain.user.model.User;
+import rePashion.server.domain.user.repository.UserRepository;
+import rePashion.server.domain.user.service.GetUserInfoService;
+import rePashion.server.global.error.exception.ErrorCode;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ProductDetailService {
+
+    private final GetUserInfoService getUserInfoService;
+    private final UserRepository userRepository;
 
     public ProductDetailDto of(Long id){
         Product product = getProduct();
@@ -27,6 +39,17 @@ public class ProductDetailService {
                 .build();
     }
 
+    public boolean setIsMe(ProductDetailDto productDetail, Long sellerId, String token) throws JsonProcessingException {
+        boolean status = determineIsMe(sellerId, token);
+        productDetail.setIsMe(status);
+        return status;
+    }
+
+    private boolean determineIsMe(Long sellerId, String token) throws JsonProcessingException {
+        Long currentUserPk = getUserInfoService.getPkOfUserInfo(token);
+        Long findSellerId = userRepository.findUserById(sellerId).orElseThrow(() -> new UserNotExistedException(ErrorCode.USER_NOT_EXISTED)).getId();
+        return currentUserPk.equals(findSellerId);
+    }
 
     private int getLikes() {
         return 16;

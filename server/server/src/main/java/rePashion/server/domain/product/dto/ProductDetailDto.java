@@ -13,6 +13,10 @@ public class ProductDetailDto {
     private Boolean isMe;
     public static final String STANDARD_PROFILE_IMAGE = "https://webserver0712.s3.ap-northeast-2.amazonaws.com/profile/%EA%B8%B0%EB%B3%B8%ED%94%84%EB%A1%9C%ED%95%84.png";
 
+    public void setIsMe(boolean equals) {
+        isMe = equals;
+    }
+
     @Getter
     public static class SellerInfo{
         private String profileImg;
