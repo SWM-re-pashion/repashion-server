@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import rePashion.server.domain.user.dto.AwsCognitoUserInfoDto;
 import rePashion.server.domain.user.exception.CognitoException;
@@ -50,6 +51,9 @@ public class GetUserInfoService {
             return restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
         }catch(HttpClientErrorException ignored){
             throw new CognitoException(ErrorCode.INVALID_TOKEN_OR_REQUEST);
+        }
+        catch (ResourceAccessException ignored){
+            throw new CognitoException(ErrorCode.COGNITO_SERVER_ERROR);
         }
     }
 
