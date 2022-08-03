@@ -28,12 +28,19 @@ public enum ErrorCode {
     USER_SIGNUP_ERROR(400, "U001", "회원가입시에 오류가 발생하여 테이블에 저장되지 않았습니다"),
     USER_NOT_EXISTED(400, "U002", "해당 유저가 존재하지 않습니다"),
 
+    // 토큰 오류
+    INVALID_TOKEN_OR_REQUEST(401, "AUTH001", "코그니토 토큰 혹은 요청에 문제가 있습니다"),
+    COGNITO_SERVER_ERROR(500, "AUTH002", "코그니토 서버에 문제가 있습니다"),
+
     //개인화 추천
     STYLE_IMAGE_NOT_EXISTED(400, "U002", "해당 이미지가 존재하지 않습니다"),
     SIZE_NOT_EXISTED(400, "U003", "해당 사이즈는 존재하지 않습니다"),
 
     //파일 업로드
     FILE_CONVERTING_ERROR(400, "F001", "파일 업로드 시에 오류가 발생했습니다"),
+
+    //Product
+    PRODUCT_NOT_EXISTED(400, "P001","해당 상품이 존재하지 않습니다"),
 
     //DB 오류
     DB_INSERTING_ERROR(400, "DB001", "DB에 데이터 추가 시에 오류가 발생했습니다"),
