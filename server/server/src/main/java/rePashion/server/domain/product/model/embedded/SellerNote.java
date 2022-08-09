@@ -1,6 +1,7 @@
 package rePashion.server.domain.product.model.embedded;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,6 +24,7 @@ public class SellerNote {
     private String material;
     private String opinion;
 
+    @Builder
     public SellerNote(String purchaseTime, String purchasePlace, String condition, String pollution, int height, String bodyShape, String length, String fit, String tag, String color, String material, String opinion) {
         this.purchaseTime = purchaseTime;
         this.purchasePlace = purchasePlace;

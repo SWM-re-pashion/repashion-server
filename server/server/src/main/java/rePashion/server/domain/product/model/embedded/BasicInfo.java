@@ -1,6 +1,7 @@
 package rePashion.server.domain.product.model.embedded;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import rePashion.server.global.common.BaseTimeEntity;
@@ -18,11 +19,11 @@ public class BasicInfo extends BaseTimeEntity {
     private String thumbnailImage;
     private int price;
     private boolean isIncludeDelivery;
-    private String gender;
     private String size;
     private int views;
 
-    public BasicInfo(String title, String contact, String category, String brand, String thumbnailImage, int price, boolean isIncludeDelivery, String gender, String size, int views) {
+    @Builder
+    public BasicInfo(String title, String contact, String category, String brand, String thumbnailImage, int price, boolean isIncludeDelivery, String size, int views) {
         this.title = title;
         this.contact = contact;
         this.category = category;
@@ -30,7 +31,6 @@ public class BasicInfo extends BaseTimeEntity {
         this.thumbnailImage = thumbnailImage;
         this.price = price;
         this.isIncludeDelivery = isIncludeDelivery;
-        this.gender = gender;
         this.size = size;
         this.views = views;
     }
