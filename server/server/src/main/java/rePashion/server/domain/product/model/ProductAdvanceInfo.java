@@ -8,7 +8,6 @@ import rePashion.server.domain.product.model.embedded.Measure;
 import rePashion.server.domain.product.model.embedded.SellerNote;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 
 @Getter
 @Entity
@@ -30,4 +29,15 @@ public class ProductAdvanceInfo {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "productId")
     private Product product;
+
+    @Builder
+    public ProductAdvanceInfo(Long id, SellerNote sellerNote, Measure measure) {
+        this.id = id;
+        this.sellerNote = sellerNote;
+        this.measure = measure;
+    }
+
+    public void setProduct(Product product){
+        this.product = product;
+    }
 }

@@ -1,13 +1,14 @@
 package rePashion.server.domain.product.model;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import rePashion.server.domain.product.model.embedded.BasicInfo;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Entity
@@ -21,12 +22,20 @@ public class Product {
     @Embedded
     BasicInfo basicInfo;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "product")
-    private ProductAdvanceInfo info;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "product")
+    private ProductAdvanceInfo advanceInfo;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "product")
-    private ArrayList<ProductImage> images = new ArrayList<>();
+    private List<ProductImage> images = new ArrayList<>();
 
-    private LocalDateTime updatedAt;
-    private LocalDateTime createdAt;
+    @Builder
+    public Product(Long id, BasicInfo basicInfo, ProductAdvanceInfo advanceInfo) {
+        this.id = id;
+        this.basicInfo = basicInfo;
+        this.advanceInfo = advanceInfo;
+    }
+
+    public void setImages(ProductImage image){
+        this.images.add(image);
+    }
 }

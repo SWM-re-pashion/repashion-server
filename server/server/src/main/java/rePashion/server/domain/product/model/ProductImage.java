@@ -1,9 +1,9 @@
 package rePashion.server.domain.product.model;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import rePashion.server.domain.product.dto.ProductDetailDto;
 
 import javax.persistence.*;
 
@@ -21,4 +21,11 @@ public class ProductImage {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "productId")
     private Product product;
+
+    @Builder
+    public ProductImage(Long id, String imagePath, Product product) {
+        this.id = id;
+        this.imagePath = imagePath;
+        this.product = product;
+    }
 }
