@@ -1,4 +1,4 @@
-package rePashion.server.domain.product.model;
+package rePashion.server.domain.product.model.embedded;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
 
+@Getter
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter
 public class Measure {
     private int totalLength;
     private int shoulderWidth;
