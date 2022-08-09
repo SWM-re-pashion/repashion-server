@@ -1,13 +1,19 @@
 package rePashion.server.domain.product.dto;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductCreateDto {
     private ArrayList<String> imgList;
     private String contact;
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class BasicInfo{
         private String title;
         private String category;
@@ -23,6 +29,9 @@ public class ProductCreateDto {
     private int price;
     private Boolean isIncludeDelivery;
     private String size;
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class AdditionalInfo{
         private String purchaseTime;
         private String purchasePlace;
@@ -33,6 +42,9 @@ public class ProductCreateDto {
         }
     }
     private AdditionalInfo additionalInfo;
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class SellerNote{
         private String condition;
         private String pollution;
@@ -51,6 +63,9 @@ public class ProductCreateDto {
         }
     }
     private SellerNote sellerNote;
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class Style{
         private String tag;
         private String color;
@@ -63,6 +78,9 @@ public class ProductCreateDto {
         }
     }
     private Style style;
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class Measure{
         private int length;
         private int shoulderWidth = -1;
