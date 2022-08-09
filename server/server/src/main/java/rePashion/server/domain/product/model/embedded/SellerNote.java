@@ -12,9 +12,9 @@ import javax.persistence.Embeddable;
 public class SellerNote {
     private String purchaseTime;
     private String purchasePlace;
-    private String condition;
     private String pollution;
     private int height;
+    private String conditions;
     private String bodyShape;
     private String length;
     private String fit;
@@ -26,9 +26,9 @@ public class SellerNote {
     public SellerNote(String purchaseTime, String purchasePlace, String condition, String pollution, int height, String bodyShape, String length, String fit, String tag, String color, String material, String opinion) {
         this.purchaseTime = purchaseTime;
         this.purchasePlace = purchasePlace;
-        this.condition = condition;
         this.pollution = pollution;
         this.height = height;
+        this.conditions = condition;
         this.bodyShape = bodyShape;
         this.length = length;
         this.fit = fit;
