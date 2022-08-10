@@ -37,7 +37,8 @@ public class ProductAdvanceInfo {
         this.measure = measure;
     }
 
-    public void setProduct(Product product){
+    public void changeProduct(Product product) {
         this.product = product;
+        product.setAdvanceInfo(this);
     }
 }

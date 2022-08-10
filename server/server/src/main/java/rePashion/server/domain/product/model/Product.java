@@ -29,13 +29,12 @@ public class Product {
     private List<ProductImage> images = new ArrayList<>();
 
     @Builder
-    public Product(Long id, BasicInfo basicInfo, ProductAdvanceInfo advanceInfo) {
+    public Product(Long id, BasicInfo basicInfo) {
         this.id = id;
         this.basicInfo = basicInfo;
-        this.advanceInfo = advanceInfo;
     }
 
-    public void setImages(ProductImage image){
-        this.images.add(image);
+    public void setAdvanceInfo(ProductAdvanceInfo productAdvanceInfo){
+        this.advanceInfo = productAdvanceInfo;
     }
 }

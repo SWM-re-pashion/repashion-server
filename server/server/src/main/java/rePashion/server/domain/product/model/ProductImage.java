@@ -28,4 +28,9 @@ public class ProductImage {
         this.imagePath = imagePath;
         this.product = product;
     }
+
+    public void changeProduct(Product product){
+        this.product = product;
+        product.getImages().add(this);
+    }
 }
