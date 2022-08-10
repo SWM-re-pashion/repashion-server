@@ -1,14 +1,28 @@
 package rePashion.server.domain.product.service;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import rePashion.server.domain.product.dto.ProductCreateDto;
+import rePashion.server.domain.product.exception.ProductNotExistedException;
 import rePashion.server.domain.product.model.Product;
 import rePashion.server.domain.product.model.ProductAdvanceInfo;
 import rePashion.server.domain.product.model.ProductImage;
 import rePashion.server.domain.product.model.embedded.BasicInfo;
 import rePashion.server.domain.product.model.embedded.Measure;
 import rePashion.server.domain.product.model.embedded.SellerNote;
+import rePashion.server.domain.product.repository.ProductAdvanceInfoRepository;
+import rePashion.server.domain.product.repository.ProductImageRepository;
+import rePashion.server.domain.product.repository.ProductRepository;
 
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
 public class ProductService {
+
+    private final ProductRepository productRepository;
+    private final ProductImageRepository productImageRepository;
+    private final ProductAdvanceInfoRepository productAdvanceInfoRepository;
 
     public Product save(ProductCreateDto dto){
 
@@ -58,25 +72,34 @@ public class ProductService {
 
         Product product = Product.builder()
                 .basicInfo(basicInfo)
-                .advanceInfo(advanceInfo)
                 .build();
 
-        advanceInfo.setProduct(product);
+        Product save = productRepository.save(product);
+        advanceInfo.changeProduct(save);
+        productAdvanceInfoRepository.save(advanceInfo);
 
         for(String image : dto.getImgList()){
             ProductImage productImage = ProductImage.builder()
                     .product(product)
                     .imagePath(image)
                     .build();
-            product.setImages(productImage);
+            productImage.changeProduct(product);
+            productImageRepository.save(productImage);
         }
 
         return product;
     }
 
-    public Long update(){return null;}
+    public Long update(Long productId, ProductCreateDto dto){
+        return 1L;
+    }
 
-    public Long delete(){return null;}
+    public void delete(Long productId){
+        Product product = productRepository.findById(productId).orElseThrow(ProductNotExistedException::new);
+        productRepository.delete(product);
+    }
 
-    public ProductCreateDto get(){return null;}
+    public ProductCreateDto get(Long productId){
+        return null;
+    }
 }

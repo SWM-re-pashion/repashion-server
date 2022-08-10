@@ -22,4 +22,10 @@ public class ProductController {
         Product savedProduct = productService.save(dto);
         return new ResponseEntity<GlobalResponse>(GlobalResponse.of(StatusCode.CREATED, savedProduct.getId()), HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<GlobalResponse> delete(@PathVariable Long id){
+        productService.delete(id);
+        return new ResponseEntity<GlobalResponse>(HttpStatus.NO_CONTENT);
+    }
 }
