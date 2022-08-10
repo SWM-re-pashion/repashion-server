@@ -4,14 +4,13 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import rePashion.server.global.common.BaseTimeEntity;
 
 import javax.persistence.Embeddable;
 
 @Getter
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BasicInfo extends BaseTimeEntity {
+public class BasicInfo{
     private String title;
     private String contact;
     private String category;
