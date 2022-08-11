@@ -31,6 +31,9 @@ public enum ErrorCode {
     STYLE_IMAGE_NOT_EXISTED(400, "U002", "해당 이미지가 존재하지 않습니다"),
     SIZE_NOT_EXISTED(400, "U003", "해당 사이즈는 존재하지 않습니다"),
 
+    //상품
+    PRODUCT_NOT_EXISTED(400, "P001", "해당 상품이 존재하지 않습니다"),
+
     //파일 업로드
     FILE_CONVERTING_ERROR(400, "F001", "파일 업로드 시에 오류가 발생했습니다"),
 
