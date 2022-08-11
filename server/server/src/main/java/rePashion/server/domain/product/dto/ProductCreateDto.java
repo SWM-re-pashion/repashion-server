@@ -1,10 +1,13 @@
 package rePashion.server.domain.product.dto;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import rePashion.server.domain.product.model.Product;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -78,34 +81,11 @@ public class ProductCreateDto {
         }
     }
     private Style style;
-
-    @Getter
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public static class Measure{
-        private int length;
-        private int shoulderWidth = -1;
-        private int waistSection = -1;
-        private int chestSection = -1;
-        private int thighSection = -1;
-        private int bottomSection = -1;
-        private int rise = -1;
-        private int sleeveLength = -1;
-
-        public Measure(int length, int shoulderWidth, int waistSection, int chestSection, int thighSection, int bottomSection, int rise, int sleeveLength) {
-            this.length = length;
-            this.shoulderWidth = shoulderWidth;
-            this.waistSection = waistSection;
-            this.chestSection = chestSection;
-            this.thighSection = thighSection;
-            this.bottomSection = bottomSection;
-            this.rise = rise;
-            this.sleeveLength = sleeveLength;
-        }
-    }
-    private Measure measure;
+    private HashMap<String, Integer> measure;
     private String opinion;
 
-    public ProductCreateDto(ArrayList<String> imgList, String contact, BasicInfo basicInfo, int price, Boolean isIncludeDelivery, String size, AdditionalInfo additionalInfo, SellerNote sellerNote, Style style, Measure measure, String opinion) {
+    @Builder
+    public ProductCreateDto(ArrayList<String> imgList, String contact, BasicInfo basicInfo, int price, Boolean isIncludeDelivery, String size, AdditionalInfo additionalInfo, SellerNote sellerNote, Style style, HashMap<String, Integer> measure, String opinion) {
         this.imgList = imgList;
         this.contact = contact;
         this.basicInfo = basicInfo;
@@ -117,5 +97,26 @@ public class ProductCreateDto {
         this.style = style;
         this.measure = measure;
         this.opinion = opinion;
+    }
+
+    static public ProductCreateDto toDto(Product product){
+        BasicInfo basicInfo = new BasicInfo(product.getBasicInfo().getTitle(), product.getBasicInfo().getCategory(), product.getBasicInfo().getBrand());
+        AdditionalInfo additionalInfo = new AdditionalInfo(product.getAdvanceInfo().getSellerNote().getPurchaseTime(), product.getAdvanceInfo().getSellerNote().getPurchasePlace());
+        SellerNote sellerNote = new SellerNote(product.getAdvanceInfo().getSellerNote().getConditions(), product.getAdvanceInfo().getSellerNote().getPollution(), product.getAdvanceInfo().getSellerNote().getHeight(), product.getAdvanceInfo().getSellerNote().getBodyShape(), product.getAdvanceInfo().getSellerNote().getLength(), product.getAdvanceInfo().getSellerNote().getFit());
+        Style style = new Style(product.getAdvanceInfo().getSellerNote().getTag(), product.getAdvanceInfo().getSellerNote().getColor(), product.getAdvanceInfo().getSellerNote().getMaterial());
+        HashMap<String, Integer> measure = product.getAdvanceInfo().getMeasure().getMap();
+        return ProductCreateDto.builder()
+                .imgList(product.toStringArray())
+                .contact(product.getBasicInfo().getContact())
+                .basicInfo(basicInfo)
+                .price(product.getBasicInfo().getPrice())
+                .isIncludeDelivery(product.getBasicInfo().isIncludeDelivery())
+                .size(product.getBasicInfo().getSize())
+                .additionalInfo(additionalInfo)
+                .sellerNote(sellerNote)
+                .style(style)
+                .measure(measure)
+                .opinion(product.getAdvanceInfo().getSellerNote().getOpinion())
+                .build();
     }
 }

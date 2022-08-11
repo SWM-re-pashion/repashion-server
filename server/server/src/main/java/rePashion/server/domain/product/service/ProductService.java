@@ -4,27 +4,26 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import rePashion.server.domain.product.dto.ProductCreateDto;
 import rePashion.server.domain.product.exception.ProductNotExistedException;
-import rePashion.server.domain.product.model.Product;
-import rePashion.server.domain.product.model.ProductAdvanceInfo;
-import rePashion.server.domain.product.model.ProductImage;
+import rePashion.server.domain.product.model.*;
 import rePashion.server.domain.product.model.embedded.BasicInfo;
-import rePashion.server.domain.product.model.embedded.Measure;
 import rePashion.server.domain.product.model.embedded.SellerNote;
-import rePashion.server.domain.product.repository.ProductAdvanceInfoRepository;
-import rePashion.server.domain.product.repository.ProductImageRepository;
+import rePashion.server.domain.product.model.measure.MeasureConfig;
+import rePashion.server.domain.product.model.measure.MeasureType;
+import rePashion.server.domain.product.model.measure.exception.MeasureException;
 import rePashion.server.domain.product.repository.ProductRepository;
+import rePashion.server.global.error.exception.ErrorCode;
 
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ProductService {
 
     private final ProductRepository productRepository;
-    private final ProductImageRepository productImageRepository;
-    private final ProductAdvanceInfoRepository productAdvanceInfoRepository;
 
     public Product save(ProductCreateDto dto){
+
+        String[] categories = dto.getBasicInfo().getCategory().split("/");
+        String type = categories[1].toUpperCase();
 
         BasicInfo basicInfo = BasicInfo.builder()
                 .title(dto.getBasicInfo().getTitle())
@@ -53,30 +52,27 @@ public class ProductService {
                 .opinion(dto.getOpinion())
                 .build();
 
+        MeasureType measureType;
+        try {
+            measureType = MeasureType.valueOf(type);
+        }catch (IllegalArgumentException e){
+            throw new MeasureException(ErrorCode.MEASURE_DATA_ERROR);
+        }
 
-        Measure measure = Measure.builder()
-                .totalLength(dto.getMeasure().getLength())
-                .shoulderWidth(dto.getMeasure().getShoulderWidth())
-                .waistSection(dto.getMeasure().getWaistSection())
-                .chestSection(dto.getMeasure().getChestSection())
-                .thighSection(dto.getMeasure().getThighSection())
-                .bottomSection(dto.getMeasure().getBottomSection())
-                .rise(dto.getMeasure().getRise())
-                .sleeveLength(dto.getMeasure().getSleeveLength())
-                .build();
+        Measure measure = MeasureConfig.determinMeasure(measureType, dto.getMeasure());
 
         ProductAdvanceInfo advanceInfo = ProductAdvanceInfo.builder()
                 .sellerNote(sellerNote)
                 .measure(measure)
                 .build();
 
+        measure.setAdvanceInfo(advanceInfo);
+
         Product product = Product.builder()
                 .basicInfo(basicInfo)
                 .build();
 
-        Product save = productRepository.save(product);
-        advanceInfo.changeProduct(save);
-        productAdvanceInfoRepository.save(advanceInfo);
+        advanceInfo.changeProduct(product);
 
         for(String image : dto.getImgList()){
             ProductImage productImage = ProductImage.builder()
@@ -84,14 +80,16 @@ public class ProductService {
                     .imagePath(image)
                     .build();
             productImage.changeProduct(product);
-            productImageRepository.save(productImage);
         }
 
-        return product;
+        Product savedProduct = productRepository.save(product);
+        return savedProduct;
     }
 
     public Long update(Long productId, ProductCreateDto dto){
-        return 1L;
+        delete(productId);
+        Product savedProduct = save(dto);
+        return savedProduct.getId();
     }
 
     public void delete(Long productId){
@@ -100,6 +98,7 @@ public class ProductService {
     }
 
     public ProductCreateDto get(Long productId){
-        return null;
+        Product product = productRepository.findProductEntityGraph(productId).orElseThrow(ProductNotExistedException::new);
+        return ProductCreateDto.toDto(product);
     }
 }

@@ -10,6 +10,7 @@ import rePashion.server.global.common.BaseTimeEntity;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Entity
@@ -33,6 +34,10 @@ public class Product extends BaseTimeEntity{
     public Product(Long id, BasicInfo basicInfo) {
         this.id = id;
         this.basicInfo = basicInfo;
+    }
+
+    public ArrayList<String> toStringArray(){
+        return new ArrayList<>(this.images.stream().map(ProductImage::getImagePath).toList());
     }
 
     public void setAdvanceInfo(ProductAdvanceInfo productAdvanceInfo){

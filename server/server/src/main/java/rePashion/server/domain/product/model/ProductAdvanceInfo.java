@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import rePashion.server.domain.product.model.embedded.Measure;
 import rePashion.server.domain.product.model.embedded.SellerNote;
 
 import javax.persistence.*;
@@ -23,8 +22,8 @@ public class ProductAdvanceInfo {
     SellerNote sellerNote;
 
     //Measure
-    @Embedded
-    Measure measure;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "advanceInfo")
+    private Measure measure;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "productId")
