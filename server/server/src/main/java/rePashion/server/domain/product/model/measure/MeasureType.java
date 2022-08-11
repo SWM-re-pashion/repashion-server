@@ -1,4 +1,4 @@
-package rePashion.server.global.common.measure;
+package rePashion.server.domain.product.model.measure;
 
 public enum MeasureType{
     TOP,
