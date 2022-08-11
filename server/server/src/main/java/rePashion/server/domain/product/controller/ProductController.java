@@ -23,6 +23,18 @@ public class ProductController {
         return new ResponseEntity<GlobalResponse>(GlobalResponse.of(StatusCode.CREATED, savedProduct.getId()), HttpStatus.CREATED);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<GlobalResponse> update(@PathVariable Long id, @RequestBody ProductCreateDto dto){
+        Long updatedId = productService.update(id, dto);
+        return new ResponseEntity<GlobalResponse>(GlobalResponse.of(StatusCode.SUCCESS, updatedId), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<GlobalResponse> get(@PathVariable Long id){
+        ProductCreateDto dto = productService.get(id);
+        return new ResponseEntity<GlobalResponse>(GlobalResponse.of(StatusCode.SUCCESS, dto), HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<GlobalResponse> delete(@PathVariable Long id){
         productService.delete(id);
