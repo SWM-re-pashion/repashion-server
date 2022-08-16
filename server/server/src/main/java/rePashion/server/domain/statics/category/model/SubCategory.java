@@ -1,4 +1,4 @@
-package rePashion.server.domain.statics.category;
+package rePashion.server.domain.statics.category.model;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -28,7 +28,7 @@ public class SubCategory {
         this.code = code;
     }
 
-    public void changeGender(ParentCategory parent){
+    public void changeParent(ParentCategory parent){
         this.parent = parent;
         parent.getChildrens().add(this);
     }

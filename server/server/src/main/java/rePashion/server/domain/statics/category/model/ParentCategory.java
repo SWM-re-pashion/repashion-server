@@ -1,4 +1,4 @@
-package rePashion.server.domain.statics.category;
+package rePashion.server.domain.statics.category.model;
 
 import lombok.AccessLevel;
 import lombok.Getter;
