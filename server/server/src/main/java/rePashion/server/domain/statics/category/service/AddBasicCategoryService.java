@@ -48,8 +48,8 @@ public class AddBasicCategoryService {
         outerSubCategories.add(new SubCategory("가디건", "cardigan"));
         outerSubCategories.add(new SubCategory("집업", "zipup"));
 
-        ParentCategory topParentCategory = new ParentCategory("상위", "top");
-        ParentCategory bottomParentCategory = new ParentCategory("하위", "bottom");
+        ParentCategory topParentCategory = new ParentCategory("상의", "top");
+        ParentCategory bottomParentCategory = new ParentCategory("하의", "bottom");
         ParentCategory outerParentCategory = new ParentCategory("아우터", "outer");
 
         topSubCategories.forEach((e) -> e.changeParent(topParentCategory));
@@ -73,8 +73,8 @@ public class AddBasicCategoryService {
         bottomCategories.add(new SubCategory("스커트", "skirt"));
         bottomCategories.add(new SubCategory("레깅스", "leggins"));
 
-        ParentCategory topParentCategory = new ParentCategory("상위", "top");
-        ParentCategory bottomParentCategory = new ParentCategory("하위", "bottom");
+        ParentCategory topParentCategory = new ParentCategory("상의", "top");
+        ParentCategory bottomParentCategory = new ParentCategory("하의", "bottom");
 
         topSubCategories.forEach((e) -> e.changeParent(topParentCategory));
         bottomCategories.forEach((e) -> e.changeParent(bottomParentCategory));
@@ -86,7 +86,12 @@ public class AddBasicCategoryService {
     }
 
     private void addMale() {
-        GenderCategory genderCategory = new GenderCategory("남성", "code");
+        SubCategory subCategory = new SubCategory("민소매", "sleevelss");
+        ParentCategory topParentCategory = new ParentCategory("상의", "top");
+        subCategory.changeParent(topParentCategory);
+        GenderCategory genderCategory = new GenderCategory("남성", "men");
+        topParentCategory.changeGender(genderCategory);
+
         genderCategoryRepository.save(genderCategory);
     }
 }
