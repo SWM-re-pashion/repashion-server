@@ -19,6 +19,8 @@ import rePashion.server.domain.statics.category.repository.ParentCategoryReposit
 import rePashion.server.domain.statics.category.repository.SubCategoryRepository;
 import rePashion.server.domain.statics.exception.DetailTypeError;
 import rePashion.server.domain.statics.exception.StaticVariableNotExisted;
+import rePashion.server.domain.statics.fit.BottomFit;
+import rePashion.server.domain.statics.fit.TopFit;
 import rePashion.server.domain.statics.length.BottomLength;
 import rePashion.server.domain.statics.length.TopLength;
 import rePashion.server.domain.statics.style.Style;
@@ -125,12 +127,30 @@ public class ProductDetailService {
                 sellerNote.getPollution(),
                 String.valueOf(sellerNote.getHeight()),
                 getNameOfLength(sellerNote.getLength()),
-                sellerNote.getFit(),
+                getNameOfFit(sellerNote.getFit()),
                 getNameOfBodyShape(sellerNote.getBodyShape()),
                 sellerNote.getPurchaseTime(),
                 sellerNote.getPurchasePlace()
         );
     }
+
+    private String getNameOfFit(String code){
+        String name = "";
+        try{
+            switch(this.type){
+                case bottom -> {
+                    name = BottomFit.valueOf(code).getName();
+                }
+                case top -> {
+                    name = TopFit.valueOf(code).getName();
+                }
+            }
+        }catch (IllegalArgumentException e){
+            throw new StaticVariableNotExisted(ErrorCode.STATIC_VARIABLE_NOT_EXISTED);
+        }
+        return name;
+    }
+
     private String getNameOfBodyShape(String code){
         try{
             return BodyShape.valueOf(code).getName();

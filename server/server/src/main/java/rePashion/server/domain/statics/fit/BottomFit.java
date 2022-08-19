@@ -7,11 +7,11 @@ import java.util.HashMap;
 @Getter
 public enum BottomFit {
 
-    ALL("전체", "all"),
-    SKINNY("스키니","skinny"),
-    NORMAL("노멀", "normal"),
-    WIDE("와이드", "wide"),
-    LOSE("루즈", "lose"),
+    all("전체", "all"),
+    skinny("스키니","skinny"),
+    normal("노멀", "normal"),
+    wide("와이드", "wide"),
+    lose("루즈", "lose"),
     ;
     private String name;
     private String code;

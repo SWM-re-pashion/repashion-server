@@ -7,11 +7,11 @@ import java.util.HashMap;
 @Getter
 public enum TopFit {
 
-    ALL("전체", "all"),
-    TIGHT("타이트", "tight"),
-    NORMAL("노멀", "normal"),
-    LOSE("루즈", "lose"),
-    OVERSIZE("오버사이즈", "oversize"),
+    all("전체", "all"),
+    tight("타이트", "tight"),
+    normal("노멀", "normal"),
+    lose("루즈", "lose"),
+    oversize("오버사이즈", "oversize"),
     ;
     private String name;
     private String code;
