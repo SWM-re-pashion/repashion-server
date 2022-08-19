@@ -31,6 +31,9 @@ public enum ErrorCode {
     STYLE_IMAGE_NOT_EXISTED(400, "U002", "해당 이미지가 존재하지 않습니다"),
     SIZE_NOT_EXISTED(400, "U003", "해당 사이즈는 존재하지 않습니다"),
 
+    //정적 변수
+    STATIC_VARIABLE_NOT_EXISTED(400, "STATIC01", "해당 파라미터에 맞는 정적 변수가 존재하지 않습니다"),
+
     //상품
     PRODUCT_NOT_EXISTED(400, "P001", "해당 상품이 존재하지 않습니다"),
 
