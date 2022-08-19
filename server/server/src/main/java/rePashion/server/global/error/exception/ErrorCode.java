@@ -33,6 +33,7 @@ public enum ErrorCode {
 
     //정적 변수
     STATIC_VARIABLE_NOT_EXISTED(400, "STATIC01", "해당 파라미터에 맞는 정적 변수가 존재하지 않습니다"),
+    CATEGORY_NOT_EXISTED(400, "STATIC02", "해당 카테고리가 존재하지 않습니다"),
 
     //상품
     PRODUCT_NOT_EXISTED(400, "P001", "해당 상품이 존재하지 않습니다"),

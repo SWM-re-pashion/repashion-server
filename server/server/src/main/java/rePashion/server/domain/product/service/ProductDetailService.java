@@ -11,6 +11,10 @@ import rePashion.server.domain.product.dto.ProductDetailDto;
 import rePashion.server.domain.product.model.embedded.BasicInfo;
 import rePashion.server.domain.product.model.embedded.SellerNote;
 import rePashion.server.domain.product.repository.ProductRepository;
+import rePashion.server.domain.statics.category.exception.CategoryNotExisted;
+import rePashion.server.domain.statics.category.model.ParentCategory;
+import rePashion.server.domain.statics.category.repository.ParentCategoryRepository;
+import rePashion.server.domain.statics.category.repository.SubCategoryRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +25,8 @@ import java.util.Optional;
 public class ProductDetailService {
 
     private final ProductRepository productRepository;
+    private final ParentCategoryRepository parentCategoryRepository;
+    private final SubCategoryRepository subCategoryRepository;
     private Product product;
 
     @Value("${secret.profile.base_url}")
@@ -69,7 +75,7 @@ public class ProductDetailService {
         String[] splitCategory = basicInfo.getCategory().split("/");
         return new ProductDetailDto.Basic(
                 basicInfo.getTitle(),
-                splitCategory[1] + "/" + splitCategory[2],
+                getNameOfParentCategory(splitCategory[1]) + "/" + getNameOfSubCategory(splitCategory[2]),
                 basicInfo.getBrand(),
                 splitCategory[0] + "/" + basicInfo.getSize(),
                 product.getAdvanceInfo().getSellerNote().getMaterial()
@@ -78,6 +84,13 @@ public class ProductDetailService {
         );
     }
 
+    private String getNameOfParentCategory(String code){
+        return parentCategoryRepository.findParentCategoryByCode(code).orElseThrow(CategoryNotExisted::new);
+    }
+
+    private String getNameOfSubCategory(String code){
+        return subCategoryRepository.findSubCategoryByCode(code).orElseThrow(CategoryNotExisted::new);
+    }
     private ProductDetailDto.SellerNotice getSellerNotice() {
         SellerNote sellerNote = product.getAdvanceInfo().getSellerNote();
         return new ProductDetailDto.SellerNotice(
