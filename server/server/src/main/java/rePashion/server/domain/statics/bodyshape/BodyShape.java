@@ -4,10 +4,10 @@ import lombok.Getter;
 
 @Getter
 public enum BodyShape {
-    THIN("마름", "thin"),
-    NORMAL("보통", "normal"),
-    CHUBBY("통통", "chubby"),
-    FAT("뚱뚱", "fat")
+    thin("마름", "ç"),
+    normal("보통", "normal"),
+    chubby("통통", "chubby"),
+    fat("뚱뚱", "fat")
     ;
     private String name;
     private String code;

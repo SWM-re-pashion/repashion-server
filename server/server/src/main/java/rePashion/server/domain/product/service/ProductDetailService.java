@@ -126,12 +126,18 @@ public class ProductDetailService {
                 String.valueOf(sellerNote.getHeight()),
                 getNameOfLength(sellerNote.getLength()),
                 sellerNote.getFit(),
-                sellerNote.getBodyShape(),
+                getNameOfBodyShape(sellerNote.getBodyShape()),
                 sellerNote.getPurchaseTime(),
                 sellerNote.getPurchasePlace()
         );
     }
-
+    private String getNameOfBodyShape(String code){
+        try{
+            return BodyShape.valueOf(code).getName();
+        }catch (IllegalArgumentException e){
+            throw new StaticVariableNotExisted(ErrorCode.STATIC_VARIABLE_NOT_EXISTED);
+        }
+    }
     private String getNameOfLength(String code){
         String name = "";
         try{
