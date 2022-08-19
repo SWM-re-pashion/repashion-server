@@ -15,6 +15,9 @@ import rePashion.server.domain.statics.category.exception.CategoryNotExisted;
 import rePashion.server.domain.statics.category.model.ParentCategory;
 import rePashion.server.domain.statics.category.repository.ParentCategoryRepository;
 import rePashion.server.domain.statics.category.repository.SubCategoryRepository;
+import rePashion.server.domain.statics.exception.StaticVariableNotExisted;
+import rePashion.server.domain.statics.style.Style;
+import rePashion.server.global.error.exception.ErrorCode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,10 +83,17 @@ public class ProductDetailService {
                 splitCategory[0] + "/" + basicInfo.getSize(),
                 product.getAdvanceInfo().getSellerNote().getMaterial()
                         + "/" + product.getAdvanceInfo().getSellerNote().getColor()
-                        + "/" + product.getAdvanceInfo().getSellerNote().getTag()
+                        + "/" + getNameOfTag(product.getAdvanceInfo().getSellerNote().getTag())
         );
     }
 
+    private String getNameOfTag(String code){
+        try{
+            return Style.valueOf(code).getName();
+        }catch (IllegalArgumentException e){
+            throw new StaticVariableNotExisted(ErrorCode.STATIC_VARIABLE_NOT_EXISTED);
+        }
+    }
     private String getNameOfParentCategory(String code){
         return parentCategoryRepository.findParentCategoryByCode(code).orElseThrow(CategoryNotExisted::new);
     }
