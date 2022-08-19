@@ -13,6 +13,7 @@ import rePashion.server.domain.product.model.embedded.SellerNote;
 import rePashion.server.domain.product.repository.ProductRepository;
 import rePashion.server.domain.statics.category.exception.CategoryNotExisted;
 import rePashion.server.domain.statics.category.model.ParentCategory;
+import rePashion.server.domain.statics.category.repository.GenderCategoryRepository;
 import rePashion.server.domain.statics.category.repository.ParentCategoryRepository;
 import rePashion.server.domain.statics.category.repository.SubCategoryRepository;
 import rePashion.server.domain.statics.exception.StaticVariableNotExisted;
@@ -30,6 +31,7 @@ public class ProductDetailService {
     private final ProductRepository productRepository;
     private final ParentCategoryRepository parentCategoryRepository;
     private final SubCategoryRepository subCategoryRepository;
+    private final GenderCategoryRepository genderCategoryRepository;
     private Product product;
 
     @Value("${secret.profile.base_url}")
@@ -80,11 +82,15 @@ public class ProductDetailService {
                 basicInfo.getTitle(),
                 getNameOfParentCategory(splitCategory[1]) + "/" + getNameOfSubCategory(splitCategory[2]),
                 basicInfo.getBrand(),
-                splitCategory[0] + "/" + basicInfo.getSize(),
+                getNameOfGenderCategory(splitCategory[0]) + "/" + basicInfo.getSize(),
                 product.getAdvanceInfo().getSellerNote().getMaterial()
                         + "/" + product.getAdvanceInfo().getSellerNote().getColor()
                         + "/" + getNameOfTag(product.getAdvanceInfo().getSellerNote().getTag())
         );
+    }
+
+    private String getNameOfGenderCategory(String code){
+        return genderCategoryRepository.findGenderCategoryByCode(code).orElseThrow(CategoryNotExisted::new);
     }
 
     private String getNameOfTag(String code){
