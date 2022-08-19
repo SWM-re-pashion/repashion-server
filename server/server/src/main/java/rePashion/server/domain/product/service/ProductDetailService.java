@@ -1,70 +1,106 @@
 package rePashion.server.domain.product.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
+import rePashion.server.domain.product.exception.ProductNotExistedException;
 import rePashion.server.domain.product.model.Product;
 import rePashion.server.domain.product.dto.ProductDetailDto;
+import rePashion.server.domain.product.model.embedded.BasicInfo;
+import rePashion.server.domain.product.model.embedded.SellerNote;
+import rePashion.server.domain.product.repository.ProductRepository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ProductDetailService {
 
-    public ProductDetailDto of(Long id){
+    private final ProductRepository productRepository;
+    private Product product;
 
-        Product product = getProduct();
-        ProductDetailDto.SellerInfo sellerInfo = getSellerInfo();
-        ProductDetailDto.Basic basic = getBasic(product);
-        ProductDetailDto.SellerNotice sellerNotice = getSellerNotice(product);
-        ProductDetailDto.Measure measure = getMeasure(product);
+    @Value("${secret.profile.base_url}")
+    private String BASE_URL;
 
+    public ProductDetailDto get(Long id){
+        product = getProduct(id);
         return ProductDetailDto.builder()
-                .sellerInfo(sellerInfo)
-                .basic(basic)
-                .sellerNotice(sellerNotice)
-                .measure(measure)
-                .opinion(product.getOpinion())
-                .price(product.getPrice())
-                .isIncludeDelivery(product.isIncludeDelivery())
-                .updatedAt(product.getUpdatedAt())
-                .like(getLikes())
-                .view(product.getView())
+                .isMe(getIsMe())
+                .status(getStatus())
+                .sellerInfo(getSellerInfo())
+                .basic(getBasic())
+                .sellerNotice(getSellerNotice())
+                .measure(product.getAdvanceInfo().getMeasure().getMap())
+                .opinion(product.getAdvanceInfo().getSellerNote().getOpinion())
+                .price(product.getBasicInfo().getPrice())
+                .isIncludeDelivery(product.getBasicInfo().isIncludeDelivery())
+                .updatedAt(product.getModifiedDate())
+                .like(getLike())
+                .view(getView())
                 .build();
     }
 
-    private int getLikes() {
-        int likes = 17;
-        return likes;
+
+    private Boolean getIsMe() {
+        return null;
     }
 
-    private ProductDetailDto.Measure getMeasure(Product product) {
-        return new ProductDetailDto.Measure(product.getTotalLength(), product.getShoulderWidth(), product.getChestSection(), product.getSleeveLength());
-    }
-
-    private ProductDetailDto.Basic getBasic(Product product) {
-        String productInfo = product.getGender() + "용/" + product.getSize();
-        String styleInfo = product.getMaterial() + "/" + product.getColor() + "/" + product.getTag();
-        return new ProductDetailDto.Basic(product.getTitle(), product.getCategory(), product.getBrand(), productInfo, styleInfo);
-    }
-
-    private ProductDetailDto.SellerNotice getSellerNotice(Product product) {
-        return new ProductDetailDto.SellerNotice(product.getCondition(),
-                product.getPollution(), String.valueOf(product.getHeight()),
-                product.getLength(), product.getBodyShape(),
-                product.getFit(), product.getPurchaseTime(),
-                product.getPurchasePlace());
+    private String getStatus(){
+        return null;
     }
 
     private ProductDetailDto.SellerInfo getSellerInfo() {
-        ArrayList<String> images = new ArrayList<>();
-        String profileImage = "https://webserver0712.s3.ap-northeast-2.amazonaws.com/profile/%EA%B8%B0%EB%B3%B8%ED%94%84%EB%A1%9C%ED%95%84.png";
-        images.add("https://webserver0712.s3.ap-northeast-2.amazonaws.com/product/KakaoTalk_20220726_150206046_01.jpg");
-        images.add("https://webserver0712.s3.ap-northeast-2.amazonaws.com/product/KakaoTalk_20220726_150206046.jpg");
-        return new ProductDetailDto.SellerInfo(profileImage, "test01", images);
+        return new ProductDetailDto.SellerInfo(getUserProfileImage(),getCurrentUser(), product.toStringArray());
     }
 
-    private Product getProduct() {
-        return Product.MockProduct();
+    private String getCurrentUser(){
+        return null;
+    }
+    private String getUserProfileImage(){
+        return BASE_URL;
+    }
+
+    private ProductDetailDto.Basic getBasic() {
+        BasicInfo basicInfo = product.getBasicInfo();
+        String[] splitCategory = basicInfo.getCategory().split("/");
+        return new ProductDetailDto.Basic(
+                basicInfo.getTitle(),
+                splitCategory[1] + "/" + splitCategory[2],
+                basicInfo.getBrand(),
+                splitCategory[0] + "/" + basicInfo.getSize(),
+                product.getAdvanceInfo().getSellerNote().getMaterial()
+                        + "/" + product.getAdvanceInfo().getSellerNote().getColor()
+                        + "/" + product.getAdvanceInfo().getSellerNote().getTag()
+        );
+    }
+
+    private ProductDetailDto.SellerNotice getSellerNotice() {
+        SellerNote sellerNote = product.getAdvanceInfo().getSellerNote();
+        return new ProductDetailDto.SellerNotice(
+                sellerNote.getConditions(),
+                sellerNote.getPollution(),
+                String.valueOf(sellerNote.getHeight()),
+                sellerNote.getLength(),
+                sellerNote.getFit(),
+                sellerNote.getBodyShape(),
+                sellerNote.getPurchaseTime(),
+                sellerNote.getPurchasePlace()
+        );
+    }
+
+    private int getLike() {
+        return 0;
+    }
+
+    private int getView(){
+        return 0;
+    }
+
+    private Product getProduct(Long id) {
+        return productRepository.findById(id).orElseThrow(ProductNotExistedException::new);
     }
 }
