@@ -5,13 +5,13 @@ import lombok.Getter;
 @Getter
 public enum BottomLength {
 
-    ALL("전체","all"),
-    MINI("미니","mini"),
-    THIGH("허벅지","thigh"),
-    KNEE("무릎","knee"),
-    SHIN("정강이","shin"),
-    ANKLE("발목","ankle"),
-    FOOT("발","foot"),
+    all("전체","all"),
+    mini("미니","mini"),
+    thigh("허벅지","thigh"),
+    knee("무릎","knee"),
+    shin("정강이","shin"),
+    ankle("발목","ankle"),
+    foot("발","foot"),
     ;
 
     private final String name;

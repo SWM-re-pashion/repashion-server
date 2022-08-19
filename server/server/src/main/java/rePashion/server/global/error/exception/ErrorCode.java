@@ -24,6 +24,8 @@ public enum ErrorCode {
     INVALID_TYPE_VALUE(400, "C005", " Invalid Type Value"),
     HANDLE_ACCESS_DENIED(403, "C006", "Access is Denied"),
 
+    DEVELOPER_INTENSE_FAULT(403, "D001", "치명적 오류"),
+
     //회원가입
     USER_SIGNUP_ERROR(400, "U001", "회원가입시에 오류가 발생하여 테이블에 저장되지 않았습니다"),
 
