@@ -110,7 +110,7 @@ public class ProductDetailService {
         try{
             return Style.valueOf(code).getName();
         }catch (IllegalArgumentException e){
-            throw new StaticVariableNotExisted(ErrorCode.STATIC_VARIABLE_NOT_EXISTED);
+            throw new StaticVariableNotExisted(code, ErrorCode.STATIC_VARIABLE_NOT_EXISTED);
         }
     }
     private String getNameOfParentCategory(String code){
@@ -146,7 +146,7 @@ public class ProductDetailService {
                 }
             }
         }catch (IllegalArgumentException e){
-            throw new StaticVariableNotExisted(ErrorCode.STATIC_VARIABLE_NOT_EXISTED);
+            throw new StaticVariableNotExisted(code, ErrorCode.STATIC_VARIABLE_NOT_EXISTED);
         }
         return name;
     }
@@ -155,7 +155,7 @@ public class ProductDetailService {
         try{
             return BodyShape.valueOf(code).getName();
         }catch (IllegalArgumentException e){
-            throw new StaticVariableNotExisted(ErrorCode.STATIC_VARIABLE_NOT_EXISTED);
+            throw new StaticVariableNotExisted(code ,ErrorCode.STATIC_VARIABLE_NOT_EXISTED);
         }
     }
     private String getNameOfLength(String code){
@@ -170,7 +170,7 @@ public class ProductDetailService {
                 }
             }
         }catch (IllegalArgumentException e){
-            throw new StaticVariableNotExisted(ErrorCode.STATIC_VARIABLE_NOT_EXISTED);
+            throw new StaticVariableNotExisted(code, ErrorCode.STATIC_VARIABLE_NOT_EXISTED);
         }
         return name;
     }
