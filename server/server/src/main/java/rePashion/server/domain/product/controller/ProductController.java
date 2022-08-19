@@ -11,6 +11,7 @@ import rePashion.server.global.common.response.GlobalResponse;
 import rePashion.server.global.common.response.StatusCode;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/product")
 @RequiredArgsConstructor
 public class ProductController {
