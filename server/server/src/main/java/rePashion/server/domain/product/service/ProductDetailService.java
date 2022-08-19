@@ -11,6 +11,21 @@ import rePashion.server.domain.product.dto.ProductDetailDto;
 import rePashion.server.domain.product.model.embedded.BasicInfo;
 import rePashion.server.domain.product.model.embedded.SellerNote;
 import rePashion.server.domain.product.repository.ProductRepository;
+import rePashion.server.domain.statics.bodyshape.BodyShape;
+import rePashion.server.domain.statics.category.exception.CategoryNotExisted;
+import rePashion.server.domain.statics.category.model.ParentCategory;
+import rePashion.server.domain.statics.category.repository.GenderCategoryRepository;
+import rePashion.server.domain.statics.category.repository.ParentCategoryRepository;
+import rePashion.server.domain.statics.category.repository.SubCategoryRepository;
+import rePashion.server.domain.statics.exception.DetailTypeError;
+import rePashion.server.domain.statics.exception.StaticVariableNotExisted;
+import rePashion.server.domain.statics.fit.BottomFit;
+import rePashion.server.domain.statics.fit.TopFit;
+import rePashion.server.domain.statics.length.BottomLength;
+import rePashion.server.domain.statics.length.TopLength;
+import rePashion.server.domain.statics.style.Style;
+import rePashion.server.global.error.exception.BusinessException;
+import rePashion.server.global.error.exception.ErrorCode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,13 +36,22 @@ import java.util.Optional;
 public class ProductDetailService {
 
     private final ProductRepository productRepository;
+    private final ParentCategoryRepository parentCategoryRepository;
+    private final SubCategoryRepository subCategoryRepository;
+    private final GenderCategoryRepository genderCategoryRepository;
     private Product product;
+    private Type type;
 
     @Value("${secret.profile.base_url}")
     private String BASE_URL;
 
+    private static enum Type{
+        bottom, top
+    }
+
     public ProductDetailDto get(Long id){
         product = getProduct(id);
+        setType();
         return ProductDetailDto.builder()
                 .isMe(getIsMe())
                 .status(getStatus())
@@ -69,27 +93,86 @@ public class ProductDetailService {
         String[] splitCategory = basicInfo.getCategory().split("/");
         return new ProductDetailDto.Basic(
                 basicInfo.getTitle(),
-                splitCategory[1] + "/" + splitCategory[2],
+                getNameOfParentCategory(splitCategory[1]) + "/" + getNameOfSubCategory(splitCategory[2]),
                 basicInfo.getBrand(),
-                splitCategory[0] + "/" + basicInfo.getSize(),
+                getNameOfGenderCategory(splitCategory[0]) + "/" + basicInfo.getSize(),
                 product.getAdvanceInfo().getSellerNote().getMaterial()
                         + "/" + product.getAdvanceInfo().getSellerNote().getColor()
-                        + "/" + product.getAdvanceInfo().getSellerNote().getTag()
+                        + "/" + getNameOfTag(product.getAdvanceInfo().getSellerNote().getTag())
         );
     }
 
+    private String getNameOfGenderCategory(String code){
+        return genderCategoryRepository.findGenderCategoryByCode(code).orElseThrow(CategoryNotExisted::new);
+    }
+
+    private String getNameOfTag(String code){
+        try{
+            return Style.valueOf(code).getName();
+        }catch (IllegalArgumentException e){
+            throw new StaticVariableNotExisted(ErrorCode.STATIC_VARIABLE_NOT_EXISTED);
+        }
+    }
+    private String getNameOfParentCategory(String code){
+        return parentCategoryRepository.findParentCategoryByCode(code).orElseThrow(CategoryNotExisted::new);
+    }
+
+    private String getNameOfSubCategory(String code){
+        return subCategoryRepository.findSubCategoryByCode(code).orElseThrow(CategoryNotExisted::new);
+    }
     private ProductDetailDto.SellerNotice getSellerNotice() {
         SellerNote sellerNote = product.getAdvanceInfo().getSellerNote();
         return new ProductDetailDto.SellerNotice(
                 sellerNote.getConditions(),
                 sellerNote.getPollution(),
                 String.valueOf(sellerNote.getHeight()),
-                sellerNote.getLength(),
-                sellerNote.getFit(),
-                sellerNote.getBodyShape(),
+                getNameOfLength(sellerNote.getLength()),
+                getNameOfFit(sellerNote.getFit()),
+                getNameOfBodyShape(sellerNote.getBodyShape()),
                 sellerNote.getPurchaseTime(),
                 sellerNote.getPurchasePlace()
         );
+    }
+
+    private String getNameOfFit(String code){
+        String name = "";
+        try{
+            switch(this.type){
+                case bottom -> {
+                    name = BottomFit.valueOf(code).getName();
+                }
+                case top -> {
+                    name = TopFit.valueOf(code).getName();
+                }
+            }
+        }catch (IllegalArgumentException e){
+            throw new StaticVariableNotExisted(ErrorCode.STATIC_VARIABLE_NOT_EXISTED);
+        }
+        return name;
+    }
+
+    private String getNameOfBodyShape(String code){
+        try{
+            return BodyShape.valueOf(code).getName();
+        }catch (IllegalArgumentException e){
+            throw new StaticVariableNotExisted(ErrorCode.STATIC_VARIABLE_NOT_EXISTED);
+        }
+    }
+    private String getNameOfLength(String code){
+        String name = "";
+        try{
+            switch(this.type){
+                case bottom -> {
+                    name = BottomLength.valueOf(code).getName();
+                }
+                case top -> {
+                    name = TopLength.valueOf(code).getName();
+                }
+            }
+        }catch (IllegalArgumentException e){
+            throw new StaticVariableNotExisted(ErrorCode.STATIC_VARIABLE_NOT_EXISTED);
+        }
+        return name;
     }
 
     private int getLike() {
@@ -102,5 +185,13 @@ public class ProductDetailService {
 
     private Product getProduct(Long id) {
         return productRepository.findById(id).orElseThrow(ProductNotExistedException::new);
+    }
+
+    private void setType(){
+        try{
+            this.type = Type.valueOf(product.getBasicInfo().getCategory().split("/")[1]);
+        }catch(IllegalArgumentException e){
+            throw new DetailTypeError();
+        }
     }
 }

@@ -6,9 +6,13 @@ import org.springframework.data.repository.query.Param;
 import rePashion.server.domain.statics.category.model.GenderCategory;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GenderCategoryRepository extends JpaRepository<GenderCategory, Long> {
 
     @Query("select distinct g from GenderCategory g join fetch g.childrens p join fetch p.childrens")
     List<GenderCategory> findGenderCategories();
+
+    @Query("select p.name from GenderCategory p where p.code = :code")
+    Optional<String> findGenderCategoryByCode(@Param("code") String code);
 }

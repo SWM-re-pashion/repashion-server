@@ -5,14 +5,14 @@ import lombok.Getter;
 @Getter
 public enum TopLength {
 
-    ALL("전체","all"),
-    CROP("크롭","crop"),
-    WAIST("허리","waist"),
-    PELVIS("골반","pelvis"),
-    HIP("엉덩이","hip"),
-    THIGH("허벅지","thigh"),
-    SHIN("정강이","shin"),
-    ANKLE("발목","ankle")
+    all("전체","all"),
+    crop("크롭","crop"),
+    waist("허리","waist"),
+    pelvis("골반","pelvis"),
+    hip("엉덩이","hip"),
+    thigh("허벅지","thigh"),
+    shin("정강이","shin"),
+    ankle("발목","ankle")
     ;
 
     private final String name;

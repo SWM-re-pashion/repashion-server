@@ -24,6 +24,8 @@ public enum ErrorCode {
     INVALID_TYPE_VALUE(400, "C005", " Invalid Type Value"),
     HANDLE_ACCESS_DENIED(403, "C006", "Access is Denied"),
 
+    DEVELOPER_INTENSE_FAULT(403, "D001", "치명적 오류"),
+
     //회원가입
     USER_SIGNUP_ERROR(400, "U001", "회원가입시에 오류가 발생하여 테이블에 저장되지 않았습니다"),
 
@@ -32,7 +34,8 @@ public enum ErrorCode {
     SIZE_NOT_EXISTED(400, "U003", "해당 사이즈는 존재하지 않습니다"),
 
     //정적 변수
-    STATIC_VARIABLE_NOT_EXISTED(400, "STATIC01", "해당 파라미터에 맞는 정적 변수가 존재하지 않습니다"),
+    STATIC_VARIABLE_NOT_EXISTED(400, "STATIC01", "해당 정적 변수가 존재하지 않습니다"),
+    CATEGORY_NOT_EXISTED(400, "STATIC02", "해당 카테고리가 존재하지 않습니다"),
 
     //상품
     PRODUCT_NOT_EXISTED(400, "P001", "해당 상품이 존재하지 않습니다"),
