@@ -5,14 +5,15 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductDetailDto {
 
     private Boolean isMe;
-    public static final String STANDARD_PROFILE_IMAGE = "https://webserver0712.s3.ap-northeast-2.amazonaws.com/profile/%EA%B8%B0%EB%B3%B8%ED%94%84%EB%A1%9C%ED%95%84.png";
 
+    private String status;
     @Getter
     public static class SellerInfo{
         private String profileImg;
@@ -68,22 +69,7 @@ public class ProductDetailDto {
         }
     }
     private SellerNotice sellerNotice;
-
-    @Getter
-    public static class Measure{
-        private int length;
-        private int shoulderWidth;
-        private int chestSection;
-        private int sleeveLength;
-
-        public Measure(int length, int shoulderWidth, int chestSection, int sleeveLength) {
-            this.length = length;
-            this.shoulderWidth = shoulderWidth;
-            this.chestSection = chestSection;
-            this.sleeveLength = sleeveLength;
-        }
-    }
-    private Measure measure;
+    private HashMap<String, Integer> measure;
     private String opinion;
     private int price;
     private Boolean isIncludeDelivery;
@@ -92,8 +78,9 @@ public class ProductDetailDto {
     private int view;
 
     @Builder
-    public ProductDetailDto(Boolean isMe, SellerInfo sellerInfo, Basic basic, SellerNotice sellerNotice, Measure measure, String opinion, int price, boolean isIncludeDelivery, LocalDateTime updatedAt, int like, int view) {
+    public ProductDetailDto(Boolean isMe, String status, SellerInfo sellerInfo, Basic basic, SellerNotice sellerNotice, HashMap<String, Integer> measure, String opinion, int price, boolean isIncludeDelivery, LocalDateTime updatedAt, int like, int view) {
         this.isMe = isMe;
+        this.status = status;
         this.sellerInfo = sellerInfo;
         this.basic = basic;
         this.sellerNotice = sellerNotice;
