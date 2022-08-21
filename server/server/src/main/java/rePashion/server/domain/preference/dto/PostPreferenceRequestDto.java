@@ -1,12 +1,12 @@
-package rePashion.server.domain.user.dto;
+package rePashion.server.domain.preference.dto;
 
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import rePashion.server.domain.user.model.BasicInfo;
-import rePashion.server.domain.user.model.Color;
-import rePashion.server.domain.user.model.Size;
+import rePashion.server.domain.preference.model.BasicInfo;
+import rePashion.server.domain.preference.model.Color;
+import rePashion.server.domain.preference.model.Size;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;

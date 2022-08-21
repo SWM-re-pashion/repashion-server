@@ -1,4 +1,4 @@
-package rePashion.server.domain.user.model;
+package rePashion.server.domain.preference.model;
 
 import lombok.Getter;
 

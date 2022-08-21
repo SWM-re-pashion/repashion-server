@@ -1,15 +1,18 @@
-package rePashion.server.domain.user.controller;
+package rePashion.server.domain.preference.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import rePashion.server.domain.user.dto.*;
-import rePashion.server.domain.user.exception.PreferenceNotExistedException;
-import rePashion.server.domain.user.model.Color;
-import rePashion.server.domain.user.model.Preference;
-import rePashion.server.domain.user.model.StyleImage;
-import rePashion.server.domain.user.service.PreferenceService;
+import rePashion.server.domain.preference.dto.GetColorsResponseDto;
+import rePashion.server.domain.preference.dto.GetStylesResponseDto;
+import rePashion.server.domain.preference.dto.PostPreferenceRequestDto;
+import rePashion.server.domain.preference.dto.PostPreferenceResponseDto;
+import rePashion.server.domain.preference.exception.PreferenceNotExistedException;
+import rePashion.server.domain.preference.model.Color;
+import rePashion.server.domain.preference.model.Preference;
+import rePashion.server.domain.preference.model.StyleImage;
+import rePashion.server.domain.preference.service.PreferenceService;
 import rePashion.server.global.error.exception.ErrorCode;
 
 import javax.validation.Valid;

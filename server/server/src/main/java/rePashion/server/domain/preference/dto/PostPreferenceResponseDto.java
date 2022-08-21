@@ -1,10 +1,9 @@
-package rePashion.server.domain.user.dto;
+package rePashion.server.domain.preference.dto;
 
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.http.HttpStatus;
-import rePashion.server.domain.user.model.Preference;
+import rePashion.server.domain.preference.model.Preference;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

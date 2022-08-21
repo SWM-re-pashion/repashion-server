@@ -1,9 +1,9 @@
-package rePashion.server.domain.user.dto;
+package rePashion.server.domain.preference.dto;
 
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import rePashion.server.domain.user.model.StyleImage;
+import rePashion.server.domain.preference.model.StyleImage;
 
 import java.util.ArrayList;
 import java.util.List;

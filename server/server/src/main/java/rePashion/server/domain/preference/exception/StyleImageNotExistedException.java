@@ -1,4 +1,4 @@
-package rePashion.server.domain.user.exception;
+package rePashion.server.domain.preference.exception;
 
 import rePashion.server.global.error.exception.ErrorCode;
 import rePashion.server.global.error.exception.InvalidValueException;

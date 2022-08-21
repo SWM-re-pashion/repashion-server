@@ -1,14 +1,17 @@
-package rePashion.server.domain.user.service;
+package rePashion.server.domain.preference.service;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import rePashion.server.domain.user.dto.PostPreferenceRequestDto;
-import rePashion.server.domain.user.exception.StyleImageNotExistedException;
-import rePashion.server.domain.user.model.*;
-import rePashion.server.domain.user.repository.PreferStyleRepository;
-import rePashion.server.domain.user.repository.PreferenceRepository;
-import rePashion.server.domain.user.repository.StyleImageRepository;
+import rePashion.server.domain.preference.dto.PostPreferenceRequestDto;
+import rePashion.server.domain.preference.exception.StyleImageNotExistedException;
+import rePashion.server.domain.preference.model.Color;
+import rePashion.server.domain.preference.model.PreferStyle;
+import rePashion.server.domain.preference.model.Preference;
+import rePashion.server.domain.preference.model.StyleImage;
+import rePashion.server.domain.preference.repository.PreferStyleRepository;
+import rePashion.server.domain.preference.repository.PreferenceRepository;
+import rePashion.server.domain.preference.repository.StyleImageRepository;
 import rePashion.server.global.error.exception.ErrorCode;
 
 import java.util.ArrayList;
