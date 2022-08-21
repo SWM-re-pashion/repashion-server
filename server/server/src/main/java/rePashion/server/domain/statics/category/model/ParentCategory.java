@@ -13,7 +13,6 @@ import java.util.Set;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(uniqueConstraints = {@UniqueConstraint(name = "NAME_CODE_UNIQUE", columnNames = {"NAME", "CODE"})})
 public class ParentCategory {
 
     @Id @GeneratedValue
