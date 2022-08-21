@@ -9,6 +9,6 @@ import java.util.Optional;
 
 public interface ParentCategoryRepository extends JpaRepository<ParentCategory, Long> {
 
-    @Query("select p.name from ParentCategory p where p.code = :code")
+    @Query("select distinct p.name from ParentCategory p where p.code = :code")
     Optional<String> findParentCategoryByCode(@Param("code") String code);
 }
