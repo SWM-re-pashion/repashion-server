@@ -8,9 +8,13 @@ import com.amazonaws.services.s3.model.ObjectListing;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import rePashion.server.domain.preference.exception.StyleImageNotExistedException;
 import rePashion.server.domain.preference.model.StyleImage;
+import rePashion.server.domain.styleimage.dto.StyleImageResponseDto;
 import rePashion.server.domain.styleimage.repository.StyleImageRepository;
+import rePashion.server.global.error.exception.ErrorCode;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 @Service
@@ -45,5 +49,11 @@ public class StyleImageService {
             }
         );
         created = true;
+    }
+
+    public StyleImageResponseDto get(){
+        List<StyleImage> styleImages = styleImageRepository.findAll();
+        if(styleImages.isEmpty()) throw new StyleImageNotExistedException(ErrorCode.STYLE_IMAGE_NOT_EXISTED);
+        return StyleImageResponseDto.fromEntity(styleImages);
     }
 }
