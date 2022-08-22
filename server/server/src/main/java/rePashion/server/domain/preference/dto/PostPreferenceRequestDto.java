@@ -1,17 +1,14 @@
 package rePashion.server.domain.preference.dto;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import rePashion.server.domain.preference.model.BasicInfo;
-import rePashion.server.domain.preference.model.Color;
-import rePashion.server.domain.preference.model.Size;
+import lombok.*;
+import rePashion.server.domain.preference.model.PreferenceBasicInfo;
+import rePashion.server.domain.statics.bodyshape.BodyShape;
+import rePashion.server.domain.statics.gender.Gender;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 
-@Data
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PostPreferenceRequestDto {
 
@@ -19,7 +16,7 @@ public class PostPreferenceRequestDto {
     private String gender;
 
     @NotNull
-    private String height;
+    private int height;
 
     @NotNull
     private String bodyShape;
@@ -31,38 +28,26 @@ public class PostPreferenceRequestDto {
     private String bottomColors;
 
     @Builder
-    public PostPreferenceRequestDto(String gender, String height, String bodyShape, String topSize, String bottomSize, ArrayList<Long> styles, String topColors, String bottomColors) {
+    public PostPreferenceRequestDto(String gender, int height, String bodyShape, String topSize, String bottomSize, ArrayList<Long> styles, String topColors, String bottomColors) {
         this.gender = gender;
         this.height = height;
         this.bodyShape = bodyShape;
-        this.topSize = validateSize(topSize);
-        this.bottomSize = validateSize(bottomSize);
+        this.topSize = topSize;
+        this.bottomSize = bottomSize;
         this.styles = styles;
-        this.topColors = validateColors(topColors);
-        this.bottomColors = validateColors(bottomColors);
+        this.topColors = topColors;
+        this.bottomColors = bottomColors;
     }
 
-    public BasicInfo toBasicInfo(){
-        return BasicInfo.builder()
-                .gender(BasicInfo.Gender.valueOf(this.getGender()))
+    public PreferenceBasicInfo toBasicInfo(){
+        return PreferenceBasicInfo.builder()
+                .gender(Gender.valueOf(this.getGender()))
                 .height(this.height)
-                .bodyShape(BasicInfo.BodyShape.valueOf(this.bodyShape))
+                .bodyShape(BodyShape.valueOf(this.bodyShape))
                 .topSize(this.topSize)
                 .bottomSize(this.bottomSize)
                 .topColors(this.topColors)
                 .bottomColors(this.bottomColors)
                 .build();
-    }
-
-    private String validateSize(String size){
-        String[] split = size.split("/");
-        for(String s : split) Size.validate(s);
-        return size;
-    }
-
-    private String validateColors(String colors){
-        String[] split = colors.split("/");
-        for(String s : split) Color.valueOf(s);
-        return colors;
     }
 }

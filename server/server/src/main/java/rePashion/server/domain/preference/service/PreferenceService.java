@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import rePashion.server.domain.preference.dto.PostPreferenceRequestDto;
 import rePashion.server.domain.preference.exception.StyleImageNotExistedException;
-import rePashion.server.domain.preference.model.Color;
 import rePashion.server.domain.preference.model.PreferStyle;
 import rePashion.server.domain.preference.model.Preference;
 import rePashion.server.domain.preference.model.StyleImage;
@@ -28,15 +27,6 @@ public class PreferenceService {
     private final PreferStyleRepository preferStyleRepository;
 
     /**
-     * 모든 색깔 정보 배열을 리턴해주는 함수
-     *
-     * @return ArrayList Color 배열을 리턴
-     */
-    public ArrayList<Color> getAllColorLists(){
-        return Color.getAll();
-    }
-
-    /**
      * S3에 저장된 모든 StyleImage들을 리턴해주는 함수
      *
      * @return  List  StyleImage 배열
@@ -54,7 +44,12 @@ public class PreferenceService {
     public Optional<Preference> savePreference(PostPreferenceRequestDto dto){
         Preference preference = new Preference(dto.toBasicInfo());
         insertPreferStyle(preference, dto.getStyles());
+        preference.changePreferredStyle(getPreferredStyle());
         return Optional.of(preferenceRepository.save(preference));
+    }
+
+    private String getPreferredStyle() {
+        return "힙합";
     }
 
     private void insertPreferStyle(Preference preference, ArrayList<Long> style){

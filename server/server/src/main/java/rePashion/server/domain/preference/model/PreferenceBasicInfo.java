@@ -4,6 +4,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import rePashion.server.domain.statics.bodyshape.BodyShape;
+import rePashion.server.domain.statics.gender.Gender;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -13,39 +15,29 @@ import javax.persistence.Enumerated;
 @Embeddable
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BasicInfo {
-
-    public enum Gender{
-        남성, 여성
-    }
-
-    public enum BodyShape{
-        마름, 보통, 통통, 뚱뚱
-    }
+public class PreferenceBasicInfo {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     Gender gender;
 
-    @Column(nullable = false, length = 3)   //170
-    String height;
+    @Column(nullable = false)
+    int height;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    BodyShape bodyShape = BodyShape.보통;
+    BodyShape bodyShape;
 
-    //XL, 2XL
-    String topSize = "XL";
+    String topSize;
 
-    //22 ~ 37
-    String bottomSize = "32";
+    String bottomSize;
 
-    String topColors = "";
+    String topColors;
 
-    String bottomColors = "";
+    String bottomColors;
 
     @Builder
-    public BasicInfo(Gender gender, String height, BodyShape bodyShape, String topSize, String bottomSize, String topColors, String bottomColors) {
+    public PreferenceBasicInfo(Gender gender, int height, BodyShape bodyShape, String topSize, String bottomSize, String topColors, String bottomColors) {
         this.gender = gender;
         this.height = height;
         this.bodyShape = bodyShape;
