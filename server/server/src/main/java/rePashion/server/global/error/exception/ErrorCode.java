@@ -30,7 +30,7 @@ public enum ErrorCode {
     USER_SIGNUP_ERROR(400, "U001", "회원가입시에 오류가 발생하여 테이블에 저장되지 않았습니다"),
 
     //개인화 추천
-    STYLE_IMAGE_NOT_EXISTED(400, "U002", "해당 이미지가 존재하지 않습니다"),
+    STYLE_IMAGE_NOT_EXISTED(400, "STYLE_IMAGE_NOT_EXISTED", "해당 이미지가 존재하지 않습니다"),
     SIZE_NOT_EXISTED(400, "U003", "해당 사이즈는 존재하지 않습니다"),
 
     //정적 변수

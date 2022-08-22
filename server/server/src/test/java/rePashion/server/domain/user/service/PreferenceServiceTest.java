@@ -11,7 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import rePashion.server.domain.preference.model.StyleImage;
 import rePashion.server.domain.preference.repository.PreferStyleRepository;
 import rePashion.server.domain.preference.repository.PreferenceRepository;
-import rePashion.server.domain.preference.repository.StyleImageRepository;
+import rePashion.server.domain.styleimage.repository.StyleImageRepository;
 import rePashion.server.domain.preference.service.PreferenceService;
 
 import java.util.ArrayList;

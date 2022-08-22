@@ -1,11 +1,11 @@
-package rePashion.server.domain.preference.controller;
+package rePashion.server.domain.styleimage.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import rePashion.server.domain.preference.service.S3UploaderService;
+import rePashion.server.domain.styleimage.service.S3UploaderService;
 
 import java.io.IOException;
 

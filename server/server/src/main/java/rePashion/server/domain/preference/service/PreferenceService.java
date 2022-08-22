@@ -10,7 +10,7 @@ import rePashion.server.domain.preference.model.Preference;
 import rePashion.server.domain.preference.model.StyleImage;
 import rePashion.server.domain.preference.repository.PreferStyleRepository;
 import rePashion.server.domain.preference.repository.PreferenceRepository;
-import rePashion.server.domain.preference.repository.StyleImageRepository;
+import rePashion.server.domain.styleimage.repository.StyleImageRepository;
 import rePashion.server.global.error.exception.ErrorCode;
 
 import java.util.ArrayList;
@@ -25,15 +25,6 @@ public class PreferenceService {
     private final PreferenceRepository preferenceRepository;
     private final StyleImageRepository styleImageRepository;
     private final PreferStyleRepository preferStyleRepository;
-
-    /**
-     * S3에 저장된 모든 StyleImage들을 리턴해주는 함수
-     *
-     * @return  List  StyleImage 배열
-     */
-    public List<StyleImage> getAllStyleImages(){
-        return styleImageRepository.findAll();
-    }
 
     /**
      * 사용자의 선호 정보들을 DB에 저장하는 함수

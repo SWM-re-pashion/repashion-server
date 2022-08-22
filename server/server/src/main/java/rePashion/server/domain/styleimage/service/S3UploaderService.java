@@ -1,4 +1,4 @@
-package rePashion.server.domain.preference.service;
+package rePashion.server.domain.styleimage.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import rePashion.server.domain.preference.exception.FileConvertingException;
 import rePashion.server.domain.preference.model.StyleImage;
-import rePashion.server.domain.preference.repository.StyleImageRepository;
+import rePashion.server.domain.styleimage.repository.StyleImageRepository;
 import rePashion.server.global.error.exception.ErrorCode;
 
 import java.io.File;
