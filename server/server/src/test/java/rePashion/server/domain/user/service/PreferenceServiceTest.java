@@ -1,7 +1,6 @@
 package rePashion.server.domain.user.service;
 
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,16 +8,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import rePashion.server.domain.user.dto.PreferenceRequestDto;
-import rePashion.server.domain.user.model.*;
-import rePashion.server.domain.user.repository.PreferStyleRepository;
-import rePashion.server.domain.user.repository.PreferenceRepository;
-import rePashion.server.domain.user.repository.StyleImageRepository;
+import rePashion.server.domain.preference.model.StyleImage;
+import rePashion.server.domain.preference.repository.PreferStyleRepository;
+import rePashion.server.domain.preference.repository.PreferenceRepository;
+import rePashion.server.domain.preference.repository.StyleImageRepository;
+import rePashion.server.domain.preference.service.PreferenceService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
@@ -55,7 +53,7 @@ class PreferenceServiceTest {
     @DisplayName("Get All Style Images")
     void getAllStyleImages() {
         //given
-        StyleImage [] styleImages = new StyleImage[5];
+        StyleImage[] styleImages = new StyleImage[5];
         styleImages[0] = new StyleImage("amazons3.01.com", "");
         styleImages[1] = new StyleImage("amazons3.02.com", "");
         styleImages[2] = new StyleImage("amazons3.03.com", "");
