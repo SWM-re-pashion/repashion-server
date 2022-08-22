@@ -10,7 +10,7 @@ import rePashion.server.domain.preference.model.Preference;
 import rePashion.server.domain.preference.model.StyleImage;
 import rePashion.server.domain.preference.repository.PreferStyleRepository;
 import rePashion.server.domain.preference.repository.PreferenceRepository;
-import rePashion.server.domain.preference.repository.StyleImageRepository;
+import rePashion.server.domain.styleimage.repository.StyleImageRepository;
 import rePashion.server.global.error.exception.ErrorCode;
 
 import java.util.ArrayList;
