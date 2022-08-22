@@ -1,4 +1,4 @@
-package rePashion.server.domain.user.service;
+package rePashion.server.domain.preference.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
@@ -8,9 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import rePashion.server.domain.user.exception.FileConvertingException;
-import rePashion.server.domain.user.model.StyleImage;
-import rePashion.server.domain.user.repository.StyleImageRepository;
+import rePashion.server.domain.preference.exception.FileConvertingException;
+import rePashion.server.domain.preference.model.StyleImage;
+import rePashion.server.domain.preference.repository.StyleImageRepository;
 import rePashion.server.global.error.exception.ErrorCode;
 
 import java.io.File;
