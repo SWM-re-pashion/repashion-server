@@ -27,15 +27,6 @@ public class PreferenceService {
     private final PreferStyleRepository preferStyleRepository;
 
     /**
-     * S3에 저장된 모든 StyleImage들을 리턴해주는 함수
-     *
-     * @return  List  StyleImage 배열
-     */
-    public List<StyleImage> getAllStyleImages(){
-        return styleImageRepository.findAll();
-    }
-
-    /**
      * 사용자의 선호 정보들을 DB에 저장하는 함수
      *
      * @param   dto Controller단에서 넘어오는 dto로 선호정보가 모두 담겨있음
