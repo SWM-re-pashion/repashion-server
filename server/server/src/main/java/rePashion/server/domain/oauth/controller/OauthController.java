@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import rePashion.server.domain.oauth.dto.request.OauthLoginRequestDto;
-import rePashion.server.domain.oauth.dto.response.CognitoGetTokenResponseDto;
 import rePashion.server.domain.oauth.dto.response.OauthLoginResponseDto;
 import rePashion.server.domain.oauth.service.CognitoService;
 import rePashion.server.global.common.response.GlobalResponse;
@@ -24,7 +23,7 @@ public class OauthController {
 
     @PostMapping("/login")
     public ResponseEntity<GlobalResponse> login(@RequestBody OauthLoginRequestDto dto) throws JsonProcessingException {
-        CognitoGetTokenResponseDto tokens = cognitoService.getToken(dto.getAuthCode());
+        OauthLoginResponseDto tokens = cognitoService.login(dto.getAuthCode());
         return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, tokens), HttpStatus.OK);
     }
 }
