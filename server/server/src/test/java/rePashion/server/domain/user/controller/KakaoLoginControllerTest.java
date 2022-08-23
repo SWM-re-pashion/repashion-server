@@ -9,8 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import rePashion.server.domain.user.dto.KakaoLoginRequestDto;
-import rePashion.server.domain.user.dto.KakaoLoginResponseDto;
 
 import java.util.Objects;
 
