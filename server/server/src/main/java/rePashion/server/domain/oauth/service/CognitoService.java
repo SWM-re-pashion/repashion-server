@@ -4,15 +4,17 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import rePashion.server.domain.oauth.dto.exception.CognitoEnvException;
+import rePashion.server.domain.oauth.dto.exception.CognitoGrantException;
 import rePashion.server.domain.oauth.dto.response.CognitoGetTokenResponseDto;
 import rePashion.server.domain.oauth.dto.response.CognitoGetUserInfoResponseDto;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -56,7 +58,16 @@ public class CognitoService {
     }
 
     private ResponseEntity<String> sendRequestToCognito(HttpHeaders headers, LinkedMultiValueMap<String,String> body){
+        ResponseEntity<String> response=null;
         HttpEntity<LinkedMultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
-        return restTemplate.exchange(COGNITO_DOMAIN + "/oauth2/token", HttpMethod.POST, request, String.class);
+        try {
+            response = restTemplate.exchange(COGNITO_DOMAIN + "/oauth2/token", HttpMethod.POST, request, String.class);
+        }catch (HttpClientErrorException e){
+            if(e.getStatusCode().equals(HttpStatus.BAD_REQUEST)){
+                if(Objects.equals(e.getMessage(), "400 Bad Request: \"{\"error\":\"invalid_grant\"}\"")) throw new CognitoGrantException();
+                else throw new CognitoEnvException();
+            }
+        }
+        return response;
     }
 }
