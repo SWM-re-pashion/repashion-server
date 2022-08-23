@@ -9,7 +9,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.client.RestTemplate;
-import rePashion.server.domain.user.dto.KakaoUserInfoDto;
 import rePashion.server.domain.user.model.User;
 
 import java.io.IOException;
