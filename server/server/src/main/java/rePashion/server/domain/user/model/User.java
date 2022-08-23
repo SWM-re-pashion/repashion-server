@@ -16,24 +16,29 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nickName;
-
     private String email;
 
-    private String ageRange;
+    @Column(columnDefinition = "TEXT")
+    private String refreshToken;
 
-    private enum gender{
-        M,W
-    };
+    private String nickname;
 
-    @Embedded
-    private UserAgreement userAgreement;
+    private String profile;
+
+    private String username;
 
     @Builder
-    public User(String nickName, String email, String ageRange, UserAgreement userAgreement) {
-        this.nickName = nickName;
+    public User(String email, String refreshToken, String username) {
         this.email = email;
-        this.ageRange = ageRange;
-        this.userAgreement = userAgreement;
+        this.refreshToken = refreshToken;
+        this.username = username;
+    }
+
+    public void changeUsername(){
+        this.nickname = "USER" + getId();
+    }
+
+    public void changeProfileImage(String profileImage){
+        this.profile = profileImage;
     }
 }
