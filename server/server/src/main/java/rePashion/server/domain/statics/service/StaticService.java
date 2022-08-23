@@ -51,12 +51,12 @@ public class StaticService {
         return style;
     }
 
-    private DividedSingleStaticRequestDto getSizes() {
-        ArrayList<SingleStaticVarFormat> top = new ArrayList<>();
-        ArrayList<SingleStaticVarFormat> bottom = new ArrayList<>();
-        Arrays.stream(TopSize.values()).forEach((e) -> top.add(new SingleStaticVarFormat(String.valueOf(e.getSize()))));
-        Arrays.stream(BottomSize.values()).forEach((e) -> bottom.add(new SingleStaticVarFormat(String.valueOf(e.getSize()))));
-        return new DividedSingleStaticRequestDto(top, bottom);
+    private DividedStaticRequestDto getSizes() {
+        ArrayList<StaticVarFormat> top = new ArrayList<>();
+        ArrayList<StaticVarFormat> bottom = new ArrayList<>();
+        Arrays.stream(TopSize.values()).forEach((e) -> top.add(new StaticVarFormat(String.valueOf(e.getSize()), String.valueOf(e.getSize()))));
+        Arrays.stream(BottomSize.values()).forEach((e) -> bottom.add(new StaticVarFormat(String.valueOf(e.getSize()), String.valueOf(e.getSize()))));
+        return new DividedStaticRequestDto(top, bottom);
     }
 
     private DividedStaticRequestDto getLengths() {
