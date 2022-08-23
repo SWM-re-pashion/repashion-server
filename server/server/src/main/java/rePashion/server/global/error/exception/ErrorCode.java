@@ -30,7 +30,7 @@ public enum ErrorCode {
     USER_SIGNUP_ERROR(400, "U001", "회원가입시에 오류가 발생하여 테이블에 저장되지 않았습니다"),
 
     //코그니토
-    COGNITO_ENVIRONMENT_ERROR(400,"COG_ENV_ERROR", "SERVER_ERROR::코그니토 환경변수 확인하세요"),
+    COGNITO_ENVIRONMENT_ERROR(500,"COG_ENV_ERROR", "SERVER_ERROR::코그니토 환경변수 확인하세요"),
     COGNITO_GRANT_ERROR(400, "COG_GRANT_ERROR", "CLIENT_ERROR::인가코드를 다시 한번 확인하세요"),
 
     //개인화 추천
