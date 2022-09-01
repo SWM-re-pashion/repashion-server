@@ -8,6 +8,7 @@ import rePashion.server.domain.statics.dto.DividedSingleStaticRequestDto;
 import rePashion.server.domain.statics.dto.DividedStaticRequestDto;
 import rePashion.server.domain.statics.dto.SingleStaticVarFormat;
 import rePashion.server.domain.statics.dto.StaticVarFormat;
+import rePashion.server.domain.statics.exception.StaticVariableNotExisted;
 import rePashion.server.domain.statics.fit.BottomFit;
 import rePashion.server.domain.statics.fit.TopFit;
 import rePashion.server.domain.statics.gender.Gender;
@@ -16,9 +17,13 @@ import rePashion.server.domain.statics.length.TopLength;
 import rePashion.server.domain.statics.size.BottomSize;
 import rePashion.server.domain.statics.size.TopSize;
 import rePashion.server.domain.statics.style.Style;
+import rePashion.server.global.error.exception.ErrorCode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import static rePashion.server.domain.statics.service.StaticService.Type.color;
+import static rePashion.server.domain.statics.service.StaticService.Type.fit;
 
 @Service
 public class StaticService {
@@ -28,15 +33,23 @@ public class StaticService {
     }
 
     public Object setMethodBy(Type type){
-        return switch (type) {
-            case color -> getColors();
-            case fit -> getFits();
-            case gender -> getGenders();
-            case length -> getLengths();
-            case size -> getSizes();
-            case style -> getStyles();
-            case bodyShape -> getBodyShape();
-        };
+        switch (type){
+            case color :
+                return getColors();
+            case fit :
+                return getFits();
+            case gender :
+                return getGenders();
+            case length :
+                return getLengths();
+            case size :
+                return getSizes();
+            case style :
+                return getStyles();
+            case bodyShape :
+                return getBodyShape();
+        }
+        throw new StaticVariableNotExisted(ErrorCode.STATIC_VARIABLE_NOT_EXISTED);
     }
 
     private ArrayList<StaticVarFormat> getBodyShape() {
