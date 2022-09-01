@@ -138,12 +138,12 @@ public class ProductDetailService {
         String name = "";
         try{
             switch(this.type){
-                case bottom -> {
+                case bottom :
                     name = BottomFit.valueOf(code).getName();
-                }
-                case top -> {
+                    break;
+                case top :
                     name = TopFit.valueOf(code).getName();
-                }
+                    break;
             }
         }catch (IllegalArgumentException e){
             throw new StaticVariableNotExisted(code, ErrorCode.STATIC_VARIABLE_NOT_EXISTED);
@@ -162,12 +162,10 @@ public class ProductDetailService {
         String name = "";
         try{
             switch(this.type){
-                case bottom -> {
+                case bottom :
                     name = BottomLength.valueOf(code).getName();
-                }
-                case top -> {
+                case top :
                     name = TopLength.valueOf(code).getName();
-                }
             }
         }catch (IllegalArgumentException e){
             throw new StaticVariableNotExisted(code, ErrorCode.STATIC_VARIABLE_NOT_EXISTED);

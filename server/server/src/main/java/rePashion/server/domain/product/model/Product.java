@@ -37,7 +37,7 @@ public class Product extends BaseTimeEntity{
     }
 
     public ArrayList<String> toStringArray(){
-        return new ArrayList<>(this.images.stream().map(ProductImage::getImagePath).toList());
+        return (ArrayList<String>) this.images.stream().map(ProductImage::getImagePath);
     }
 
     public void setAdvanceInfo(ProductAdvanceInfo productAdvanceInfo){
