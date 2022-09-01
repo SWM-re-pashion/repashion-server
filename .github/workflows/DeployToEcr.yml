@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - dev
-      -
 jobs:
   deploy:
     name: Deploy
@@ -14,6 +13,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Build with gradle
+        run: |
+          cd server/server
+          chmod +x gradlew
+          ./gradlew clean build -x test
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -33,6 +38,6 @@ jobs:
           REPOSITORY: web-server
           IMAGE_TAG: ${{github.sha}}
         run: |
-          docker build --platform=linux/amd64 -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+          docker build --platform=linux/amd64 -t $REGISTRY/$REPOSITORY:$IMAGE_TAG ./server/server
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+          echo "::set-output name=image::$REGISTRY/$REPOSITORY:$IMAGE_TAG"
