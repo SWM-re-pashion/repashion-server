@@ -11,7 +11,10 @@ import java.util.Optional;
 public interface GenderCategoryRepository extends JpaRepository<GenderCategory, Long> {
 
     @Query("select distinct g from GenderCategory g join fetch g.childrens p join fetch p.childrens")
-    List<GenderCategory> findGenderCategories();
+    List<GenderCategory> findAllCategoriesV1();
+
+    @Query("select g from GenderCategory g join g.childrens c join c.childrens")
+    List<GenderCategory> findAllCategoriesV2();
 
     @Query("select p.name from GenderCategory p where p.code = :code")
     Optional<String> findGenderCategoryByCode(@Param("code") String code);

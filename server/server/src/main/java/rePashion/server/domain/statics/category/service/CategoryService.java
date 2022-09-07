@@ -13,11 +13,18 @@ import java.util.List;
 public class CategoryService {
 
     private final GenderCategoryRepository genderCategoryRepository;
-    private final AddBasicCategoryService addBasicCategoryService;
+    private final AddInitialCategoryService addBasicCategoryService;
 
-    public GetCategoriesResponseDto get(){
-        addBasicCategoryService.addBasicVariablse();
-        List<GenderCategory> genderCategories = genderCategoryRepository.findGenderCategories();
+    public GetCategoriesResponseDto getV1(){
+        addBasicCategoryService.addInitialData();
+        List<GenderCategory> genderCategories = genderCategoryRepository.findAllCategoriesV1();
+        GetCategoriesResponseDto getCategoriesResponseDto = GetCategoriesResponseDto.fromEntity(genderCategories);
+        return getCategoriesResponseDto;
+    }
+
+    public GetCategoriesResponseDto getV2(){
+        addBasicCategoryService.addInitialData();
+        List<GenderCategory> genderCategories = genderCategoryRepository.findAllCategoriesV2();
         GetCategoriesResponseDto getCategoriesResponseDto = GetCategoriesResponseDto.fromEntity(genderCategories);
         return getCategoriesResponseDto;
     }
