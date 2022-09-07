@@ -1,4 +1,4 @@
-package rePashion.server.domain.statics.fit;
+package rePashion.server.domain.statics.model.fit;
 
 import lombok.Getter;
 

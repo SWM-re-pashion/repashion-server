@@ -1,9 +1,7 @@
 package rePashion.server.domain.product.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
 import rePashion.server.domain.product.exception.ProductNotExistedException;
 import rePashion.server.domain.product.model.Product;
@@ -11,25 +9,19 @@ import rePashion.server.domain.product.dto.ProductDetailDto;
 import rePashion.server.domain.product.model.embedded.BasicInfo;
 import rePashion.server.domain.product.model.embedded.SellerNote;
 import rePashion.server.domain.product.repository.ProductRepository;
-import rePashion.server.domain.statics.bodyshape.BodyShape;
+import rePashion.server.domain.statics.model.bodyshape.BodyShape;
 import rePashion.server.domain.statics.category.exception.CategoryNotExisted;
-import rePashion.server.domain.statics.category.model.ParentCategory;
 import rePashion.server.domain.statics.category.repository.GenderCategoryRepository;
 import rePashion.server.domain.statics.category.repository.ParentCategoryRepository;
 import rePashion.server.domain.statics.category.repository.SubCategoryRepository;
 import rePashion.server.domain.statics.exception.DetailTypeError;
 import rePashion.server.domain.statics.exception.StaticVariableNotExisted;
-import rePashion.server.domain.statics.fit.BottomFit;
-import rePashion.server.domain.statics.fit.TopFit;
-import rePashion.server.domain.statics.length.BottomLength;
-import rePashion.server.domain.statics.length.TopLength;
-import rePashion.server.domain.statics.style.Style;
-import rePashion.server.global.error.exception.BusinessException;
+import rePashion.server.domain.statics.model.fit.BottomFit;
+import rePashion.server.domain.statics.model.fit.TopFit;
+import rePashion.server.domain.statics.model.length.BottomLength;
+import rePashion.server.domain.statics.model.length.TopLength;
+import rePashion.server.domain.statics.model.style.Style;
 import rePashion.server.global.error.exception.ErrorCode;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package rePashion.server.domain.statics.conroller;
+package rePashion.server.domain.statics.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

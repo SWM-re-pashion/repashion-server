@@ -1,4 +1,4 @@
-package rePashion.server.domain.statics.style;
+package rePashion.server.domain.statics.model.style;
 
 import lombok.Getter;
 

@@ -1,29 +1,24 @@
 package rePashion.server.domain.statics.service;
 
 import org.springframework.stereotype.Service;
-import rePashion.server.domain.statics.bodyshape.BodyShape;
-import rePashion.server.domain.statics.color.BottomColor;
-import rePashion.server.domain.statics.color.TopColor;
-import rePashion.server.domain.statics.dto.DividedSingleStaticRequestDto;
+import rePashion.server.domain.statics.model.bodyshape.BodyShape;
+import rePashion.server.domain.statics.model.color.BottomColor;
+import rePashion.server.domain.statics.model.color.TopColor;
 import rePashion.server.domain.statics.dto.DividedStaticRequestDto;
-import rePashion.server.domain.statics.dto.SingleStaticVarFormat;
 import rePashion.server.domain.statics.dto.StaticVarFormat;
 import rePashion.server.domain.statics.exception.StaticVariableNotExisted;
-import rePashion.server.domain.statics.fit.BottomFit;
-import rePashion.server.domain.statics.fit.TopFit;
-import rePashion.server.domain.statics.gender.Gender;
-import rePashion.server.domain.statics.length.BottomLength;
-import rePashion.server.domain.statics.length.TopLength;
-import rePashion.server.domain.statics.size.BottomSize;
-import rePashion.server.domain.statics.size.TopSize;
-import rePashion.server.domain.statics.style.Style;
+import rePashion.server.domain.statics.model.fit.BottomFit;
+import rePashion.server.domain.statics.model.fit.TopFit;
+import rePashion.server.domain.statics.model.gender.Gender;
+import rePashion.server.domain.statics.model.length.BottomLength;
+import rePashion.server.domain.statics.model.length.TopLength;
+import rePashion.server.domain.statics.model.size.BottomSize;
+import rePashion.server.domain.statics.model.size.TopSize;
+import rePashion.server.domain.statics.model.style.Style;
 import rePashion.server.global.error.exception.ErrorCode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import static rePashion.server.domain.statics.service.StaticService.Type.color;
-import static rePashion.server.domain.statics.service.StaticService.Type.fit;
 
 @Service
 public class StaticService {
