@@ -23,6 +23,7 @@ public class GenderCategory {
 
     String code;
 
+    @OrderBy("id asc")
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "gender")
     private Set<ParentCategory> childrens = new HashSet<>();
 

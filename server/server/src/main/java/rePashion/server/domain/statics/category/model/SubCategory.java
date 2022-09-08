@@ -9,7 +9,6 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(uniqueConstraints = {@UniqueConstraint(name = "NAME_CODE_UNIQUE", columnNames = {"NAME", "CODE"})})
 public class SubCategory {
 
     @Id

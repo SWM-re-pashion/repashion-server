@@ -26,6 +26,7 @@ public class ParentCategory {
     @JoinColumn(name = "genderId")
     private GenderCategory gender;
 
+    @OrderBy("id asc")
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "parent")
     private Set<SubCategory> childrens = new HashSet<>();
 

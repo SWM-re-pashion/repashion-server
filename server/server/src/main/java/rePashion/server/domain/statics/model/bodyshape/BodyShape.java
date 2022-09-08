@@ -1,4 +1,4 @@
-package rePashion.server.domain.statics.bodyshape;
+package rePashion.server.domain.statics.model.bodyshape;
 
 import lombok.Getter;
 

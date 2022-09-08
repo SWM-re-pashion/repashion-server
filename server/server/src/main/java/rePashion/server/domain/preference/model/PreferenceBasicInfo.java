@@ -4,8 +4,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import rePashion.server.domain.statics.bodyshape.BodyShape;
-import rePashion.server.domain.statics.gender.Gender;
+import rePashion.server.domain.statics.model.bodyshape.BodyShape;
+import rePashion.server.domain.statics.model.gender.Gender;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

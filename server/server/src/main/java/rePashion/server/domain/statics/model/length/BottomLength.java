@@ -1,4 +1,4 @@
-package rePashion.server.domain.statics.length;
+package rePashion.server.domain.statics.model.length;
 
 import lombok.Getter;
 

@@ -2,8 +2,8 @@ package rePashion.server.domain.preference.dto;
 
 import lombok.*;
 import rePashion.server.domain.preference.model.PreferenceBasicInfo;
-import rePashion.server.domain.statics.bodyshape.BodyShape;
-import rePashion.server.domain.statics.gender.Gender;
+import rePashion.server.domain.statics.model.bodyshape.BodyShape;
+import rePashion.server.domain.statics.model.gender.Gender;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;

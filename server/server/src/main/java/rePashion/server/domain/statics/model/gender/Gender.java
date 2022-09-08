@@ -1,4 +1,4 @@
-package rePashion.server.domain.statics.gender;
+package rePashion.server.domain.statics.model.gender;
 
 import lombok.Getter;
 

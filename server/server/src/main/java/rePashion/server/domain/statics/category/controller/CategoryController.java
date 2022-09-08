@@ -16,9 +16,15 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @GetMapping
-    public ResponseEntity<GlobalResponse> get(){
-        GetCategoriesResponseDto dto = categoryService.get();
+    @GetMapping("/v1")
+    public ResponseEntity<GlobalResponse> getV1(){
+        GetCategoriesResponseDto dto = categoryService.getV1();
+        return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, dto), HttpStatus.OK);
+    }
+
+    @GetMapping("/v2")
+    public ResponseEntity<GlobalResponse> getV2(){
+        GetCategoriesResponseDto dto = categoryService.getV2();
         return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, dto), HttpStatus.OK);
     }
 }
