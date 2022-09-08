@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 @Service
 @RequiredArgsConstructor
-public class AddInitialCategoryService {
+public class InitCategoryService {
 
     private final GenderCategoryRepository genderCategoryRepository;
     private final ParentCategoryRepository parentCategoryRepository;
@@ -23,7 +23,7 @@ public class AddInitialCategoryService {
     ArrayList<ParentCategory> womenParentCategory = new ArrayList<>();
     ArrayList<ParentCategory> menParentCategory = new ArrayList<>();
 
-    public void addInitialData(){
+    public void initData(){
         if(isExisted()) return;
         generateGenderCategories();
         ArrayList<ParentCategory> parentCategories1 = generateParentCategories(genderCategories.get(0));
@@ -92,12 +92,9 @@ public class AddInitialCategoryService {
 
     private ArrayList<SubCategory> generateBottomSubCategories(){
         ArrayList<SubCategory> bottomSubCategories  = new ArrayList<>();
-        bottomSubCategories.add(new SubCategory("탑", "top"));
-        bottomSubCategories.add(new SubCategory("반팔", "short"));
-        bottomSubCategories.add(new SubCategory("긴팔", "long"));
-        bottomSubCategories.add(new SubCategory("니트웨어", "knit"));
-        bottomSubCategories.add(new SubCategory("셔츠", "shirt"));
-        bottomSubCategories.add(new SubCategory("후드티", "hood"));
+        bottomSubCategories.add(new SubCategory("청바지", "jeans"));
+        bottomSubCategories.add(new SubCategory("팬츠", "pants"));
+        bottomSubCategories.add(new SubCategory("조거팬츠", "jogger"));
         return bottomSubCategories;
     }
 
