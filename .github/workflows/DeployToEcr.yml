@@ -47,20 +47,16 @@ jobs:
         env:
           IMAGE: ${{steps.build-image.outputs.image}}
           REGISTRY: ${{steps.login-ecr.outputs.registry}}
-          REGION: $${{secrets.AWS_REGION}}
+          REGION: ${{secrets.AWS_REGION}}
         with:
           host: ${{ secrets.HOST_DNS }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
+          envs: IMAGE,REGISTRY,REGION
           port: 22
           script : |
             cd web-server
-            echo "$REGION"
-            echo "$REGISTRY"
-            aws ecr get-login-password --region "$REGION"
-            docker login --username "AWS" --password-stdin "$REGISTRY"
-            echo $(docker ps -qa)
-            echo $(docker images -q)
+            docker login -u AWS -p $(aws ecr get-login-password --region $REGION) $REGISTRY
             docker rm -f $(docker ps -qa)
             docker rmi $(docker images -q)
             docker pull $IMAGE
