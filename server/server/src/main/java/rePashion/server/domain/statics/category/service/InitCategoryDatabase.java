@@ -1,24 +1,24 @@
 package rePashion.server.domain.statics.category.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
 import rePashion.server.domain.statics.category.model.Category;
 import rePashion.server.domain.statics.category.repository.CategoryRepository;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 
-@Service
+@Component
 @RequiredArgsConstructor
-public class InitServiceV3 {
+public class InitCategoryDatabase implements CommandLineRunner {
 
     private ArrayList<Category> categories = new ArrayList<>();
     private final CategoryRepository categoryRepository;
 
-    @PostConstruct
-    public void initDB(){
+    @Override
+    public void run(String... args) throws Exception {
         if(!isEmpty()) return;
-
         Category genderCategory1 = create(1L, "남성", "men", null);
         Category genderCategory2 = create(2L, "여성", "women", null);
         Category genderCategory3 = create(3L, "공용", "common", null);
