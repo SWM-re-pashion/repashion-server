@@ -17,6 +17,8 @@ public class CategoryResponseDto {
     private String id;
     private String name;
     private String code;
+
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<CategoryResponseDto> children;
 
     private CategoryResponseDto(String id, String name, String code, List<CategoryResponseDto> children) {
