@@ -27,7 +27,7 @@ public class Category {
     private Category parentCategory;
 
     @OrderBy("categoryId asc")
-    @OneToMany(mappedBy = "parentCategory", cascade = PERSIST)
+    @OneToMany(mappedBy = "parentCategory")
     private Set<Category> children = new HashSet<>();
 
     private String name;
@@ -46,12 +46,11 @@ public class Category {
     public void updateParent(Category parent) {
         if(parent == null){
             this.parentCategory = null;
-            this.depth = 1;
+            this.depth =1;
+            return;
         }
-        else{
-            this.parentCategory = parent;
-            this.depth = parent.getDepth()+1;
-            parent.getChildren().add(this);
-        }
+        this.parentCategory = parent;
+        this.depth = parent.getDepth()+1;
+        parent.getChildren().add(this);
     }
 }
