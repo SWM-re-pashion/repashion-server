@@ -41,10 +41,7 @@ public class CategoryService {
         return getCategoriesResponseDto;
     }
 
-    public CategoryResponseDto getV3(){
-        List<CategoryResponseDto> collect = categoryRepository.findTopCategories()
-                .stream().map(CategoryResponseDto::fromEntity)
-                .collect(Collectors.toList());
-        return new CategoryResponseDto("성별", "gender", collect);
+    public List<Category> getV3(){
+        return categoryRepository.findTopCategories();
     }
 }
