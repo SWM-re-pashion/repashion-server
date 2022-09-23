@@ -34,7 +34,6 @@ public class ProductService {
                 .price(dto.getPrice())
                 .isIncludeDelivery(dto.getIsIncludeDelivery())
                 .size(dto.getSize())
-                .views(0)
                 .build();
 
         SellerNote sellerNote = SellerNote.builder()

@@ -1,5 +1,6 @@
 package rePashion.server.domain.product.model.embedded;
 
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,10 +20,15 @@ public class BasicInfo{
     private int price;
     private boolean isIncludeDelivery;
     private String size;
-    private int views;
+
+    private int views = 0;
+
+    private int likes = 0;
+
+    private Boolean status = false;
 
     @Builder
-    public BasicInfo(String title, String contact, String category, String brand, String thumbnailImage, int price, boolean isIncludeDelivery, String size, int views) {
+    public BasicInfo(String title, String contact, String category, String brand, String thumbnailImage, int price, boolean isIncludeDelivery, String size) {
         this.title = title;
         this.contact = contact;
         this.category = category;
@@ -31,6 +37,25 @@ public class BasicInfo{
         this.price = price;
         this.isIncludeDelivery = isIncludeDelivery;
         this.size = size;
-        this.views = views;
+    }
+
+    public void increaseLikes(){
+        this.likes++;
+    }
+
+    public void decreaseLikes(){
+        this.likes--;
+    }
+
+    public void increaseViews(){
+        this.views++;
+    }
+
+    public void decreaseViews(){
+        this.views--;
+    }
+
+    public void changeStatus(){
+        this.status = !status;
     }
 }
