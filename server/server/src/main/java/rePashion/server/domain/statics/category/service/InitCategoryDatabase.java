@@ -34,7 +34,7 @@ public class InitCategoryDatabase implements CommandLineRunner {
         Category middleCategory4 = create(2001L, "상의", "top", genderCategory2);
         Category middleCategory5 = create(2002L, "하의", "bottom", genderCategory2);
         Category middleCategory6 = create(2003L, "아우터", "outer", genderCategory2);
-        Category middleCategory7 = create(2004L, "원피스", "outer", genderCategory2);
+        Category middleCategory7 = create(2004L, "원피스", "onepiece", genderCategory2);
 
         create(3999L, "추천", "recommend", genderCategory3);
         create(3000L, "전체", "all", genderCategory3);
