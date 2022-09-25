@@ -2,11 +2,11 @@ package rePashion.server.domain.statics.model.filter;
 
 public enum Order {
 
-    LATEST("최신순", "latest"),
-    LIKE("인기순", "like"),
-    VIEW("최신순", "view"),
-    LOW_PRICE("낮은 가격순", "low price"),
-    HIGH_PRICE("높은 가격순", "high price"),
+    latest("최신순", "latest"),
+    like("인기순", "like"),
+    view("최신순", "view"),
+    low_price("낮은 가격순", "low price"),
+    high_price("높은 가격순", "high price"),
     ;
 
     private String name;

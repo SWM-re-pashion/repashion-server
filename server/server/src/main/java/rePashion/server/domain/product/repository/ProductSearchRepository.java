@@ -54,15 +54,15 @@ public class ProductSearchRepository {
 
     private OrderSpecifier<?> productOrderIs(Order order) {
         switch (order){
-            case LOW_PRICE:
+            case low_price:
                 return product.basicInfo.price.asc();
-            case HIGH_PRICE:
+            case high_price:
                 return product.basicInfo.price.desc();
-            case LIKE:
+            case like:
                 return product.basicInfo.likes.desc();
-            case VIEW:
+            case view:
                 return product.basicInfo.views.desc();
-            case LATEST:
+            case latest:
                 return product.modifiedDate.desc();
             default:
                 throw new UndefinedOrderException();
