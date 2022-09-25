@@ -34,6 +34,7 @@ public class ProductSearchRepository {
                 .select(new QProductPreviewDto(
                         product.id,
                         product.basicInfo.thumbnailImage,
+                        product.basicInfo.title,
                         product.basicInfo.size,
                         product.basicInfo.likes,
                         product.basicInfo.price,
@@ -43,7 +44,7 @@ public class ProductSearchRepository {
                 .from(product)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .where(productCategoryEq(cond.getCategory()))
+                .where(productCategoryEq(cond.getCategory()), productHideStatusEq(cond.getHideSold()))
                 .orderBy(productOrderIs(cond.getOrder()))
                 .fetch();
 
@@ -71,5 +72,9 @@ public class ProductSearchRepository {
 
     private BooleanExpression productCategoryEq(String category) {
         return isEmpty(category) ? null : product.basicInfo.category.eq(category);
+    }
+
+    private BooleanExpression productHideStatusEq(Boolean status){
+        return (status == null) ? null : product.basicInfo.status.eq(status);
     }
 }

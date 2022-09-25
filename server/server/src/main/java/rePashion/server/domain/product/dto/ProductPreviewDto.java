@@ -12,6 +12,7 @@ public class ProductPreviewDto {
 
     private Long id;
     private String img;
+    private String title;
     private String size;
     private Integer like;
     private Integer price;
@@ -19,9 +20,10 @@ public class ProductPreviewDto {
     private String updatedAt;
 
     @QueryProjection
-    public ProductPreviewDto(Long id, String img, String size, Integer like, Integer price, Boolean isSoldOut, LocalDateTime updatedAt) {
+    public ProductPreviewDto(Long id, String img, String title, String size, Integer like, Integer price, Boolean isSoldOut, LocalDateTime updatedAt) {
         this.id = id;
         this.img = img;
+        this.title = title;
         this.size = size;
         this.like = like;
         this.price = price;
