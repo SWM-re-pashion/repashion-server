@@ -12,6 +12,7 @@ import rePashion.server.domain.product.dto.ProductPreviewDto;
 import rePashion.server.domain.product.dto.ProductSearchCond;
 import rePashion.server.domain.product.dto.QProductPreviewDto;
 import rePashion.server.domain.product.exception.UndefinedOrderException;
+import rePashion.server.domain.product.model.Product;
 import rePashion.server.domain.product.model.QProduct;
 import rePashion.server.domain.statics.model.filter.Order;
 
@@ -46,7 +47,9 @@ public class ProductSearchRepository {
                 .orderBy(productOrderIs(cond.getOrder()))
                 .fetch();
 
-        return new PageImpl<>(content, pageable , content.size());
+        List<Product> fetchedProduct = queryFactory.selectFrom(product).fetch();
+
+        return new PageImpl<>(content, pageable , fetchedProduct.size());
     }
 
     private OrderSpecifier<?> productOrderIs(Order order) {
