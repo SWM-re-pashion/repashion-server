@@ -10,12 +10,15 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ShopResponseDto {
+
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class Pagination{
         private Boolean isEndOfPage;
-        private Integer totalItemCount;
-        private Integer totalPageCount;
+        private Long totalItemCount;
+        private int totalPageCount;
 
-        public Pagination(Boolean isEndOfPage, Integer totalItemCount, Integer totalPageCount) {
+        public Pagination(Boolean isEndOfPage, Long totalItemCount, int totalPageCount) {
             this.isEndOfPage = isEndOfPage;
             this.totalItemCount = totalItemCount;
             this.totalPageCount = totalPageCount;

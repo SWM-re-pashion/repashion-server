@@ -2,11 +2,12 @@ package rePashion.server.domain.product.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-@Data
+@Getter
 public class ProductPreviewDto {
 
     private Long id;
