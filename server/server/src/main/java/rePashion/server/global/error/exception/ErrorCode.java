@@ -51,7 +51,11 @@ public enum ErrorCode {
     DB_INSERTING_ERROR(400, "DB001", "DB에 데이터 추가 시에 오류가 발생했습니다"),
 
     //Measure 오류
-    MEASURE_DATA_ERROR(400, "MEASURE001", "예약된 측정값의 개수 혹은 형식이 올바르지 않습니다");
+    MEASURE_DATA_ERROR(400, "MEASURE001", "예약된 측정값의 개수 혹은 형식이 올바르지 않습니다"),
+
+    // filter
+
+    ORDER_FILTER_UNDEFINED(400, "ORDER_FILTER_UNDEFINED", "해당 Order가 정의되지 않았습니다");
 
     private final String code;
     private final String message;

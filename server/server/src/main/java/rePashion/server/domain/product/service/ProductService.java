@@ -22,9 +22,6 @@ public class ProductService {
 
     public Product save(ProductCreateDto dto){
 
-        String[] categories = dto.getBasicInfo().getCategory().split("/");
-        String type = categories[1].toUpperCase();
-
         BasicInfo basicInfo = BasicInfo.builder()
                 .title(dto.getBasicInfo().getTitle())
                 .contact(dto.getContact())
@@ -34,7 +31,6 @@ public class ProductService {
                 .price(dto.getPrice())
                 .isIncludeDelivery(dto.getIsIncludeDelivery())
                 .size(dto.getSize())
-                .views(0)
                 .build();
 
         SellerNote sellerNote = SellerNote.builder()
@@ -54,7 +50,7 @@ public class ProductService {
 
         MeasureType measureType;
         try {
-            measureType = MeasureType.valueOf(type);
+            measureType = MeasureType.valueOf(dto.getMeasureType());
         }catch (IllegalArgumentException e){
             throw new MeasureException(ErrorCode.MEASURE_DATA_ERROR);
         }

@@ -84,8 +84,10 @@ public class ProductCreateDto {
     private HashMap<String, Integer> measure;
     private String opinion;
 
+    private String measureType;
+
     @Builder
-    public ProductCreateDto(ArrayList<String> imgList, String contact, BasicInfo basicInfo, int price, Boolean isIncludeDelivery, String size, AdditionalInfo additionalInfo, SellerNote sellerNote, Style style, HashMap<String, Integer> measure, String opinion) {
+    public ProductCreateDto(ArrayList<String> imgList, String contact, BasicInfo basicInfo, int price, Boolean isIncludeDelivery, String size, AdditionalInfo additionalInfo, SellerNote sellerNote, Style style, HashMap<String, Integer> measure, String opinion, String measureType) {
         this.imgList = imgList;
         this.contact = contact;
         this.basicInfo = basicInfo;
@@ -97,6 +99,7 @@ public class ProductCreateDto {
         this.style = style;
         this.measure = measure;
         this.opinion = opinion;
+        this.measureType = measureType;
     }
 
     static public ProductCreateDto toDto(Product product){
