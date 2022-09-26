@@ -197,4 +197,45 @@ class ProductFilterRepositoryTest {
         assertThat(content.get(2)).extracting("title").isEqualTo("title03");
         assertThat(content.get(3)).extracting("title").isEqualTo("title02");
     }
+
+    @Test
+    public void BLACK_색깔_조회(){
+        //given
+        List<String> colors = List.of("BLACK");
+        ProductFilterCond cond = new ProductFilterCond();
+        cond.setCategory("1001001");
+        cond.setColor(colors);
+        cond.setOrder(Order.latest);
+
+        PageRequest of = PageRequest.of(0, 5);
+
+        //when
+        Page<ProductPreviewDto> dto = productFilterRepository.get(cond, of);
+        List<ProductPreviewDto> content = dto.getContent();
+
+        //then
+        assertThat(content.size()).isEqualTo(1);
+        assertThat(content.get(0)).extracting("title").isEqualTo("title01");
+    }
+
+    @Test
+    public void BLACK_and_PINK_색깔_조회(){
+        //given
+        List<String> colors = List.of("BLACK", "PINK");
+        ProductFilterCond cond = new ProductFilterCond();
+        cond.setCategory("1001001");
+        cond.setColor(colors);
+        cond.setOrder(Order.latest);
+
+        PageRequest of = PageRequest.of(0, 5);
+
+        //when
+        Page<ProductPreviewDto> dto = productFilterRepository.get(cond, of);
+        List<ProductPreviewDto> content = dto.getContent();
+
+        //then
+        assertThat(content.size()).isEqualTo(2);
+        assertThat(content.get(0)).extracting("title").isEqualTo("title05");
+        assertThat(content.get(1)).extracting("title").isEqualTo("title01");
+    }
 }
