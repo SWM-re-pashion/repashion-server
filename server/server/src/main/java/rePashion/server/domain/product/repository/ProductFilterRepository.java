@@ -1,5 +1,6 @@
 package rePashion.server.domain.product.repository;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -27,9 +28,11 @@ public class ProductFilterRepository {
 
     QProduct product = QProduct.product;
     QProductAdvanceInfo advanceInfo = QProductAdvanceInfo.productAdvanceInfo;
+    ProductFilterCond cond;
 
     public Page<ProductPreviewDto> get(ProductFilterCond cond, Pageable pageable){
 
+        this.cond = cond;
         List<ProductPreviewDto> content = queryFactory
                 .select(new QProductPreviewDto(
                         product.id,
@@ -42,68 +45,86 @@ public class ProductFilterRepository {
                         product.modifiedDate
                 ))
                 .from(product)
-                .join(product.advanceInfo, advanceInfo).fetchJoin()
+                .leftJoin(product.advanceInfo, advanceInfo)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .where(productCategoryEq(cond.getCategory()),
-                        (BooleanExpression) cond.getSize().stream().map(this::productStyleEq),
-                        (BooleanExpression) cond.getColor().stream().map(this::productColorEq),
-                        (BooleanExpression) cond.getFit().stream().map(this::productFitEq),
-                        (BooleanExpression) cond.getLength().stream().map(this::productLengthEq),
-                        (BooleanExpression) cond.getSize().stream().map(this::productSizeEq),
-                        productLoe(cond.getPriceLoe()),
-                        productGoe(cond.getPriceGoe())
-                        )
+                .where(
+                        productCategoryEq(cond.getCategory()),
+                        productHideStatusEq(cond.getHideSold()),
+                        productPriceGoe(cond.getPriceGoe()),
+                        productPriceLoe(cond.getPriceLoe()),
+                        productStyleEq(cond.getStyle()),
+                        productColorEq(cond.getColor()),
+                        productFitEq(cond.getFit()),
+                        productLengthEq(cond.getLength()),
+                        productSizeEq(cond.getSize())
+                    )
                 .orderBy(productOrderIs(cond.getOrder()))
                 .fetch();
 
         long count = queryFactory
                 .selectFrom(product)
-                .join(product.advanceInfo, advanceInfo).fetchJoin()
-                .where(productCategoryEq(cond.getCategory()),
-                        (BooleanExpression) cond.getSize().stream().map(this::productStyleEq),
-                        (BooleanExpression) cond.getColor().stream().map(this::productColorEq),
-                        (BooleanExpression) cond.getFit().stream().map(this::productFitEq),
-                        (BooleanExpression) cond.getLength().stream().map(this::productLengthEq),
-                        (BooleanExpression) cond.getSize().stream().map(this::productSizeEq),
-                        productLoe(cond.getPriceLoe()),
-                        productGoe(cond.getPriceGoe()),
-                        productHideStatusEq(cond.getHideSold())
+                .join(product.advanceInfo, advanceInfo)
+                .where(
+                        productCategoryEq(cond.getCategory()),
+                        productHideStatusEq(cond.getHideSold()),
+                        productPriceGoe(cond.getPriceGoe()),
+                        productPriceLoe(cond.getPriceLoe()),
+                        productStyleEq(cond.getStyle()),
+                        productColorEq(cond.getColor()),
+                        productFitEq(cond.getFit()),
+                        productLengthEq(cond.getLength()),
+                        productSizeEq(cond.getSize())
                 )
                 .fetch().size();
 
         return new PageImpl<>(content, pageable , count);
     }
 
+    private BooleanBuilder productStyleEq(List<String> styles){
+        if(styles == null) return null;
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        styles.forEach((style) -> booleanBuilder.or(isEmpty(style) ? null : advanceInfo.sellerNote.tag.eq(style)));
+        return booleanBuilder;
+    }
+
+    private BooleanBuilder productColorEq(List<String> colors){
+        if(colors == null) return null;
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        colors.forEach((color) -> booleanBuilder.or(isEmpty(color) ? null : advanceInfo.sellerNote.color.eq(color)));
+        return booleanBuilder;
+    }
+
+    private BooleanBuilder productFitEq(List<String> fits){
+        if(fits == null) return null;
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        fits.forEach((fit) -> booleanBuilder.or(isEmpty(fit) ? null : advanceInfo.sellerNote.fit.eq(fit)));
+        return booleanBuilder;
+    }
+
+    private BooleanBuilder productLengthEq(List<String> lengths){
+        if(lengths == null) return null;
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        lengths.forEach((length) -> booleanBuilder.or(isEmpty(length) ? null : advanceInfo.sellerNote.length.eq(length)));
+        return booleanBuilder;
+    }
+
+    private BooleanBuilder productSizeEq(List<String> sizes){
+        if(sizes == null) return null;
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        sizes.forEach((size) -> booleanBuilder.or(isEmpty(size) ? null : product.basicInfo.size.eq(size)));
+        return booleanBuilder;
+    }
+
     private BooleanExpression productCategoryEq(String category) {
         return isEmpty(category) ? null : product.basicInfo.category.eq(category);
     }
 
-    private BooleanExpression productStyleEq(String style){
-        return isEmpty(style) ? null : advanceInfo.sellerNote.tag.eq(style);
-    }
-
-    private BooleanExpression productColorEq(String color){
-        return isEmpty(color) ? null : advanceInfo.sellerNote.color.eq(color);
-    }
-
-    private BooleanExpression productFitEq(String fit){
-        return isEmpty(fit) ? null : advanceInfo.sellerNote.fit.eq(fit);
-    }
-
-    private BooleanExpression productLengthEq(String length){
-        return isEmpty(length) ? null : advanceInfo.sellerNote.length.eq(length);
-    }
-
-    private BooleanExpression productSizeEq(String size){
-        return isEmpty(size) ? null : product.basicInfo.size.eq(size);
-    }
-
-    private BooleanExpression productLoe(Integer priceLoe){
+    private BooleanExpression productPriceLoe(Integer priceLoe){
         return priceLoe == null ? null : product.basicInfo.price.loe(priceLoe);
     }
 
-    private BooleanExpression productGoe(Integer priceGoe){
+    private BooleanExpression productPriceGoe(Integer priceGoe){
         return priceGoe == null ? null : product.basicInfo.price.goe(priceGoe);
     }
 
