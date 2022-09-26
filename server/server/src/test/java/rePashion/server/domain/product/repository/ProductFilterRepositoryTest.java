@@ -334,7 +334,7 @@ class ProductFilterRepositoryTest {
         List<String> sizes  = List.of("XS");
         ProductFilterCond cond = new ProductFilterCond();
         cond.setCategory("1001001");
-        cond.setSize(sizes);
+        cond.setClothesSize(sizes);
         cond.setOrder(Order.latest);
 
         PageRequest of = PageRequest.of(0, 5);
@@ -357,7 +357,7 @@ class ProductFilterRepositoryTest {
         List<String> sizes = List.of("XS", "S");
         ProductFilterCond cond = new ProductFilterCond();
         cond.setCategory("1001001");
-        cond.setSize(sizes);
+        cond.setClothesSize(sizes);
         cond.setOrder(Order.latest);
 
         PageRequest of = PageRequest.of(0, 5);

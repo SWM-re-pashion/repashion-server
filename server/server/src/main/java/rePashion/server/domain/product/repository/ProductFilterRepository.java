@@ -57,7 +57,7 @@ public class ProductFilterRepository {
                         productColorEq(cond.getColor()),
                         productFitEq(cond.getFit()),
                         productLengthEq(cond.getLength()),
-                        productSizeEq(cond.getSize())
+                        productSizeEq(cond.getClothesSize())
                     )
                 .orderBy(productOrderIs(cond.getOrder()))
                 .fetch();
@@ -74,7 +74,7 @@ public class ProductFilterRepository {
                         productColorEq(cond.getColor()),
                         productFitEq(cond.getFit()),
                         productLengthEq(cond.getLength()),
-                        productSizeEq(cond.getSize())
+                        productSizeEq(cond.getClothesSize())
                 )
                 .fetch().size();
 

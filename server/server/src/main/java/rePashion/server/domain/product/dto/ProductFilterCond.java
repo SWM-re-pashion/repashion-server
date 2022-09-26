@@ -12,7 +12,7 @@ public class ProductFilterCond {
     private List<String> color;
     private List<String> fit;
     private List<String> length;
-    private List<String> size;
+    private List<String> clothesSize;
     private Order order;
     private Boolean hideSold;
     private Integer priceLoe;
