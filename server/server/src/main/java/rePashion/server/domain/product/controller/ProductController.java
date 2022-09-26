@@ -23,7 +23,6 @@ import rePashion.server.global.common.response.StatusCode;
 public class ProductController {
 
     private final ProductService productService;
-    private final ProductSearchRepository productSearchRepository;
 
     @PostMapping
     public ResponseEntity<GlobalResponse> create(@RequestBody ProductCreateDto dto){
@@ -47,11 +46,5 @@ public class ProductController {
     public ResponseEntity<GlobalResponse> delete(@PathVariable Long id){
         productService.delete(id);
         return new ResponseEntity<GlobalResponse>(HttpStatus.NO_CONTENT);
-    }
-
-    @GetMapping("/shop")
-    public ResponseEntity<GlobalResponse> getShop(ProductSearchCond cond, Pageable pageable){
-        Page<ProductPreviewDto> preview = productSearchRepository.search(cond, pageable);
-        return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, preview), HttpStatus.OK);
     }
 }
