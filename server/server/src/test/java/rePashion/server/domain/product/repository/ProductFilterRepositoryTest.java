@@ -96,7 +96,7 @@ class ProductFilterRepositoryTest {
                 .thumbnailImage("https://image05")
                 .price(200004)
                 .isIncludeDelivery(true)
-                .size("XS")
+                .size("S")
                 .build());
 
         sellerNotes.add(
@@ -237,5 +237,165 @@ class ProductFilterRepositoryTest {
         assertThat(content.size()).isEqualTo(2);
         assertThat(content.get(0)).extracting("title").isEqualTo("title05");
         assertThat(content.get(1)).extracting("title").isEqualTo("title01");
+    }
+
+    @Test
+    public void normal_fit_조회(){
+        //given
+        List<String> fits = List.of("normal");
+        ProductFilterCond cond = new ProductFilterCond();
+        cond.setCategory("1001001");
+        cond.setFit(fits);
+        cond.setOrder(Order.latest);
+
+        PageRequest of = PageRequest.of(0, 5);
+
+        //when
+        Page<ProductPreviewDto> dto = productFilterRepository.get(cond, of);
+        List<ProductPreviewDto> content = dto.getContent();
+
+        //then
+        assertThat(content.size()).isEqualTo(2);
+        assertThat(content.get(0)).extracting("title").isEqualTo("title04");
+        assertThat(content.get(1)).extracting("title").isEqualTo("title02");
+    }
+
+    @Test
+    public void normal_and_tight_fit_조회(){
+        //given
+        List<String> fits = List.of("normal", "tight");
+        ProductFilterCond cond = new ProductFilterCond();
+        cond.setCategory("1001001");
+        cond.setFit(fits);
+        cond.setOrder(Order.latest);
+
+        PageRequest of = PageRequest.of(0, 5);
+
+        //when
+        Page<ProductPreviewDto> dto = productFilterRepository.get(cond, of);
+        List<ProductPreviewDto> content = dto.getContent();
+
+        //then
+        assertThat(content.size()).isEqualTo(4);
+        assertThat(content.get(0)).extracting("title").isEqualTo("title04");
+        assertThat(content.get(1)).extracting("title").isEqualTo("title03");
+        assertThat(content.get(2)).extracting("title").isEqualTo("title02");
+        assertThat(content.get(3)).extracting("title").isEqualTo("title01");
+    }
+
+    @Test
+    public void crop_length_조회(){
+        //given
+        List<String> lengths  = List.of("crop");
+        ProductFilterCond cond = new ProductFilterCond();
+        cond.setCategory("1001001");
+        cond.setLength(lengths);
+        cond.setOrder(Order.latest);
+
+        PageRequest of = PageRequest.of(0, 5);
+
+        //when
+        Page<ProductPreviewDto> dto = productFilterRepository.get(cond, of);
+        List<ProductPreviewDto> content = dto.getContent();
+
+        //then
+        assertThat(content.size()).isEqualTo(2);
+        assertThat(content.get(0)).extracting("title").isEqualTo("title02");
+        assertThat(content.get(1)).extracting("title").isEqualTo("title01");
+    }
+
+    @Test
+    public void crop_and_waist_length_조회(){
+        //given
+        List<String> fits = List.of("crop", "waist");
+        ProductFilterCond cond = new ProductFilterCond();
+        cond.setCategory("1001001");
+        cond.setLength(fits);
+        cond.setOrder(Order.latest);
+
+        PageRequest of = PageRequest.of(0, 5);
+
+        //when
+        Page<ProductPreviewDto> dto = productFilterRepository.get(cond, of);
+        List<ProductPreviewDto> content = dto.getContent();
+
+        //then
+        assertThat(content.size()).isEqualTo(5);
+        assertThat(content.get(0)).extracting("title").isEqualTo("title05");
+        assertThat(content.get(1)).extracting("title").isEqualTo("title04");
+        assertThat(content.get(2)).extracting("title").isEqualTo("title03");
+        assertThat(content.get(3)).extracting("title").isEqualTo("title02");
+        assertThat(content.get(4)).extracting("title").isEqualTo("title01");
+    }
+
+    @Test
+    public void XS_size_조회(){
+        //given
+        List<String> sizes  = List.of("XS");
+        ProductFilterCond cond = new ProductFilterCond();
+        cond.setCategory("1001001");
+        cond.setSize(sizes);
+        cond.setOrder(Order.latest);
+
+        PageRequest of = PageRequest.of(0, 5);
+
+        //when
+        Page<ProductPreviewDto> dto = productFilterRepository.get(cond, of);
+        List<ProductPreviewDto> content = dto.getContent();
+
+        //then
+        assertThat(content.size()).isEqualTo(4);
+        assertThat(content.get(0)).extracting("title").isEqualTo("title04");
+        assertThat(content.get(1)).extracting("title").isEqualTo("title03");
+        assertThat(content.get(2)).extracting("title").isEqualTo("title02");
+        assertThat(content.get(3)).extracting("title").isEqualTo("title01");
+    }
+
+    @Test
+    public void XS_and_S_length_조회(){
+        //given
+        List<String> sizes = List.of("XS", "S");
+        ProductFilterCond cond = new ProductFilterCond();
+        cond.setCategory("1001001");
+        cond.setSize(sizes);
+        cond.setOrder(Order.latest);
+
+        PageRequest of = PageRequest.of(0, 5);
+
+        //when
+        Page<ProductPreviewDto> dto = productFilterRepository.get(cond, of);
+        List<ProductPreviewDto> content = dto.getContent();
+
+        //then
+        assertThat(content.size()).isEqualTo(5);
+        assertThat(content.get(0)).extracting("title").isEqualTo("title05");
+        assertThat(content.get(1)).extracting("title").isEqualTo("title04");
+        assertThat(content.get(2)).extracting("title").isEqualTo("title03");
+        assertThat(content.get(3)).extracting("title").isEqualTo("title02");
+        assertThat(content.get(4)).extracting("title").isEqualTo("title01");
+    }
+
+    @Test
+    public void kitsch_Style_or_BLACK_and_MINT_Color_조회(){
+        //given
+        List<String> styles = List.of("kitsch");
+        List<String> colors = List.of("GREEN", "PURPLE");
+
+        ProductFilterCond cond = new ProductFilterCond();
+        cond.setCategory("1001001");
+        cond.setStyle(styles);
+        cond.setColor(colors);
+        cond.setOrder(Order.latest);
+
+        PageRequest of = PageRequest.of(0, 5);
+
+        //when
+        Page<ProductPreviewDto> dto = productFilterRepository.get(cond, of);
+        List<ProductPreviewDto> content = dto.getContent();
+
+        //then
+        assertThat(content.size()).isEqualTo(2);
+        assertThat(content.get(0)).extracting("title").isEqualTo("title04");
+        assertThat(content.get(1)).extracting("title").isEqualTo("title02");
     }
 }
