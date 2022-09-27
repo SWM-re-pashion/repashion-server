@@ -1,6 +1,5 @@
 package rePashion.server.domain.product.repository;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.context.TestPropertySource;
-import rePashion.server.domain.product.dto.ProductFilterCond;
+import rePashion.server.domain.product.resources.request.Condition;
 import rePashion.server.domain.product.dto.ProductPreviewDto;
 import rePashion.server.domain.product.model.Product;
 import rePashion.server.domain.product.model.ProductAdvanceInfo;
@@ -19,11 +17,9 @@ import rePashion.server.domain.product.model.embedded.SellerNote;
 import rePashion.server.domain.statics.model.filter.Order;
 import rePashion.server.global.common.config.JpaQueryFactoryConfig;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @Import({ProductFilterRepository.class, JpaQueryFactoryConfig.class})
@@ -156,10 +152,9 @@ class ProductFilterRepositoryTest {
     @Test
     public void kitsch_스타일_조회(){
         //given
-        List<String> kitsch = List.of("kitsch");
-        ProductFilterCond cond = new ProductFilterCond();
+        Condition.Filter cond = new Condition.Filter();
         cond.setCategory("1001001");
-        cond.setStyle(kitsch);
+        cond.setStyle("kitsch");
         cond.setOrder(Order.latest);
 
         PageRequest of = PageRequest.of(0, 5);
@@ -178,10 +173,9 @@ class ProductFilterRepositoryTest {
     @Test
     public void kitsch_and_hiphop_스타일_조회(){
         //given
-        List<String> kitsch = List.of("kitsch", "street");
-        ProductFilterCond cond = new ProductFilterCond();
+        Condition.Filter cond = new Condition.Filter();
         cond.setCategory("1001001");
-        cond.setStyle(kitsch);
+        cond.setStyle("kitsch,street");
         cond.setOrder(Order.latest);
 
         PageRequest of = PageRequest.of(0, 5);
@@ -201,10 +195,9 @@ class ProductFilterRepositoryTest {
     @Test
     public void BLACK_색깔_조회(){
         //given
-        List<String> colors = List.of("BLACK");
-        ProductFilterCond cond = new ProductFilterCond();
+        Condition.Filter cond = new Condition.Filter();
         cond.setCategory("1001001");
-        cond.setColor(colors);
+        cond.setColor("BLACK");
         cond.setOrder(Order.latest);
 
         PageRequest of = PageRequest.of(0, 5);
@@ -221,10 +214,9 @@ class ProductFilterRepositoryTest {
     @Test
     public void BLACK_and_PINK_색깔_조회(){
         //given
-        List<String> colors = List.of("BLACK", "PINK");
-        ProductFilterCond cond = new ProductFilterCond();
+        Condition.Filter cond = new Condition.Filter();
         cond.setCategory("1001001");
-        cond.setColor(colors);
+        cond.setColor("BLACK,PINK");
         cond.setOrder(Order.latest);
 
         PageRequest of = PageRequest.of(0, 5);
@@ -242,10 +234,9 @@ class ProductFilterRepositoryTest {
     @Test
     public void normal_fit_조회(){
         //given
-        List<String> fits = List.of("normal");
-        ProductFilterCond cond = new ProductFilterCond();
+        Condition.Filter cond = new Condition.Filter();
         cond.setCategory("1001001");
-        cond.setFit(fits);
+        cond.setFit("normal");
         cond.setOrder(Order.latest);
 
         PageRequest of = PageRequest.of(0, 5);
@@ -263,10 +254,9 @@ class ProductFilterRepositoryTest {
     @Test
     public void normal_and_tight_fit_조회(){
         //given
-        List<String> fits = List.of("normal", "tight");
-        ProductFilterCond cond = new ProductFilterCond();
+        Condition.Filter cond = new Condition.Filter();
         cond.setCategory("1001001");
-        cond.setFit(fits);
+        cond.setFit("normal,tight");
         cond.setOrder(Order.latest);
 
         PageRequest of = PageRequest.of(0, 5);
@@ -286,10 +276,9 @@ class ProductFilterRepositoryTest {
     @Test
     public void crop_length_조회(){
         //given
-        List<String> lengths  = List.of("crop");
-        ProductFilterCond cond = new ProductFilterCond();
+        Condition.Filter cond = new Condition.Filter();
         cond.setCategory("1001001");
-        cond.setLength(lengths);
+        cond.setLength("crop");
         cond.setOrder(Order.latest);
 
         PageRequest of = PageRequest.of(0, 5);
@@ -307,10 +296,9 @@ class ProductFilterRepositoryTest {
     @Test
     public void crop_and_waist_length_조회(){
         //given
-        List<String> fits = List.of("crop", "waist");
-        ProductFilterCond cond = new ProductFilterCond();
+        Condition.Filter cond = new Condition.Filter();
         cond.setCategory("1001001");
-        cond.setLength(fits);
+        cond.setLength("crop,waist");
         cond.setOrder(Order.latest);
 
         PageRequest of = PageRequest.of(0, 5);
@@ -331,10 +319,9 @@ class ProductFilterRepositoryTest {
     @Test
     public void XS_size_조회(){
         //given
-        List<String> sizes  = List.of("XS");
-        ProductFilterCond cond = new ProductFilterCond();
+        Condition.Filter cond = new Condition.Filter();
         cond.setCategory("1001001");
-        cond.setClothesSize(sizes);
+        cond.setClothesSize("XS");
         cond.setOrder(Order.latest);
 
         PageRequest of = PageRequest.of(0, 5);
@@ -354,10 +341,9 @@ class ProductFilterRepositoryTest {
     @Test
     public void XS_and_S_length_조회(){
         //given
-        List<String> sizes = List.of("XS", "S");
-        ProductFilterCond cond = new ProductFilterCond();
+        Condition.Filter cond = new Condition.Filter();
         cond.setCategory("1001001");
-        cond.setClothesSize(sizes);
+        cond.setClothesSize("XS,S");
         cond.setOrder(Order.latest);
 
         PageRequest of = PageRequest.of(0, 5);
@@ -378,13 +364,10 @@ class ProductFilterRepositoryTest {
     @Test
     public void kitsch_Style_or_BLACK_and_MINT_Color_조회(){
         //given
-        List<String> styles = List.of("kitsch");
-        List<String> colors = List.of("GREEN", "PURPLE");
-
-        ProductFilterCond cond = new ProductFilterCond();
+        Condition.Filter cond = new Condition.Filter();
         cond.setCategory("1001001");
-        cond.setStyle(styles);
-        cond.setColor(colors);
+        cond.setStyle("kitsch");
+        cond.setColor("GREEN,PURPLE");
         cond.setOrder(Order.latest);
 
         PageRequest of = PageRequest.of(0, 5);

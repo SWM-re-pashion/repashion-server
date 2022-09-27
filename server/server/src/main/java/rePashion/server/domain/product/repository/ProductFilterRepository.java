@@ -9,7 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-import rePashion.server.domain.product.dto.ProductFilterCond;
+import rePashion.server.domain.product.resources.request.Condition;
 import rePashion.server.domain.product.dto.ProductPreviewDto;
 import rePashion.server.domain.product.dto.QProductPreviewDto;
 import rePashion.server.domain.product.exception.UndefinedOrderException;
@@ -28,11 +28,12 @@ public class ProductFilterRepository {
 
     QProduct product = QProduct.product;
     QProductAdvanceInfo advanceInfo = QProductAdvanceInfo.productAdvanceInfo;
-    ProductFilterCond cond;
+    Condition.Filter cond;
 
-    public Page<ProductPreviewDto> get(ProductFilterCond cond, Pageable pageable){
+    public Page<ProductPreviewDto> get(Condition.Filter cond, Pageable pageable){
 
         this.cond = cond;
+
         List<ProductPreviewDto> content = queryFactory
                 .select(new QProductPreviewDto(
                         product.id,
@@ -81,38 +82,43 @@ public class ProductFilterRepository {
         return new PageImpl<>(content, pageable , count);
     }
 
-    private BooleanBuilder productStyleEq(List<String> styles){
+    private BooleanBuilder productStyleEq(String styles){
         if(styles == null) return null;
+        List<String> splitStyles = List.of(styles.split(","));
         BooleanBuilder booleanBuilder = new BooleanBuilder();
-        styles.forEach((style) -> booleanBuilder.or(isEmpty(style) ? null : advanceInfo.sellerNote.tag.eq(style)));
+        splitStyles.forEach((style) -> booleanBuilder.or(isEmpty(style) ? null : advanceInfo.sellerNote.tag.eq(style)));
         return booleanBuilder;
     }
 
-    private BooleanBuilder productColorEq(List<String> colors){
+    private BooleanBuilder productColorEq(String colors){
         if(colors == null) return null;
+        List<String> splitColors = List.of(colors.split(","));
         BooleanBuilder booleanBuilder = new BooleanBuilder();
-        colors.forEach((color) -> booleanBuilder.or(isEmpty(color) ? null : advanceInfo.sellerNote.color.eq(color)));
+        splitColors.forEach((color) -> booleanBuilder.or(isEmpty(color) ? null : advanceInfo.sellerNote.color.eq(color)));
         return booleanBuilder;
     }
 
-    private BooleanBuilder productFitEq(List<String> fits){
+    private BooleanBuilder productFitEq(String fits){
         if(fits == null) return null;
+        List<String> splitFits = List.of(fits.split(","));
         BooleanBuilder booleanBuilder = new BooleanBuilder();
-        fits.forEach((fit) -> booleanBuilder.or(isEmpty(fit) ? null : advanceInfo.sellerNote.fit.eq(fit)));
+        splitFits.forEach((fit) -> booleanBuilder.or(isEmpty(fit) ? null : advanceInfo.sellerNote.fit.eq(fit)));
         return booleanBuilder;
     }
 
-    private BooleanBuilder productLengthEq(List<String> lengths){
+    private BooleanBuilder productLengthEq(String lengths){
         if(lengths == null) return null;
+        List<String> splitLengths = List.of(lengths.split(","));
         BooleanBuilder booleanBuilder = new BooleanBuilder();
-        lengths.forEach((length) -> booleanBuilder.or(isEmpty(length) ? null : advanceInfo.sellerNote.length.eq(length)));
+        splitLengths.forEach((length) -> booleanBuilder.or(isEmpty(length) ? null : advanceInfo.sellerNote.length.eq(length)));
         return booleanBuilder;
     }
 
-    private BooleanBuilder productSizeEq(List<String> sizes){
+    private BooleanBuilder productSizeEq(String sizes){
         if(sizes == null) return null;
+        List<String> splitSizes = List.of(sizes.split(","));
         BooleanBuilder booleanBuilder = new BooleanBuilder();
-        sizes.forEach((size) -> booleanBuilder.or(isEmpty(size) ? null : product.basicInfo.size.eq(size)));
+        splitSizes.forEach((size) -> booleanBuilder.or(isEmpty(size) ? null : product.basicInfo.size.eq(size)));
         return booleanBuilder;
     }
 
