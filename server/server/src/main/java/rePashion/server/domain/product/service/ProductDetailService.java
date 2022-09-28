@@ -9,6 +9,8 @@ import rePashion.server.domain.product.dto.ProductDetailDto;
 import rePashion.server.domain.product.model.embedded.BasicInfo;
 import rePashion.server.domain.product.model.embedded.SellerNote;
 import rePashion.server.domain.product.repository.ProductRepository;
+import rePashion.server.domain.statics.category.model.Category;
+import rePashion.server.domain.statics.category.repository.CategoryRepository;
 import rePashion.server.domain.statics.model.bodyshape.BodyShape;
 import rePashion.server.domain.statics.category.exception.CategoryNotExisted;
 import rePashion.server.domain.statics.category.repository.GenderCategoryRepository;
@@ -28,9 +30,7 @@ import rePashion.server.global.error.exception.ErrorCode;
 public class ProductDetailService {
 
     private final ProductRepository productRepository;
-    private final ParentCategoryRepository parentCategoryRepository;
-    private final SubCategoryRepository subCategoryRepository;
-    private final GenderCategoryRepository genderCategoryRepository;
+    private final CategoryRepository categoryRepository;
     private Product product;
     private Type type;
 
@@ -82,21 +82,25 @@ public class ProductDetailService {
 
     private ProductDetailDto.Basic getBasic() {
         BasicInfo basicInfo = product.getBasicInfo();
-        String[] splitCategory = basicInfo.getCategory().split("/");
+        String[] categories = getCategories(basicInfo.getCategory());
         return new ProductDetailDto.Basic(
                 basicInfo.getTitle(),
-                getNameOfParentCategory(splitCategory[1]) + "/" + getNameOfSubCategory(splitCategory[2]),
+                categories[2] + "/" + categories[1],
                 basicInfo.getBrand(),
-                getNameOfGenderCategory(splitCategory[0]) + "/" + basicInfo.getSize(),
+                categories[0] + "/" + basicInfo.getSize(),
                 product.getAdvanceInfo().getSellerNote().getMaterial()
                         + "/" + product.getAdvanceInfo().getSellerNote().getColor()
                         + "/" + getNameOfTag(product.getAdvanceInfo().getSellerNote().getTag())
         );
     }
 
-    private String getNameOfGenderCategory(String code){
-        return genderCategoryRepository.findGenderCategoryByCode(code).orElseThrow(CategoryNotExisted::new);
+    private String[] getCategories(String categoryId){
+        Category category = categoryRepository.findCategoryByCategoryId(Long.valueOf(categoryId)).orElseThrow(CategoryNotExisted::new);
+        Category middleCategory = category.getParentCategory();
+        return new String[]{category.getName(), middleCategory.getName(), middleCategory.getParentCategory().getName()};
     }
+
+
 
     private String getNameOfTag(String code){
         try{
@@ -105,13 +109,7 @@ public class ProductDetailService {
             throw new StaticVariableNotExisted(code, ErrorCode.STATIC_VARIABLE_NOT_EXISTED);
         }
     }
-    private String getNameOfParentCategory(String code){
-        return parentCategoryRepository.findParentCategoryByCode(code).orElseThrow(CategoryNotExisted::new);
-    }
 
-    private String getNameOfSubCategory(String code){
-        return subCategoryRepository.findSubCategoryByCode(code).orElseThrow(CategoryNotExisted::new);
-    }
     private ProductDetailDto.SellerNotice getSellerNotice() {
         SellerNote sellerNote = product.getAdvanceInfo().getSellerNote();
         return new ProductDetailDto.SellerNotice(
@@ -178,10 +176,14 @@ public class ProductDetailService {
     }
 
     private void setType(){
-        try{
-            this.type = Type.valueOf(product.getBasicInfo().getCategory().split("/")[1]);
-        }catch(IllegalArgumentException e){
-            throw new DetailTypeError();
+        String category = product.getBasicInfo().getCategory();
+        switch(category.charAt(0)) {
+            case '1':
+                this.type = Type.top;
+            case '2':
+                this.type = Type.bottom;
+            default:
+                this.type = Type.top;
         }
     }
 }
