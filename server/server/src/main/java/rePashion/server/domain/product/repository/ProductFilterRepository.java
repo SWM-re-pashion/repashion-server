@@ -135,7 +135,7 @@ public class ProductFilterRepository {
     }
 
     private BooleanExpression productHideStatusEq(Boolean status){
-        return (status == null) ? null : product.basicInfo.status.eq(status);
+        return (status == null) ? null : product.basicInfo.status.eq(!status);
     }
 
     private OrderSpecifier<?> productOrderIs(Order order) {
