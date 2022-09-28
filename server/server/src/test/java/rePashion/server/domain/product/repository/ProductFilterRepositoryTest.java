@@ -477,4 +477,24 @@ class ProductFilterRepositoryTest {
         //then
         assertThat(content.size()).isEqualTo(8);
     }
+
+    @Test
+    public void 전체_여성_카테고리_조회(){
+        //given
+        Condition.Filter cond = new Condition.Filter();
+        cond.setCategory("2000");       // 전체 카테고리를 의미함
+        cond.setOrder(Order.latest);
+
+        PageRequest of = PageRequest.of(0, 5);
+
+        //when
+        Page<ProductPreviewDto> dto = productFilterRepository.get(cond, of);
+        List<ProductPreviewDto> content = dto.getContent();
+
+        //then
+        assertThat(content.size()).isEqualTo(3);
+        assertThat(content.get(0).getTitle()).isEqualTo("category_2001002");
+        assertThat(content.get(1).getTitle()).isEqualTo("category_2002001");
+        assertThat(content.get(2).getTitle()).isEqualTo("category_2001001");
+    }
 }
