@@ -95,6 +95,39 @@ class ProductFilterRepositoryTest {
                 .size("S")
                 .build());
 
+        basicInfos.add(BasicInfo.builder()
+                .title("category_2001001")
+                .contact("test06@test.com")
+                .category("2001001")
+                .brand("brand06")
+                .thumbnailImage("https://image06")
+                .price(200004)
+                .isIncludeDelivery(true)
+                .size("S")
+                .build());
+
+        basicInfos.add(BasicInfo.builder()
+                .title("category_2002001")
+                .contact("test07@test.com")
+                .category("2002001")
+                .brand("brand07")
+                .thumbnailImage("https://image07")
+                .price(200004)
+                .isIncludeDelivery(true)
+                .size("S")
+                .build());
+
+        basicInfos.add(BasicInfo.builder()
+                .title("category_2001002")
+                .contact("test08@test.com")
+                .category("2001002")
+                .brand("brand08")
+                .thumbnailImage("https://image08")
+                .price(200004)
+                .isIncludeDelivery(true)
+                .size("S")
+                .build());
+
         sellerNotes.add(
                 SellerNote
                         .builder()
@@ -140,7 +173,34 @@ class ProductFilterRepositoryTest {
                         .color("PINK")
                         .build());
 
-        for(int i =0; i < 5; i++){
+        sellerNotes.add(
+                SellerNote
+                        .builder()
+                        .length("waist")
+                        .fit("oversize")
+                        .tag("street")
+                        .color("PINK")
+                        .build());
+
+        sellerNotes.add(
+                SellerNote
+                        .builder()
+                        .length("waist")
+                        .fit("oversize")
+                        .tag("street")
+                        .color("PINK")
+                        .build());
+
+        sellerNotes.add(
+                SellerNote
+                        .builder()
+                        .length("waist")
+                        .fit("oversize")
+                        .tag("street")
+                        .color("PINK")
+                        .build());
+
+        for(int i =0; i < 8; i++){
             Product p = Product.builder().basicInfo(basicInfos.get(i)).build();
             ProductAdvanceInfo pai = ProductAdvanceInfo.builder().sellerNote(sellerNotes.get(i)).build();
             pai.changeProduct(p);
@@ -380,5 +440,41 @@ class ProductFilterRepositoryTest {
         assertThat(content.size()).isEqualTo(2);
         assertThat(content.get(0)).extracting("title").isEqualTo("title04");
         assertThat(content.get(1)).extracting("title").isEqualTo("title02");
+    }
+
+    @Test
+    public void 최상단_카테고리로_자식_카테고리_조회하기(){
+        //given
+        Condition.Filter cond = new Condition.Filter();
+        cond.setCategory("2");
+        cond.setOrder(Order.latest);
+
+        PageRequest of = PageRequest.of(0, 5);
+
+        //when
+        Page<ProductPreviewDto> dto = productFilterRepository.get(cond, of);
+        List<ProductPreviewDto> content = dto.getContent();
+
+        //then
+        assertThat(content.size()).isEqualTo(3);
+        assertThat(content.get(0).getTitle()).isEqualTo("category_2001002");
+        assertThat(content.get(1).getTitle()).isEqualTo("category_2002001");
+        assertThat(content.get(2).getTitle()).isEqualTo("category_2001001");
+    }
+
+    @Test
+    public void 모든값_null_값으로_조회해보기(){
+        //given
+        Condition.Filter cond = new Condition.Filter();
+        cond.setOrder(Order.latest);
+
+        PageRequest of = PageRequest.of(0, 10);
+
+        //when
+        Page<ProductPreviewDto> dto = productFilterRepository.get(cond, of);
+        List<ProductPreviewDto> content = dto.getContent();
+
+        //then
+        assertThat(content.size()).isEqualTo(8);
     }
 }
