@@ -123,7 +123,7 @@ public class ProductFilterRepository {
     }
 
     private BooleanExpression productCategoryEq(String category) {
-        return isEmpty(category) ? null : product.basicInfo.category.eq(category);
+        return isEmpty(category) ? null : product.basicInfo.category.startsWith(category);
     }
 
     private BooleanExpression productPriceLoe(Integer priceLoe){
@@ -135,7 +135,7 @@ public class ProductFilterRepository {
     }
 
     private BooleanExpression productHideStatusEq(Boolean status){
-        return (status == null) ? null : product.basicInfo.status.eq(status);
+        return (status == null) ? null : product.basicInfo.status.eq(!status);
     }
 
     private OrderSpecifier<?> productOrderIs(Order order) {
