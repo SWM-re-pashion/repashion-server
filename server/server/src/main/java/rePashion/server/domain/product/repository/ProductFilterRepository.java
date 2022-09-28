@@ -123,7 +123,11 @@ public class ProductFilterRepository {
     }
 
     private BooleanExpression productCategoryEq(String category) {
-        return isEmpty(category) ? null : product.basicInfo.category.startsWith(category);
+        return isEmpty(category) ? null : product.basicInfo.category.startsWith(convertStringWhenMeansAll(category));
+    }
+
+    private String convertStringWhenMeansAll(String category){  // 끝자리가 000으로 끝나는 전체 카테고리를 의미할 경우에 "000"을 제거해서 보내준다
+        return (category.endsWith("000")) ? category.substring(0, category.length() - 3) : category;
     }
 
     private BooleanExpression productPriceLoe(Integer priceLoe){
