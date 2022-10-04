@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class 상AccessTokenProviderTest {
+class AccessTokenProviderTest {
 
     @Autowired
     private AccessTokenProvider accessTokenProvider;

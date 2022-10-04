@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import rePashion.server.domain.user.model.User;
 import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
@@ -12,5 +13,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findUserById(@Param("id") Long id);
 
     @Query("select u from User u where u.email = :email")
-    List<User> findUserByEmail(@Param("email") String email);
+    Optional<User> findUserByEmail(@Param("email") String email);
 }

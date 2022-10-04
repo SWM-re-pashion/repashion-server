@@ -1,4 +1,4 @@
-package rePashion.server.domain.oauth.dto.response;
+package rePashion.server.domain.auth.dto.response;
 
 import lombok.AccessLevel;
 import lombok.Getter;
