@@ -1,4 +1,4 @@
-package rePashion.server.domain.oauth.dto.response;
+package rePashion.server.domain.auth.dto.response;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -6,11 +6,11 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OauthLoginResponseDto {
+public class TokenResponseDto {
     private String accessToken;
     private String refreshToken;
 
-    public OauthLoginResponseDto(String accessToken, String refreshToken) {
+    public TokenResponseDto(String accessToken, String refreshToken) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }
