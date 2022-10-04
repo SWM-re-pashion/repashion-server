@@ -1,4 +1,4 @@
-package rePashion.server.domain.oauth.dto.exception;
+package rePashion.server.domain.auth.dto.exception;
 ;
 import rePashion.server.global.error.exception.EnvironmentVariableException;
 import rePashion.server.global.error.exception.ErrorCode;

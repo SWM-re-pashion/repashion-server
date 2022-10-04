@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "USERS")
@@ -27,6 +30,9 @@ public class User {
 
     private String username;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
+    private Set<UserAuthority> authorities = new HashSet<>();
+
     @Builder
     public User(String email, String refreshToken, String username) {
         this.email = email;
@@ -36,6 +42,12 @@ public class User {
 
     public void changeUsername(){
         this.nickname = "USER" + getId();
+    }
+
+    public String getAuthorityToString() {
+        return this.authorities.stream()
+                .map(UserAuthority::getRoleName)
+                .collect(Collectors.joining(","));
     }
 
     public void changeProfileImage(String profileImage){

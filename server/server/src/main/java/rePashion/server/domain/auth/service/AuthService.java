@@ -1,4 +1,4 @@
-package rePashion.server.domain.oauth.service;
+package rePashion.server.domain.auth.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,22 +9,33 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import rePashion.server.domain.oauth.dto.exception.CognitoEnvException;
-import rePashion.server.domain.oauth.dto.exception.CognitoGrantException;
-import rePashion.server.domain.oauth.dto.response.CognitoGetTokenResponseDto;
-import rePashion.server.domain.oauth.dto.response.CognitoGetUserInfoResponseDto;
-import rePashion.server.domain.oauth.dto.response.OauthLoginResponseDto;
+import rePashion.server.domain.auth.dto.exception.CognitoEnvException;
+import rePashion.server.domain.auth.dto.exception.CognitoGrantException;
+import rePashion.server.domain.auth.dto.exception.UserNotExistedException;
+import rePashion.server.domain.auth.dto.response.CognitoGetTokenResponseDto;
+import rePashion.server.domain.auth.dto.response.CognitoGetUserInfoResponseDto;
+import rePashion.server.domain.auth.dto.response.TokenResponseDto;
+import rePashion.server.domain.user.model.Role;
 import rePashion.server.domain.user.model.User;
+import rePashion.server.domain.user.model.UserAuthority;
+import rePashion.server.domain.user.repository.UserAuthorityRepository;
 import rePashion.server.domain.user.repository.UserRepository;
+import rePashion.server.global.jwt.impl.AccessTokenProvider;
+import rePashion.server.global.jwt.impl.RefreshTokenProvider;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class CognitoService {
+public class AuthService {
 
     private final RestTemplate restTemplate;
     private final UserRepository userRepository;
+    private final UserAuthorityRepository userAuthorityRepository;
+
+    private final AccessTokenProvider accessTokenProvider;
+    private final RefreshTokenProvider refreshTokenProvider;
 
     @Value("${spring.cloud.aws.security.cognito.redirect_url}")
     private String REDIRECT_URL;
@@ -35,16 +46,22 @@ public class CognitoService {
     @Value("${spring.cloud.aws.security.cognito.domain}")
     private String COGNITO_DOMAIN;
 
-    private String accessToken;
-    private String refreshToken;
+    private String oAuthAccessToken;
+    private String oAuthRefreshToken;
 
     private String authCode;
 
-    public OauthLoginResponseDto login(String authCode) throws JsonProcessingException {
+    public TokenResponseDto login(String authCode) throws JsonProcessingException {
         this.authCode = authCode;
         getToken();
-        getUserInfo();
-        return new OauthLoginResponseDto(accessToken, refreshToken);
+        User user = getUserInfo();
+        return issueToken(user);
+    }
+
+    private TokenResponseDto issueToken(User user) {
+        String accessToken = accessTokenProvider.parse(user);
+        String refreshToken = refreshTokenProvider.parse(user);
+        return new TokenResponseDto(accessToken, refreshToken);
     }
 
     private void getToken() throws JsonProcessingException {
@@ -56,22 +73,26 @@ public class CognitoService {
 
     private void setToken(ResponseEntity<String> response) throws JsonProcessingException {
         CognitoGetTokenResponseDto dto = new ObjectMapper().readValue(response.getBody(), CognitoGetTokenResponseDto.class);
-        this.accessToken = dto.getAccess_token();
-        this.refreshToken = dto.getRefresh_token();
+        this.oAuthAccessToken = dto.getAccess_token();
+        this.oAuthRefreshToken = dto.getRefresh_token();
     }
 
-    private void getUserInfo() throws JsonProcessingException {
-        HttpHeaders headers = getHeaders(this.accessToken);
+    private User getUserInfo() throws JsonProcessingException {
+        HttpHeaders headers = getHeaders(this.oAuthAccessToken);
         ResponseEntity<String> response = sendRequestToCognito(headers);
         CognitoGetUserInfoResponseDto dto = new ObjectMapper().readValue(response.getBody(), CognitoGetUserInfoResponseDto.class);
-        registerUser(dto);
+        return registerUser(dto);
     }
 
-    private void registerUser(CognitoGetUserInfoResponseDto dto) {
+    private User registerUser(CognitoGetUserInfoResponseDto dto) {
         if(isNotRegister(dto.getEmail())) {
-            User savedUser = userRepository.save(dto.toUserEntity(this.refreshToken));
+            UserAuthority userAuthority = new UserAuthority(Role.ROLE_USER);
+            User savedUser = userRepository.save(dto.toUserEntity(this.oAuthRefreshToken));
+            userAuthority.changeAuthority(savedUser);
+            userAuthorityRepository.save(userAuthority);
             savedUser.changeUsername();
         }
+        return userRepository.findUserByEmail(dto.getEmail()).orElseThrow(UserNotExistedException::new);
     }
 
     private boolean isNotRegister(String email) {
