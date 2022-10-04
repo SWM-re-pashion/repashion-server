@@ -33,6 +33,8 @@ public enum ErrorCode {
     COGNITO_ENVIRONMENT_ERROR(500,"COG_ENV_ERROR", "SERVER_ERROR::코그니토 환경변수 확인하세요"),
     COGNITO_GRANT_ERROR(400, "COG_GRANT_ERROR", "CLIENT_ERROR::인가코드를 다시 한번 확인하세요"),
 
+    USER_NOT_EXISTED(400, "USER_NOT_EXISTED", "USER가 존재하지 않습니다"),
+
     //개인화 추천
     STYLE_IMAGE_NOT_EXISTED(400, "STYLE_IMAGE_NOT_EXISTED", "해당 이미지가 존재하지 않습니다"),
     SIZE_NOT_EXISTED(400, "U003", "해당 사이즈는 존재하지 않습니다"),
@@ -55,7 +57,14 @@ public enum ErrorCode {
 
     // filter
 
-    ORDER_FILTER_UNDEFINED(400, "ORDER_FILTER_UNDEFINED", "해당 Order가 정의되지 않았습니다");
+    ORDER_FILTER_UNDEFINED(400, "ORDER_FILTER_UNDEFINED", "해당 Order가 정의되지 않았습니다"),
+
+    // jwt 토큰 오류
+    TOKEN_EXPIRED(403, "TOKEN_EXPIRED", "token has expired."),
+    INVALID_SIGNATURE_TOKEN(403, "INVALID_SIGNATURE", "The token's signature information is incorrect."),
+    MISMATCH_ALGORITHM(403, "MISMATCH_ALGORITHM", "The token encryption algorithm is incorrect."),
+    INVALID_TOKEN(403, "INVALID_TOKEN", "Invalid formatted token."),
+    INVALID_REFRESH_TOKEN(403, "INVALID_REFRESH_TOKEN", "Invalid refresh token");
 
     private final String code;
     private final String message;
