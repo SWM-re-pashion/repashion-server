@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -32,6 +34,9 @@ public class User {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
     private Set<UserAuthority> authorities = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<UserProduct> products = new ArrayList<>();
 
     @Builder
     public User(String email, String refreshToken, String username) {
