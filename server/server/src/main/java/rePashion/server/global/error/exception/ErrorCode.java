@@ -64,7 +64,13 @@ public enum ErrorCode {
     INVALID_SIGNATURE_TOKEN(403, "INVALID_SIGNATURE", "The token's signature information is incorrect."),
     MISMATCH_ALGORITHM(403, "MISMATCH_ALGORITHM", "The token encryption algorithm is incorrect."),
     INVALID_TOKEN(403, "INVALID_TOKEN", "Invalid formatted token."),
-    INVALID_REFRESH_TOKEN(403, "INVALID_REFRESH_TOKEN", "Invalid refresh token");
+    INVALID_REFRESH_TOKEN(403, "INVALID_REFRESH_TOKEN", "Invalid refresh token"),
+
+    //Refresh token
+
+    REFRESH_TOKEN_NOT_EXISTED(400, "REFRESH_TOKEN_NOT_EXISTED", "refresh token not existed"),
+    REFRESH_TOKEN_NOT_MATCH(400, "REFRESH_TOKEN_NOT_MATCH", "refresh token is not matched");
+
 
     private final String code;
     private final String message;

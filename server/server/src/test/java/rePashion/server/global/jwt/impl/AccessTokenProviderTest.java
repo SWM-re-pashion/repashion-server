@@ -55,7 +55,7 @@ class AccessTokenProviderTest {
 
         //when
         JwtTokenDto parsing = accessTokenProvider.parsing(parsedToken);
-        Long id = userRepository.findUserById(savedUser.getId()).get(0).getId();
+        Long id = userRepository.findUserById(savedUser.getId()).get().getId();
 
         //then
         Assertions.assertThat(parsing.getUserId()).isEqualTo(id);
@@ -76,7 +76,7 @@ class AccessTokenProviderTest {
 
         //when
         JwtTokenDto parsing = accessTokenProvider.parsing(parsedToken);
-        Long id = userRepository.findUserById(savedUser.getId()).get(0).getId();
+        Long id = userRepository.findUserById(savedUser.getId()).get().getId();
 
         //then
         Assertions.assertThat(parsing.getUserId()).isEqualTo(id);

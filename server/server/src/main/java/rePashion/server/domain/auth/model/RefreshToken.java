@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 public class RefreshToken {
 
     @Id
+    @Column(name = "refresh_token_id")
     private Long key;
     private String value;
 
