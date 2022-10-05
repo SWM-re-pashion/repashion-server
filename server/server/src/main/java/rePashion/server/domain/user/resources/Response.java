@@ -1,13 +1,14 @@
 package rePashion.server.domain.user.resources;
 
 import lombok.AccessLevel;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 public class Response {
 
-    @Getter
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @Data
+    @AllArgsConstructor
     public static class MyInfoResponse{
         private String name;
         private String profileImage;
