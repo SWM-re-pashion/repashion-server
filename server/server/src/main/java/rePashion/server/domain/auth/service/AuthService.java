@@ -11,15 +11,20 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import rePashion.server.domain.auth.dto.exception.CognitoEnvException;
 import rePashion.server.domain.auth.dto.exception.CognitoGrantException;
+import rePashion.server.domain.auth.dto.exception.RefreshTokenException;
 import rePashion.server.domain.auth.dto.exception.UserNotExistedException;
 import rePashion.server.domain.auth.dto.response.CognitoGetTokenResponseDto;
 import rePashion.server.domain.auth.dto.response.CognitoGetUserInfoResponseDto;
 import rePashion.server.domain.auth.dto.response.TokenResponseDto;
+import rePashion.server.domain.auth.model.RefreshToken;
+import rePashion.server.domain.auth.repository.RefreshTokenRepository;
 import rePashion.server.domain.user.model.Role;
 import rePashion.server.domain.user.model.User;
 import rePashion.server.domain.user.model.UserAuthority;
 import rePashion.server.domain.user.repository.UserAuthorityRepository;
 import rePashion.server.domain.user.repository.UserRepository;
+import rePashion.server.global.error.exception.ErrorCode;
+import rePashion.server.global.jwt.JwtTokenDto;
 import rePashion.server.global.jwt.impl.AccessTokenProvider;
 import rePashion.server.global.jwt.impl.RefreshTokenProvider;
 
@@ -36,6 +41,8 @@ public class AuthService {
 
     private final AccessTokenProvider accessTokenProvider;
     private final RefreshTokenProvider refreshTokenProvider;
+
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Value("${spring.cloud.aws.security.cognito.redirect_url}")
     private String REDIRECT_URL;
@@ -58,9 +65,21 @@ public class AuthService {
         return issueToken(user);
     }
 
+    public String reissueRefreshToken(User user, String refreshToken){
+        compareWithSavedToken(user.getId(), refreshToken);
+        refreshTokenProvider.parsing(refreshToken);
+        return refreshTokenProvider.parse(user);
+    }
+
+    private void compareWithSavedToken(Long userId, String refreshToken){
+        RefreshToken savedRefreshToken = refreshTokenRepository.findByKey(userId).orElseThrow(() -> new RefreshTokenException(ErrorCode.REFRESH_TOKEN_NOT_EXISTED));
+        if(!refreshToken.equals(savedRefreshToken.getValue())) throw new RefreshTokenException(ErrorCode.REFRESH_TOKEN_NOT_MATCH);
+    }
+
     private TokenResponseDto issueToken(User user) {
         String accessToken = accessTokenProvider.parse(user);
         String refreshToken = refreshTokenProvider.parse(user);
+        refreshTokenRepository.save(new RefreshToken(user.getId(), refreshToken));
         return new TokenResponseDto(accessToken, refreshToken);
     }
 
