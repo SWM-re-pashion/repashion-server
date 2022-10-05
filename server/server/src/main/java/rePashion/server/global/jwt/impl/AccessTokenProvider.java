@@ -104,8 +104,7 @@ public class AccessTokenProvider implements JwtProvider {
 
     public Authentication getAuthentication(String token){
 
-        JwtTokenDto parsedToken = this.parsing(token);
-
+        JwtTokenDto parsedToken = parsing(token);
         Collection<? extends GrantedAuthority> authorities =
                 Arrays.stream(parsedToken.getAuthority().split(","))
                         .map(SimpleGrantedAuthority::new)
