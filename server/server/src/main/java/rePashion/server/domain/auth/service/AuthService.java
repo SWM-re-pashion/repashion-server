@@ -109,7 +109,7 @@ public class AuthService {
             User savedUser = userRepository.save(dto.toUserEntity(this.oAuthRefreshToken));
             userAuthority.changeAuthority(savedUser);
             userAuthorityRepository.save(userAuthority);
-            savedUser.changeUsername();
+            savedUser.setDefaultUserName();
         }
         return userRepository.findUserByEmail(dto.getEmail()).orElseThrow(UserNotExistedException::new);
     }
