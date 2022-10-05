@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import rePashion.server.domain.product.model.embedded.BasicInfo;
+import rePashion.server.domain.user.model.UserProduct;
 import rePashion.server.global.common.BaseTimeEntity;
 
 import javax.persistence.*;
@@ -29,6 +30,9 @@ public class Product extends BaseTimeEntity{
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "product")
     private List<ProductImage> images = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product")
+    private List<UserProduct> users = new ArrayList<>();
 
     @Builder
     public Product(Long id, BasicInfo basicInfo) {

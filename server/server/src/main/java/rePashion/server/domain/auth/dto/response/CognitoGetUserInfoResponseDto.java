@@ -25,7 +25,7 @@ public class CognitoGetUserInfoResponseDto {
         return User.builder()
                 .email(this.email)
                 .refreshToken(refreshToken)
-                .username(this.username)
+                .nickName(this.username)
                 .build();
     }
 }

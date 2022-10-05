@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -22,26 +24,27 @@ public class User {
     private String email;
 
     @Column(columnDefinition = "TEXT")
-    private String refreshToken;
+    private String cognitoRefreshToken;
 
-    private String nickname;
+    private String nickName;
 
-    private String profile;
-
-    private String username;
+    private String profile = "https://webserver0712.s3.ap-northeast-2.amazonaws.com/profile/default.png";
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
     private Set<UserAuthority> authorities = new HashSet<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<UserProduct> products = new ArrayList<>();
+
     @Builder
-    public User(String email, String refreshToken, String username) {
+    public User(String email, String refreshToken, String nickName) {
         this.email = email;
-        this.refreshToken = refreshToken;
-        this.username = username;
+        this.cognitoRefreshToken = refreshToken;
+        this.nickName = nickName;
     }
 
-    public void changeUsername(){
-        this.nickname = "USER" + getId();
+    public void setDefaultUserName(){
+        this.nickName = "USER" + getId();
     }
 
     public String getAuthorityToString() {
@@ -53,4 +56,6 @@ public class User {
     public void changeProfileImage(String profileImage){
         this.profile = profileImage;
     }
+
+    public void changeNickName(String nickName){this.nickName = nickName;}
 }
