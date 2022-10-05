@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import rePashion.server.domain.auth.dto.exception.UserNotExistedException;
 import rePashion.server.domain.user.model.User;
 import rePashion.server.domain.user.resources.Request;
@@ -13,6 +14,7 @@ import rePashion.server.global.common.response.GlobalResponse;
 import rePashion.server.global.common.response.StatusCode;
 import rePashion.server.global.common.util.Util;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @RestController
@@ -34,6 +36,13 @@ public class MyUserController {
     public ResponseEntity<GlobalResponse> updateMyNickName(@RequestBody Request.UpdateNickNameRequest request){
         User user = util.getMe().orElseThrow(UserNotExistedException::new);
         Response.MyInfoResponse myInfo = userService.updateMyNickName(user, request.getNickName());
+        return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, myInfo), HttpStatus.OK);
+    }
+
+    @PatchMapping("/profileimage")
+    public ResponseEntity<GlobalResponse> updateMyProfileImage(@RequestBody MultipartFile file) throws IOException {
+        User user = util.getMe().orElseThrow(UserNotExistedException::new);
+        Response.MyInfoResponse myInfo = userService.updateProfileImage(user, file);
         return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, myInfo), HttpStatus.OK);
     }
 }
