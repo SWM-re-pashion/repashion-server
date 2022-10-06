@@ -40,7 +40,7 @@ public enum ErrorCode {
     SIZE_NOT_EXISTED(400, "U003", "해당 사이즈는 존재하지 않습니다"),
 
     //정적 변수
-    STATIC_VARIABLE_NOT_EXISTED(400, "STATIC01", "해당 정적 변수가 존재하지 않습니다"),
+    STATIC_VARIABLE_NOT_EXISTED(400, "STATIC_VARIABLE_NOT_EXISTED", "해당 정적 변수가 존재하지 않습니다"),
     CATEGORY_NOT_EXISTED(400, "STATIC02", "해당 카테고리가 존재하지 않습니다"),
 
     //상품
