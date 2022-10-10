@@ -25,7 +25,7 @@ public class ShopController {
     private final ProductFilterRepository productFilterRepository;
 
     @GetMapping
-    public ResponseEntity<GlobalResponse> getShop(ProductSearchCond cond, Pageable pageable){
+    public ResponseEntity<GlobalResponse> getShop(Condition.SearchCond cond, Pageable pageable){
         Page<ProductPreviewDto> productPreview = productSearchRepository.search(cond, pageable);
         Dto.Shop response = toShopResponseEntity(productPreview);
         return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, response), HttpStatus.OK);
