@@ -1,6 +1,8 @@
 package rePashion.server.domain.product.repository;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,8 @@ import rePashion.server.domain.product.dto.QProductPreviewDto;
 import rePashion.server.domain.product.exception.UndefinedOrderException;
 import rePashion.server.domain.product.model.Product;
 import rePashion.server.domain.product.model.QProduct;
+import rePashion.server.domain.product.model.QProductAdvanceInfo;
+import rePashion.server.domain.product.resources.request.Condition;
 import rePashion.server.domain.statics.model.filter.Order;
 
 import java.util.List;
@@ -27,8 +31,9 @@ public class ProductSearchRepository {
     private final JPAQueryFactory queryFactory;
 
     QProduct product = QProduct.product;
+    QProductAdvanceInfo advanceInfo = QProductAdvanceInfo.productAdvanceInfo;
 
-    public Page<ProductPreviewDto> search(ProductSearchCond cond, Pageable pageable){
+    public Page<ProductPreviewDto> search(Condition.SearchCond cond, Pageable pageable){
 
         List<ProductPreviewDto> content = queryFactory
                 .select(new QProductPreviewDto(
@@ -42,15 +47,25 @@ public class ProductSearchRepository {
                         product.modifiedDate
                         ))
                 .from(product)
+                .leftJoin(product.advanceInfo, advanceInfo)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .where(productCategoryEq(cond.getCategory()), productHideStatusEq(cond.getHideSold()))
+                .where(productTitleOrContentContains(cond.getValue()), productHideStatusEq(cond.getHideSold()))
                 .orderBy(productOrderIs(cond.getOrder()))
                 .fetch();
 
         List<Product> fetchedProduct = queryFactory.selectFrom(product).fetch();
 
         return new PageImpl<>(content, pageable , fetchedProduct.size());
+    }
+
+
+    private BooleanBuilder productTitleOrContentContains(String value) {
+        if(value == null) return null;
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        return booleanBuilder
+                .or(product.basicInfo.title.contains(value))
+                .or(advanceInfo.sellerNote.opinion.contains(value));
     }
 
     private OrderSpecifier<?> productOrderIs(Order order) {
@@ -68,10 +83,6 @@ public class ProductSearchRepository {
             default:
                 throw new UndefinedOrderException();
         }
-    }
-
-    private BooleanExpression productCategoryEq(String category) {
-        return isEmpty(category) ? null : product.basicInfo.category.eq(category);
     }
 
     private BooleanExpression productHideStatusEq(Boolean status){

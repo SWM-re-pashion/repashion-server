@@ -28,11 +28,8 @@ public class ProductFilterRepository {
 
     QProduct product = QProduct.product;
     QProductAdvanceInfo advanceInfo = QProductAdvanceInfo.productAdvanceInfo;
-    Condition.Filter cond;
 
     public Page<ProductPreviewDto> get(Condition.Filter cond, Pageable pageable){
-
-        this.cond = cond;
 
         List<ProductPreviewDto> content = queryFactory
                 .select(new QProductPreviewDto(
