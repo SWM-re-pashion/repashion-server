@@ -1,12 +1,19 @@
 package rePashion.server.domain.product.resources.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
 import rePashion.server.domain.statics.model.filter.Order;
 
 public class Condition {
+
+    @Data
+    public static class SearchCond{
+        private String value;
+        private Order order;
+
+        @JsonProperty("hide_sold")
+        private Boolean hideSold;
+    }
 
     @Data
     public static class Filter{
