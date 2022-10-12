@@ -24,11 +24,9 @@ import rePashion.server.domain.user.model.UserAuthority;
 import rePashion.server.domain.user.repository.UserAuthorityRepository;
 import rePashion.server.domain.user.repository.UserRepository;
 import rePashion.server.global.error.exception.ErrorCode;
-import rePashion.server.global.jwt.JwtTokenDto;
 import rePashion.server.global.jwt.impl.AccessTokenProvider;
 import rePashion.server.global.jwt.impl.RefreshTokenProvider;
 
-import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -53,15 +51,9 @@ public class AuthService {
     @Value("${spring.cloud.aws.security.cognito.domain}")
     private String COGNITO_DOMAIN;
 
-    private String oAuthAccessToken;
-    private String oAuthRefreshToken;
-
-    private String authCode;
-
     public TokenResponseDto login(String authCode) throws JsonProcessingException {
-        this.authCode = authCode;
-        getToken();
-        User user = getUserInfo();
+        CognitoGetTokenResponseDto tokens = getToken(authCode);
+        User user = getUserInfo(tokens);
         return issueToken(user);
     }
 
@@ -83,30 +75,24 @@ public class AuthService {
         return new TokenResponseDto(accessToken, refreshToken);
     }
 
-    private void getToken() throws JsonProcessingException {
+    private CognitoGetTokenResponseDto getToken(String authCode) throws JsonProcessingException {
         HttpHeaders headers = getHeaders();
         LinkedMultiValueMap<String, String> requestBody = getRequestBody(authCode);
         ResponseEntity<String> response = sendRequestToCognito(headers, requestBody);
-        setToken(response);
+        return new ObjectMapper().readValue(response.getBody(), CognitoGetTokenResponseDto.class);
     }
 
-    private void setToken(ResponseEntity<String> response) throws JsonProcessingException {
-        CognitoGetTokenResponseDto dto = new ObjectMapper().readValue(response.getBody(), CognitoGetTokenResponseDto.class);
-        this.oAuthAccessToken = dto.getAccess_token();
-        this.oAuthRefreshToken = dto.getRefresh_token();
-    }
-
-    private User getUserInfo() throws JsonProcessingException {
-        HttpHeaders headers = getHeaders(this.oAuthAccessToken);
+    private User getUserInfo(CognitoGetTokenResponseDto tokens) throws JsonProcessingException {
+        HttpHeaders headers = getHeaders(tokens.getAccess_token());
         ResponseEntity<String> response = sendRequestToCognito(headers);
         CognitoGetUserInfoResponseDto dto = new ObjectMapper().readValue(response.getBody(), CognitoGetUserInfoResponseDto.class);
-        return registerUser(dto);
+        return registerUser(dto, tokens.getRefresh_token());
     }
 
-    private User registerUser(CognitoGetUserInfoResponseDto dto) {
+    private User registerUser(CognitoGetUserInfoResponseDto dto, String refreshToken) {
         if(isNotRegister(dto.getEmail())) {
             UserAuthority userAuthority = new UserAuthority(Role.ROLE_USER);
-            User savedUser = userRepository.save(dto.toUserEntity(this.oAuthRefreshToken));
+            User savedUser = userRepository.save(dto.toUserEntity(refreshToken));
             userAuthority.changeAuthority(savedUser);
             userAuthorityRepository.save(userAuthority);
             savedUser.setDefaultUserName();
