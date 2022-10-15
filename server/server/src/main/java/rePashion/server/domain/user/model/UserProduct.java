@@ -16,6 +16,7 @@ public class UserProduct extends BaseTimeEntity {
     @Id @GeneratedValue
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "purchase_status")
     PurchaseStatus purchaseStatus;
 
@@ -34,7 +35,5 @@ public class UserProduct extends BaseTimeEntity {
     public void changeUserAndProduct(User user, Product product){
         this.user = user;
         this.product = product;
-        user.getProducts().add(this);
-        product.getUsers().add(this);
     }
 }
