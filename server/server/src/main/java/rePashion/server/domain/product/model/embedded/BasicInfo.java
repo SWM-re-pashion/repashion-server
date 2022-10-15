@@ -39,6 +39,10 @@ public class BasicInfo{
         this.size = size;
     }
 
+    public void changeThumbNail(String thumbnailImage){
+        this.thumbnailImage = thumbnailImage;
+    }
+
     public void increaseLikes(){
         this.likes++;
     }
