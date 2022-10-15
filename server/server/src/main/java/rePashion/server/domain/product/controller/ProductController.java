@@ -1,50 +1,55 @@
 package rePashion.server.domain.product.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import rePashion.server.domain.product.dto.ProductCreateDto;
-import rePashion.server.domain.product.dto.ProductPreviewDto;
-import rePashion.server.domain.product.dto.ProductSearchCond;
+import rePashion.server.domain.auth.dto.exception.UserNotExistedException;
+import rePashion.server.domain.product.dto.ProductRequestBody;
 import rePashion.server.domain.product.model.Product;
-import rePashion.server.domain.product.repository.ProductSearchRepository;
 import rePashion.server.domain.product.service.ProductService;
+import rePashion.server.domain.user.model.User;
+import rePashion.server.domain.user.repository.UserRepository;
 import rePashion.server.global.common.response.GlobalResponse;
 import rePashion.server.global.common.response.StatusCode;
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api/product")
 @RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
+    private final UserRepository userRepository;
 
     @PostMapping
-    public ResponseEntity<GlobalResponse> create(@RequestBody ProductCreateDto dto){
-        Product savedProduct = productService.save(dto);
-        return new ResponseEntity<GlobalResponse>(GlobalResponse.of(StatusCode.CREATED, savedProduct.getId()), HttpStatus.CREATED);
+    public ResponseEntity<GlobalResponse> create(@AuthenticationPrincipal Long userId, @RequestBody ProductRequestBody dto){
+        User user = findUser(userId);
+        Product savedProduct = productService.save(user, dto);
+        return new ResponseEntity<>(GlobalResponse.of(StatusCode.CREATED, savedProduct.getId()), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<GlobalResponse> update(@PathVariable Long id, @RequestBody ProductCreateDto dto){
-        Long updatedId = productService.update(id, dto);
-        return new ResponseEntity<GlobalResponse>(GlobalResponse.of(StatusCode.SUCCESS, updatedId), HttpStatus.OK);
+    public ResponseEntity<GlobalResponse> update(@AuthenticationPrincipal Long userId, @PathVariable Long id, @RequestBody ProductRequestBody dto){
+        User user = findUser(userId);
+        Long updatedId = productService.update(user, id, dto);
+        return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, updatedId), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<GlobalResponse> get(@PathVariable Long id){
-        ProductCreateDto dto = productService.get(id);
-        return new ResponseEntity<GlobalResponse>(GlobalResponse.of(StatusCode.SUCCESS, dto), HttpStatus.OK);
+        //ProductRequestBody dto = productService.get(id);
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<GlobalResponse> delete(@PathVariable Long id){
-        productService.delete(id);
-        return new ResponseEntity<GlobalResponse>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<GlobalResponse> delete(@AuthenticationPrincipal Long userId, @PathVariable Long id){
+        User user = findUser(userId);
+        productService.delete(user, id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    private User findUser(Long userId){
+        return userRepository.findById(userId).orElseThrow(UserNotExistedException::new);
     }
 }

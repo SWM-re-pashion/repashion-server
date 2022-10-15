@@ -4,7 +4,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import rePashion.server.domain.product.dto.ProductRequestBody;
 import rePashion.server.domain.product.model.embedded.SellerNote;
+import rePashion.server.domain.product.model.measure.entity.Measure;
 
 import javax.persistence.*;
 

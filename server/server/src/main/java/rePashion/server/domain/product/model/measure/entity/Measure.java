@@ -1,7 +1,8 @@
-package rePashion.server.domain.product.model;
+package rePashion.server.domain.product.model.measure.entity;
+
+import rePashion.server.domain.product.model.ProductAdvanceInfo;
 
 import javax.persistence.*;
-import java.util.HashMap;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -13,10 +14,6 @@ public abstract class  Measure {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "advanceInfoId")
     private ProductAdvanceInfo advanceInfo;
-
-    public abstract HashMap<String, Integer> getMap();
-
-    protected abstract String[] getArray();
 
     public void setAdvanceInfo(ProductAdvanceInfo advanceInfo){
         this.advanceInfo = advanceInfo;

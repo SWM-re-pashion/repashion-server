@@ -31,7 +31,7 @@ public class Product extends BaseTimeEntity{
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "product")
     private List<ProductImage> images = new ArrayList<>();
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "product")
     private List<UserProduct> users = new ArrayList<>();
 
     @Builder

@@ -50,7 +50,7 @@ public class ProductDetailService {
                 .sellerInfo(getSellerInfo())
                 .basic(getBasic())
                 .sellerNotice(getSellerNotice())
-                .measure(product.getAdvanceInfo().getMeasure().getMap())
+                //.measure(product.getAdvanceInfo().getMeasure().getMap())
                 .opinion(product.getAdvanceInfo().getSellerNote().getOpinion())
                 .price(product.getBasicInfo().getPrice())
                 .isIncludeDelivery(product.getBasicInfo().isIncludeDelivery())
