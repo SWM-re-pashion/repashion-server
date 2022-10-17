@@ -32,6 +32,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/health-check").permitAll()
                 .antMatchers("/statics/**").permitAll()
                 .antMatchers("/api/auth/**").permitAll()       //api/auth/**는 로그인, 중복 id 검사 등등 이므로 모든 권한을 가진 자들에게 접근을 풀어줌
+                .antMatchers("/api/category/**").permitAll()
                 .antMatchers("/api/shop/**").permitAll()       //api/shop/**는 shop 상품 정보 보기, shop 검색 기능 등등 이므로 모든 권한을 가진 자들에게 접근을 풀어줌
                 .anyRequest().authenticated()                              // 그 밖에 모든 요청은 jwt를 통해서
                 .and()

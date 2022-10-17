@@ -24,25 +24,25 @@ public class InitCategoryDatabase implements CommandLineRunner {
         Category genderCategory3 = create(3L, "공용", "common", null);
 
         create(1999L, "추천", "recommend", genderCategory1);
-        create(1L, "전체", "all", genderCategory1);
+        create(1000L, "전체", "all", genderCategory1);
         Category middleCategory1 = create(1001L, "상의", "top", genderCategory1);
         Category middleCategory2 = create(1002L, "하의", "bottom", genderCategory1);
         Category middleCategory3 = create(1003L, "아우터", "outer", genderCategory1);
 
         create(2999L, "추천", "recommend", genderCategory2);
-        create(2L, "전체", "all", genderCategory2);
+        create(2000L, "전체", "all", genderCategory2);
         Category middleCategory4 = create(2001L, "상의", "top", genderCategory2);
         Category middleCategory5 = create(2002L, "하의", "bottom", genderCategory2);
         Category middleCategory6 = create(2003L, "아우터", "outer", genderCategory2);
         Category middleCategory7 = create(2004L, "원피스", "onepiece", genderCategory2);
 
         create(3999L, "추천", "recommend", genderCategory3);
-        create(3L, "전체", "all", genderCategory3);
+        create(3000L, "전체", "all", genderCategory3);
         Category middleCategory8 = create(3001L, "상의", "top", genderCategory3);
         Category middleCategory9 = create(3002L, "하의", "bottom", genderCategory3);
         Category middleCategory10 = create(3003L, "아우터", "outer", genderCategory3);
 
-        create(1001L, "전체", "all", middleCategory1);
+        create(1001000L, "전체", "all", middleCategory1);
         create(1001001L, "탑", "top", middleCategory1);
         create(1001002L, "반팔", "short", middleCategory1);
         create(1001003L, "긴팔", "long", middleCategory1);
@@ -50,12 +50,12 @@ public class InitCategoryDatabase implements CommandLineRunner {
         create(1001005L, "셔츠", "shirt", middleCategory1);
         create(1001006L, "후드티", "hood", middleCategory1);
 
-        create(1002L, "전체", "all", middleCategory2);
+        create(1002000L, "전체", "all", middleCategory2);
         create(1002001L, "청바지", "jeans", middleCategory2);
         create(1002002L, "팬츠", "pants", middleCategory2);
         create(1002003L, "조거팬츠", "jogger", middleCategory2);
 
-        create(1003L, "전체", "all", middleCategory3);
+        create(1003000L, "전체", "all", middleCategory3);
         create(1003001L, "코트", "coat", middleCategory3);
         create(1003002L, "재킷", "jacket", middleCategory3);
         create(1003003L, "점퍼", "jumper", middleCategory3);
@@ -64,7 +64,7 @@ public class InitCategoryDatabase implements CommandLineRunner {
         create(1003006L, "가디건", "cardigan", middleCategory3);
         create(1003007L, "집업", "zipup", middleCategory3);
 
-        create(2001L, "전체", "all", middleCategory4);
+        create(2001000L, "전체", "all", middleCategory4);
         create(2001001L, "탑", "top", middleCategory4);
         create(2001002L, "반팔", "short", middleCategory4);
         create(2001003L, "긴팔", "long", middleCategory4);
@@ -74,14 +74,14 @@ public class InitCategoryDatabase implements CommandLineRunner {
         create(2001007L, "블라우스", "blouse", middleCategory4);
         create(2001008L, "브라탑", "bratop", middleCategory4);
 
-        create(2002L, "전체", "all", middleCategory5);
+        create(2002000L, "전체", "all", middleCategory5);
         create(2002001L, "청바지", "jeans", middleCategory5);
         create(2002002L, "팬츠", "pants", middleCategory5);
         create(2002003L, "조거팬츠", "jogger", middleCategory5);
         create(2002004L, "스커트", "skirt", middleCategory5);
         create(2002005L, "레깅스", "leggings", middleCategory5);
 
-        create(2003L, "전체", "all", middleCategory6);
+        create(2003000L, "전체", "all", middleCategory6);
         create(2003001L, "코트", "coat", middleCategory6);
         create(2003002L, "재킷", "jacket", middleCategory6);
         create(2003003L, "점퍼", "jumper", middleCategory6);
@@ -90,11 +90,11 @@ public class InitCategoryDatabase implements CommandLineRunner {
         create(2003006L, "가디건", "cardigan", middleCategory6);
         create(2003007L, "집업", "zipup", middleCategory6);
 
-        create(2004L, "전체", "all", middleCategory7);
+        create(2004000L, "전체", "all", middleCategory7);
         create(2004001L, "드레스", "dress", middleCategory7);
         create(2004002L, "점프수트", "jumpsuit", middleCategory7);
 
-        create(3001L, "전체", "all", middleCategory8);
+        create(3001000L, "전체", "all", middleCategory8);
         create(3001001L, "탑", "top", middleCategory8);
         create(3001002L, "반팔", "short", middleCategory8);
         create(3001003L, "긴팔", "long", middleCategory8);
@@ -102,11 +102,12 @@ public class InitCategoryDatabase implements CommandLineRunner {
         create(3001005L, "셔츠", "shirt", middleCategory8);
         create(3001006L, "후드티", "hood", middleCategory8);
 
-        create(3002L, "전체", "all", middleCategory9);
+        create(3002000L, "전체", "all", middleCategory9);
         create(3002001L, "청바지", "jeans", middleCategory9);
         create(3002002L, "팬츠", "pants", middleCategory9);
         create(3002003L, "조거팬츠", "jogger", middleCategory9);
 
+        create(3003000L, "전체", "all", middleCategory10);
         create(3003001L, "코트", "coat", middleCategory10);
         create(3003002L, "재킷", "jacket", middleCategory10);
         create(3003003L, "점퍼", "jumper", middleCategory10);
