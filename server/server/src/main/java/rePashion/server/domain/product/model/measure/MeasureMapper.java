@@ -2,7 +2,7 @@ package rePashion.server.domain.product.model.measure;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import rePashion.server.domain.product.dto.ProductRequestBody;
+import rePashion.server.domain.product.dto.ProductDto;
 import rePashion.server.domain.product.model.measure.entity.*;
 import rePashion.server.domain.product.repository.MeasureRepository;
 
@@ -12,13 +12,13 @@ public class MeasureMapper {
 
     private final MeasureRepository measureRepository;
 
-    public Measure getMeasure(ProductRequestBody body){
+    public Measure getMeasure(ProductDto body){
         String type = body.getMeasureType();
         MeasureType measureType = MeasureType.getMeasureType(type);
         return saveProperMeasure(body.getMeasure(), measureType);
     }
 
-    private Measure saveProperMeasure(ProductRequestBody.Measure measure, MeasureType type){
+    private Measure saveProperMeasure(ProductDto.Measure measure, MeasureType type){
         if(type == null) return null;
         switch (type){
             case top:
@@ -33,7 +33,7 @@ public class MeasureMapper {
         return null;
     }
 
-    private TopMeasure constructTopMeasure(ProductRequestBody.Measure measure){
+    private TopMeasure constructTopMeasure(ProductDto.Measure measure){
         return TopMeasure
                 .builder()
                 .length(measure.getLength())
@@ -43,7 +43,7 @@ public class MeasureMapper {
                 .build();
     }
 
-    private BottomMeasure constructBottomMeasure(ProductRequestBody.Measure measure){
+    private BottomMeasure constructBottomMeasure(ProductDto.Measure measure){
         return BottomMeasure
                 .builder()
                 .length(measure.getLength())
@@ -54,7 +54,7 @@ public class MeasureMapper {
                 .build();
     }
 
-    private SkirtMeasure constructSkirtMeasure(ProductRequestBody.Measure measure){
+    private SkirtMeasure constructSkirtMeasure(ProductDto.Measure measure){
         return SkirtMeasure
                 .builder()
                 .length(measure.getLength())
@@ -63,7 +63,7 @@ public class MeasureMapper {
                 .build();
     }
 
-    private OnepieceMeasure constructOnepieceMeasure(ProductRequestBody.Measure measure){
+    private OnepieceMeasure constructOnepieceMeasure(ProductDto.Measure measure){
         return OnepieceMeasure
                 .builder()
                 .length(measure.getLength())

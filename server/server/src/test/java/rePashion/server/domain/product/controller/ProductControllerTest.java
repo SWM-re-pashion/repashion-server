@@ -1,9 +1,7 @@
 package rePashion.server.domain.product.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.bind.annotation.RequestBody;
-import rePashion.server.domain.product.dto.ProductRequestBody;
+import rePashion.server.domain.product.dto.ProductDto;
 import rePashion.server.domain.product.model.Product;
 import rePashion.server.domain.product.repository.ProductRepository;
 import rePashion.server.domain.product.service.ProductService;
@@ -23,7 +18,6 @@ import rePashion.server.domain.user.model.Role;
 import rePashion.server.domain.user.model.User;
 import rePashion.server.domain.user.model.UserAuthority;
 import rePashion.server.domain.user.repository.UserRepository;
-import rePashion.server.global.common.response.GlobalResponse;
 import rePashion.server.global.jwt.impl.AccessTokenProvider;
 
 import java.util.ArrayList;
@@ -72,12 +66,12 @@ class ProductControllerTest {
         imgList.add("image2.com");
         imgList.add("image3.com");
 
-        ProductRequestBody.BasicInfo basicInfo = new ProductRequestBody.BasicInfo("나이키 프린팅 티셔츠", "100304", "나이키");
-        ProductRequestBody.AdditionalInfo additionalInfo = new ProductRequestBody.AdditionalInfo("2020-04-01", "온라인 매장");
-        ProductRequestBody.SellerNote sellerNote = new ProductRequestBody.SellerNote("none", "normal", 130, "chubby", "all", "normal");
-        ProductRequestBody.Style style = new ProductRequestBody.Style("feminin", "Blue", "fur");
-        ProductRequestBody.Measure measure = new ProductRequestBody.Measure(120, 10, 10, 0, 1, 3, 4, 5);
-        ProductRequestBody productRequestBody = new ProductRequestBody(
+        ProductDto.BasicInfo basicInfo = new ProductDto.BasicInfo("나이키 프린팅 티셔츠", "100304", "나이키");
+        ProductDto.AdditionalInfo additionalInfo = new ProductDto.AdditionalInfo("2020-04-01", "온라인 매장");
+        ProductDto.SellerNote sellerNote = new ProductDto.SellerNote("none", "normal", 130, "chubby", "all", "normal");
+        ProductDto.Style style = new ProductDto.Style("feminin", "Blue", "fur");
+        ProductDto.Measure measure = new ProductDto.Measure(120, 10, 10, 0, 1, 3, 4, 5);
+        ProductDto productDto = new ProductDto(
                 imgList,
                 "contact.com",
                 basicInfo,
@@ -91,7 +85,7 @@ class ProductControllerTest {
                 "매우 깨끗한 옷입니다",
                 "top"
         );
-        String body = new ObjectMapper().writeValueAsString(productRequestBody);
+        String body = new ObjectMapper().writeValueAsString(productDto);
 
         //when
         //then
@@ -122,12 +116,12 @@ class ProductControllerTest {
         imgList.add("image2.com");
         imgList.add("image3.com");
 
-        ProductRequestBody.BasicInfo basicInfo = new ProductRequestBody.BasicInfo("나이키 프린팅 티셔츠", "100304", "나이키");
-        ProductRequestBody.AdditionalInfo additionalInfo = new ProductRequestBody.AdditionalInfo("2020-04-01", "온라인 매장");
-        ProductRequestBody.SellerNote sellerNote = new ProductRequestBody.SellerNote("none", "normal", 130, "chubby", "all", "normal");
-        ProductRequestBody.Style style = new ProductRequestBody.Style("feminin", "Blue", "fur");
-        ProductRequestBody.Measure measure = new ProductRequestBody.Measure(120, 10, 10, 0, 1, 3, 4, 5);
-        ProductRequestBody productRequestBody = new ProductRequestBody(
+        ProductDto.BasicInfo basicInfo = new ProductDto.BasicInfo("나이키 프린팅 티셔츠", "100304", "나이키");
+        ProductDto.AdditionalInfo additionalInfo = new ProductDto.AdditionalInfo("2020-04-01", "온라인 매장");
+        ProductDto.SellerNote sellerNote = new ProductDto.SellerNote("none", "normal", 130, "chubby", "all", "normal");
+        ProductDto.Style style = new ProductDto.Style("feminin", "Blue", "fur");
+        ProductDto.Measure measure = new ProductDto.Measure(120, 10, 10, 0, 1, 3, 4, 5);
+        ProductDto productDto = new ProductDto(
                 imgList,
                 "contact.com",
                 basicInfo,
@@ -143,11 +137,11 @@ class ProductControllerTest {
         );
 
         //when
-        Product savedProduct = productService.save(savedUser, productRequestBody);
+        Product savedProduct = productService.save(savedUser, productDto);
 
         // 바뀐 Request 만들기
-        ProductRequestBody.BasicInfo changedBasicInfo = new ProductRequestBody.BasicInfo("아디다스 프린팅 티셔츠", "100304", "아디다스");
-        ProductRequestBody changedProductRequestBody = new ProductRequestBody(
+        ProductDto.BasicInfo changedBasicInfo = new ProductDto.BasicInfo("아디다스 프린팅 티셔츠", "100304", "아디다스");
+        ProductDto changedProductDto = new ProductDto(
                 imgList,
                 "contact.com",
                 changedBasicInfo,
@@ -161,7 +155,7 @@ class ProductControllerTest {
                 "매우 깨끗한 옷입니다",
                 "top"
         );
-        String body = new ObjectMapper().writeValueAsString(changedProductRequestBody);
+        String body = new ObjectMapper().writeValueAsString(changedProductDto);
 
         //then
         mvc.perform(put("/api/product/" + savedProduct.getId()).header(header, parsedAccessToken)
@@ -194,12 +188,12 @@ class ProductControllerTest {
         imgList.add("image2.com");
         imgList.add("image3.com");
 
-        ProductRequestBody.BasicInfo basicInfo = new ProductRequestBody.BasicInfo("나이키 프린팅 티셔츠", "100304", "나이키");
-        ProductRequestBody.AdditionalInfo additionalInfo = new ProductRequestBody.AdditionalInfo("2020-04-01", "온라인 매장");
-        ProductRequestBody.SellerNote sellerNote = new ProductRequestBody.SellerNote("none", "normal", 130, "chubby", "all", "normal");
-        ProductRequestBody.Style style = new ProductRequestBody.Style("feminin", "Blue", "fur");
-        ProductRequestBody.Measure measure = new ProductRequestBody.Measure(120, 10, 10, 0, 1, 3, 4, 5);
-        ProductRequestBody productRequestBody = new ProductRequestBody(
+        ProductDto.BasicInfo basicInfo = new ProductDto.BasicInfo("나이키 프린팅 티셔츠", "100304", "나이키");
+        ProductDto.AdditionalInfo additionalInfo = new ProductDto.AdditionalInfo("2020-04-01", "온라인 매장");
+        ProductDto.SellerNote sellerNote = new ProductDto.SellerNote("none", "normal", 130, "chubby", "all", "normal");
+        ProductDto.Style style = new ProductDto.Style("feminin", "Blue", "fur");
+        ProductDto.Measure measure = new ProductDto.Measure(120, 10, 10, 0, 1, 3, 4, 5);
+        ProductDto productDto = new ProductDto(
                 imgList,
                 "contact.com",
                 basicInfo,
@@ -213,8 +207,8 @@ class ProductControllerTest {
                 "매우 깨끗한 옷입니다",
                 "top"
         );
-        Product savedProduct = productService.save(savedUser, productRequestBody);
-        String body = new ObjectMapper().writeValueAsString(productRequestBody);
+        Product savedProduct = productService.save(savedUser, productDto);
+        String body = new ObjectMapper().writeValueAsString(productDto);
 
         //when
 
@@ -242,12 +236,12 @@ class ProductControllerTest {
         imgList.add("image2.com");
         imgList.add("image3.com");
 
-        ProductRequestBody.BasicInfo basicInfo = new ProductRequestBody.BasicInfo("나이키 프린팅 티셔츠", "100304", "나이키");
-        ProductRequestBody.AdditionalInfo additionalInfo = new ProductRequestBody.AdditionalInfo("2020-04-01", "온라인 매장");
-        ProductRequestBody.SellerNote sellerNote = new ProductRequestBody.SellerNote("none", "normal", 130, "chubby", "all", "normal");
-        ProductRequestBody.Style style = new ProductRequestBody.Style("feminin", "Blue", "fur");
-        ProductRequestBody.Measure measure = new ProductRequestBody.Measure(120, 10, 10, 0, 1, 3, 4, 5);
-        ProductRequestBody productRequestBody = new ProductRequestBody(
+        ProductDto.BasicInfo basicInfo = new ProductDto.BasicInfo("나이키 프린팅 티셔츠", "100304", "나이키");
+        ProductDto.AdditionalInfo additionalInfo = new ProductDto.AdditionalInfo("2020-04-01", "온라인 매장");
+        ProductDto.SellerNote sellerNote = new ProductDto.SellerNote("none", "normal", 130, "chubby", "all", "normal");
+        ProductDto.Style style = new ProductDto.Style("feminin", "Blue", "fur");
+        ProductDto.Measure measure = new ProductDto.Measure(120, 10, 10, 0, 1, 3, 4, 5);
+        ProductDto productDto = new ProductDto(
                 imgList,
                 "contact.com",
                 basicInfo,
@@ -261,8 +255,8 @@ class ProductControllerTest {
                 "매우 깨끗한 옷입니다",
                 "top"
         );
-        Product savedProduct = productService.save(savedUser, productRequestBody);
-        String body = new ObjectMapper().writeValueAsString(productRequestBody);
+        Product savedProduct = productService.save(savedUser, productDto);
+        String body = new ObjectMapper().writeValueAsString(productDto);
 
         //when
         User otherUser = new User("other@test.com", "", "hi");

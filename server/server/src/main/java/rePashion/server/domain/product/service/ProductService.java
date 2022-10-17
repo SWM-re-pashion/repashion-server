@@ -2,8 +2,8 @@ package rePashion.server.domain.product.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import rePashion.server.domain.product.dto.ProductDto;
 import rePashion.server.domain.product.dto.ProductFlatDto;
-import rePashion.server.domain.product.dto.ProductRequestBody;
 import rePashion.server.domain.product.exception.ProductBuyerException;
 import rePashion.server.domain.product.exception.ProductNotExistedException;
 import rePashion.server.domain.product.model.*;
@@ -35,7 +35,7 @@ public class ProductService {
     private final MeasureRepository measureRepository;
     private final MeasureMapper measureMapper;
     private final ProductMapper productMapper;
-    public Product save(User user, ProductRequestBody dto){
+    public Product save(User user, ProductDto dto){
         ProductFlatDto productFlatDto = productMapper.productDtoToFlatDto(dto);
         Product savedProduct = saveProduct(productFlatDto, user, dto.getImgList().get(0));
         ProductAdvanceInfo savedProductAdvanceInfo = saveProductAdvanceInfo(productFlatDto, savedProduct);
@@ -60,7 +60,7 @@ public class ProductService {
         return productAdvanceInfoRepository.save(productAdvanceInfo);
     }
 
-    private void saveMeasure(ProductRequestBody body, ProductAdvanceInfo advanceInfo){
+    private void saveMeasure(ProductDto body, ProductAdvanceInfo advanceInfo){
         Measure measure = measureMapper.getMeasure(body);
         measure.setAdvanceInfo(advanceInfo);
         measureRepository.save(measure);
@@ -76,7 +76,7 @@ public class ProductService {
         return savedProduct;
     }
 
-    public Long update(User user, Long productId, ProductRequestBody dto){
+    public Long update(User user, Long productId, ProductDto dto){
         delete(user, productId);
         Product savedProduct = save(user, dto);
         return savedProduct.getId();

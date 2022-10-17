@@ -5,7 +5,7 @@ import lombok.*;
 import java.util.ArrayList;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ProductRequestBody {
+public class ProductDto {
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
@@ -70,7 +70,7 @@ public class ProductRequestBody {
     private String opinion;
     private String measureType;
 
-    public ProductRequestBody(ArrayList<String> imgList, String contact, BasicInfo basicInfo, int price, Boolean isIncludeDelivery, String size, AdditionalInfo additionalInfo, SellerNote sellerNote, Style style, Measure measure, String opinion, String measureType) {
+    public ProductDto(ArrayList<String> imgList, String contact, BasicInfo basicInfo, int price, Boolean isIncludeDelivery, String size, AdditionalInfo additionalInfo, SellerNote sellerNote, Style style, Measure measure, String opinion, String measureType) {
         this.imgList = imgList;
         this.contact = contact;
         this.basicInfo = basicInfo;
