@@ -50,10 +50,12 @@ public class AuthController {
 
     private ResponseCookie createHttpOnlyCookie(String refreshToken){
         return ResponseCookie.from("refreshToken", refreshToken)
+                .maxAge(7*24*60*60)
+                .path("/")
+                // secure(true)
+                .sameSite("None")
                 .httpOnly(true)
                 .secure(true)
-                .path("/")
-                .maxAge(7*24*60*60)
                 .build();
     }
 }
