@@ -14,7 +14,7 @@ public class WebConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry
                         .addMapping("/**")
-                        .allowedOrigins("http://localhost:3001, https://refashion.link")
+                        .allowedOrigins("http://localhost:3001", "https://refashion.link")
                         .allowCredentials(true)
                         .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS");
             }
