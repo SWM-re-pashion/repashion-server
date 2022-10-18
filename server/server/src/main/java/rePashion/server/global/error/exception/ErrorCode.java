@@ -69,7 +69,7 @@ public enum ErrorCode {
     INVALID_REFRESH_TOKEN(403, "INVALID_REFRESH_TOKEN", "Invalid refresh token"),
 
     //Refresh token
-
+    COOKIE_NOT_EXISTED(400, "COOKIE_NOT_EXISTED", "cookie is not existed, please access to https server"),
     REFRESH_TOKEN_NOT_EXISTED(400, "REFRESH_TOKEN_NOT_EXISTED", "refresh token not existed"),
     REFRESH_TOKEN_NOT_MATCH(400, "REFRESH_TOKEN_NOT_MATCH", "refresh token is not matched");
 
