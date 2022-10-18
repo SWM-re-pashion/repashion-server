@@ -16,7 +16,7 @@ public class WebConfig {
                         .addMapping("/**")
                         .allowedOrigins("http://localhost:3001, https://refashion.link")
                         .allowCredentials(true)
-                        .allowedMethods("*");
+                        .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS");
             }
         };
     }
