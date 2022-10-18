@@ -57,10 +57,13 @@ public class AuthService {
         return issueToken(user);
     }
 
-    public String reissueRefreshToken(User user, String refreshToken){
-        compareWithSavedToken(user.getId(), refreshToken);
+    public String reissueRefreshToken(Long userId, String refreshToken){
+        User user = userRepository.findById(userId).orElseThrow(UserNotExistedException::new);
+        System.out.println("hihi token = " + refreshTokenRepository.findByKey(user.getId()).get().getValue());
+        System.out.println("savedRefreshToken = " + refreshToken);
+        compareWithSavedToken(userId, refreshToken);
         refreshTokenProvider.parsing(refreshToken);
-        return refreshTokenProvider.parse(user);
+        return accessTokenProvider.parse(user);
     }
 
     private void compareWithSavedToken(Long userId, String refreshToken){
