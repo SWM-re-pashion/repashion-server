@@ -42,9 +42,9 @@ public class AuthController {
     }
 
     @GetMapping("/reissue")
-    public ResponseEntity<GlobalResponse> reissue(@CookieValue(name = "refreshToken", defaultValue = "") String refreshToken, @AuthenticationPrincipal Long userId){
+    public ResponseEntity<GlobalResponse> reissue(@CookieValue(name = "refreshToken", defaultValue = "") String refreshToken, HttpServletRequest request){
         if(refreshToken.equals("")) throw new CookieNotExistedException();
-        String accessToken = authService.reissueRefreshToken(userId, refreshToken);
+        String accessToken = authService.reissueRefreshToken(request, refreshToken);
         return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, new TokenResponseDto(accessToken)), HttpStatus.OK);
     }
 

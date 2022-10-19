@@ -27,6 +27,7 @@ import rePashion.server.global.error.exception.ErrorCode;
 import rePashion.server.global.jwt.impl.AccessTokenProvider;
 import rePashion.server.global.jwt.impl.RefreshTokenProvider;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 
 @Service
@@ -57,10 +58,10 @@ public class AuthService {
         return issueToken(user);
     }
 
-    public String reissueRefreshToken(Long userId, String refreshToken){
+    public String reissueRefreshToken(HttpServletRequest request, String refreshToken){
+        String token = accessTokenProvider.resolve(request);
+        Long userId = accessTokenProvider.getPk(token);
         User user = userRepository.findById(userId).orElseThrow(UserNotExistedException::new);
-        System.out.println("hihi token = " + refreshTokenRepository.findByKey(user.getId()).get().getValue());
-        System.out.println("savedRefreshToken = " + refreshToken);
         compareWithSavedToken(userId, refreshToken);
         refreshTokenProvider.parsing(refreshToken);
         return accessTokenProvider.parse(user);
