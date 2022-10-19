@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OauthLoginRequestDto {
-    private String authCode;
+    private String accessToken;
 
-    public OauthLoginRequestDto(String authCode) {
-        this.authCode = authCode;
+    public OauthLoginRequestDto(String accessToken) {
+        this.accessToken = accessToken;
     }
 }

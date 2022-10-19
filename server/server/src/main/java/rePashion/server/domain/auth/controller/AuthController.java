@@ -34,7 +34,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<GlobalResponse> login(@RequestBody OauthLoginRequestDto dto) throws JsonProcessingException {
-        TokenResponseDto tokens = authService.login(dto.getAuthCode());
+        TokenResponseDto tokens = authService.login(dto.getAccessToken());
         ResponseCookie httpOnlyCookie = createHttpOnlyCookie(tokens.getRefreshToken());
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set("Set-Cookie", httpOnlyCookie.toString());
