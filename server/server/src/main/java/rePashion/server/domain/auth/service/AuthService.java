@@ -9,11 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
-import rePashion.server.domain.auth.dto.exception.CognitoEnvException;
-import rePashion.server.domain.auth.dto.exception.CognitoGrantException;
-import rePashion.server.domain.auth.dto.exception.RefreshTokenException;
-import rePashion.server.domain.auth.dto.exception.UserNotExistedException;
-import rePashion.server.domain.auth.dto.response.CognitoGetTokenResponseDto;
+import rePashion.server.domain.auth.dto.exception.*;
 import rePashion.server.domain.auth.dto.response.CognitoGetUserInfoResponseDto;
 import rePashion.server.domain.auth.dto.response.TokenResponseDto;
 import rePashion.server.domain.auth.model.RefreshToken;
@@ -52,9 +48,8 @@ public class AuthService {
     @Value("${spring.cloud.aws.security.cognito.domain}")
     private String COGNITO_DOMAIN;
 
-    public TokenResponseDto login(String authCode) throws JsonProcessingException {
-        CognitoGetTokenResponseDto tokens = getToken(authCode);
-        User user = getUserInfo(tokens);
+    public TokenResponseDto login(String cognitoAccessToken) throws JsonProcessingException {
+        User user = getUserInfo(cognitoAccessToken);
         return issueToken(user);
     }
 
@@ -79,24 +74,17 @@ public class AuthService {
         return new TokenResponseDto(accessToken, refreshToken);
     }
 
-    private CognitoGetTokenResponseDto getToken(String authCode) throws JsonProcessingException {
-        HttpHeaders headers = getHeaders();
-        LinkedMultiValueMap<String, String> requestBody = getRequestBody(authCode);
-        ResponseEntity<String> response = sendRequestToCognito(headers, requestBody);
-        return new ObjectMapper().readValue(response.getBody(), CognitoGetTokenResponseDto.class);
-    }
-
-    private User getUserInfo(CognitoGetTokenResponseDto tokens) throws JsonProcessingException {
-        HttpHeaders headers = getHeaders(tokens.getAccess_token());
+    private User getUserInfo(String cognitoAccessToken) throws JsonProcessingException {
+        HttpHeaders headers = getCognitoHeaders(cognitoAccessToken);
         ResponseEntity<String> response = sendRequestToCognito(headers);
         CognitoGetUserInfoResponseDto dto = new ObjectMapper().readValue(response.getBody(), CognitoGetUserInfoResponseDto.class);
-        return registerUser(dto, tokens.getRefresh_token());
+        return registerUser(dto);
     }
 
-    private User registerUser(CognitoGetUserInfoResponseDto dto, String refreshToken) {
+    private User registerUser(CognitoGetUserInfoResponseDto dto) {
         if(isNotRegister(dto.getEmail())) {
             UserAuthority userAuthority = new UserAuthority(Role.ROLE_USER);
-            User savedUser = userRepository.save(dto.toUserEntity(refreshToken));
+            User savedUser = userRepository.save(dto.toUserEntity());
             userAuthority.changeAuthority(savedUser);
             userAuthorityRepository.save(userAuthority);
             savedUser.setDefaultUserName();
@@ -108,53 +96,23 @@ public class AuthService {
         return userRepository.findUserByEmail(email).isEmpty();
     }
 
-    private LinkedMultiValueMap<String, String> getRequestBody(String authCode) {
-        LinkedMultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
-        requestBody.add("grant_type", "authorization_code");
-        requestBody.add("client_id", CLIENT_ID);
-        requestBody.add("redirect_uri", REDIRECT_URL);
-        requestBody.add("code", authCode);
-        return requestBody;
-    }
-
-    private HttpHeaders getHeaders() {
+    private HttpHeaders getCognitoHeaders(String token) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-type", "application/x-www-form-urlencoded");
-        return headers;
-    }
-
-    private HttpHeaders getHeaders(String token) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-type", "application/x-www-form-urlencoded");
+        headers.add("Content-type", "application/json");
         headers.add("Authorization", "Bearer " + token);
         return headers;
     }
 
     private ResponseEntity<String> sendRequestToCognito(HttpHeaders headers){
-        ResponseEntity<String> response=null;
         HttpEntity<LinkedMultiValueMap<String, String>> request = new HttpEntity<>(headers);
         try {
-            response = restTemplate.exchange(COGNITO_DOMAIN + "/oauth2/userInfo", HttpMethod.GET, request, String.class);
+            return restTemplate.exchange(COGNITO_DOMAIN + "/oauth2/userInfo", HttpMethod.GET, request, String.class);
         }catch (HttpClientErrorException e){
-            if(e.getStatusCode().equals(HttpStatus.BAD_REQUEST)){
-                if(Objects.equals(e.getMessage(), "400 Bad Request: \"{\"error\":\"invalid_grant\"}\"")) throw new CognitoGrantException();
-                else throw new CognitoEnvException();
-            }
+            if(e.getStatusCode().equals(HttpStatus.UNAUTHORIZED))   throw new CognitoGrantException(ErrorCode.COGNITO_TOKEN_ERROR);
+            else if(e.getStatusCode().equals(HttpStatus.BAD_REQUEST))   throw new CognitoGrantException(ErrorCode.COGNITO_ENVIRONMENT_ERROR);
+        }catch (Exception e){
+            throw new CognitoGrantException(ErrorCode.COFNITO_SERVER_ERROR);
         }
-        return response;
-    }
-
-    private ResponseEntity<String> sendRequestToCognito(HttpHeaders headers, LinkedMultiValueMap<String,String> body){
-        ResponseEntity<String> response=null;
-        HttpEntity<LinkedMultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
-        try {
-            response = restTemplate.exchange(COGNITO_DOMAIN + "/oauth2/token", HttpMethod.POST, request, String.class);
-        }catch (HttpClientErrorException e){
-            if(e.getStatusCode().equals(HttpStatus.BAD_REQUEST)){
-                if(Objects.equals(e.getMessage(), "400 Bad Request: \"{\"error\":\"invalid_grant\"}\"")) throw new CognitoGrantException();
-                else throw new CognitoEnvException();
-            }
-        }
-        return response;
+        return null;
     }
 }
