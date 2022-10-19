@@ -23,9 +23,6 @@ public class User {
 
     private String email;
 
-    @Column(columnDefinition = "TEXT")
-    private String cognitoRefreshToken;
-
     private String nickName;
 
     private String profile = "https://webserver0712.s3.ap-northeast-2.amazonaws.com/profile/default.png";
@@ -37,9 +34,8 @@ public class User {
     private List<UserProduct> products = new ArrayList<>();
 
     @Builder
-    public User(String email, String refreshToken, String nickName) {
+    public User(String email, String nickName) {
         this.email = email;
-        this.cognitoRefreshToken = refreshToken;
         this.nickName = nickName;
     }
 
