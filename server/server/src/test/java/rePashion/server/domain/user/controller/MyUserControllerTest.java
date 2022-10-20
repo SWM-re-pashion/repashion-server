@@ -99,7 +99,7 @@ class MyUserControllerTest {
         //given
 
         // User 만들기 및 accessToken 토큰 만들기
-        User user = new User("test@test.com", "", "hi");
+        User user = new User("test@test.com", "hi");
         UserAuthority userAuthority1 = new UserAuthority(Role.ROLE_USER);
         userAuthority1.changeAuthority(user);
         User savedUser = userRepository.save(user);
@@ -132,7 +132,7 @@ class MyUserControllerTest {
         //given
 
         // User 만들기 및 accessToken 토큰 만들기
-        User user = new User("test@test.com", "", "originalNickName");
+        User user = new User("test@test.com", "originalNickName");
         UserAuthority userAuthority1 = new UserAuthority(Role.ROLE_USER);
         userAuthority1.changeAuthority(user);
         User savedUser = userRepository.save(user);

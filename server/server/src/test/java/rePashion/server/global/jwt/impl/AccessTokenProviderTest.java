@@ -47,7 +47,7 @@ class AccessTokenProviderTest {
     public void 정상적인_토큰(){
 
         //given
-        User user = new User("test@test.com", "", "hi");
+        User user = new User("test@test.com", "hi");
         UserAuthority userAuthority = new UserAuthority(Role.ROLE_USER);
         userAuthority.changeAuthority(user);
         User savedUser = userRepository.save(user);
@@ -56,8 +56,9 @@ class AccessTokenProviderTest {
         //when
         JwtTokenDto parsing = accessTokenProvider.parsing(parsedToken);
         Long id = userRepository.findUserById(savedUser.getId()).get().getId();
-
+        System.out.println("parsedToken = " + parsedToken);
         //then
+
         Assertions.assertThat(parsing.getUserId()).isEqualTo(id);
         Assertions.assertThat(parsing.getAuthority()).isEqualTo("ROLE_USER");
     }
@@ -66,7 +67,7 @@ class AccessTokenProviderTest {
     public void 정상적인_토큰_여러_권한을_가진(){
 
         //given
-        User user = new User("test@test.com", "", "hi");
+        User user = new User("test@test.com", "hi");
         UserAuthority userAuthority1 = new UserAuthority(Role.ROLE_USER);
         UserAuthority userAuthority2 = new UserAuthority(Role.ROLE_ADMIN);
         userAuthority1.changeAuthority(user);
@@ -87,7 +88,7 @@ class AccessTokenProviderTest {
     public void 정상적인_토큰_pk값_가져오기(){
 
         //given
-        User user = new User("test@test.com", "", "hi");
+        User user = new User("test@test.com", "hi");
         UserAuthority userAuthority1 = new UserAuthority(Role.ROLE_USER);
         userAuthority1.changeAuthority(user);
         User savedUser = userRepository.save(user);

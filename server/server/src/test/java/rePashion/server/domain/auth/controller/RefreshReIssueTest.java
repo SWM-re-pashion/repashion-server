@@ -56,7 +56,7 @@ class RefreshReIssueTest {
     @Test
     public void 정상적으로_재발급_받기() throws Exception {
         //given
-        User user = new User("test@test.com", "", "hi");
+        User user = new User("test@test.com", "hi");
         UserAuthority userAuthority1 = new UserAuthority(Role.ROLE_USER);
         userAuthority1.changeAuthority(user);
         User savedUser = userRepository.save(user);
@@ -77,7 +77,7 @@ class RefreshReIssueTest {
     @Test
     public void DB에_저장된_것과_다른_경우() throws Exception {
         //given
-        User user = new User("test@test.com", "", "hi");
+        User user = new User("test@test.com", "hi");
         UserAuthority userAuthority1 = new UserAuthority(Role.ROLE_USER);
         userAuthority1.changeAuthority(user);
         User savedUser = userRepository.save(user);
@@ -99,7 +99,7 @@ class RefreshReIssueTest {
     @Test
     public void Token이_잘못된_경우() throws Exception {
         //given
-        User user = new User("test@test.com", "", "hi");
+        User user = new User("test@test.com", "hi");
         UserAuthority userAuthority1 = new UserAuthority(Role.ROLE_USER);
         userAuthority1.changeAuthority(user);
         User savedUser = userRepository.save(user);
