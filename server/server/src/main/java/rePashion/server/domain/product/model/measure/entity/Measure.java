@@ -1,5 +1,6 @@
 package rePashion.server.domain.product.model.measure.entity;
 
+import rePashion.server.domain.product.dto.MeasureDto;
 import rePashion.server.domain.product.model.ProductAdvanceInfo;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ public abstract class  Measure {
     @JoinColumn(name = "advanceInfoId")
     private ProductAdvanceInfo advanceInfo;
 
+    public abstract MeasureDto getMeasureDto();
     public void setAdvanceInfo(ProductAdvanceInfo advanceInfo){
         this.advanceInfo = advanceInfo;
     }
