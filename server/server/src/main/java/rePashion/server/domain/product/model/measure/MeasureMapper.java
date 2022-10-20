@@ -2,6 +2,7 @@ package rePashion.server.domain.product.model.measure;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import rePashion.server.domain.product.dto.MeasureDto;
 import rePashion.server.domain.product.dto.ProductDto;
 import rePashion.server.domain.product.model.measure.entity.*;
 import rePashion.server.domain.product.repository.MeasureRepository;
@@ -18,7 +19,7 @@ public class MeasureMapper {
         return saveProperMeasure(body.getMeasure(), measureType);
     }
 
-    private Measure saveProperMeasure(ProductDto.Measure measure, MeasureType type){
+    private Measure saveProperMeasure(MeasureDto measure, MeasureType type){
         if(type == null) return null;
         switch (type){
             case top:
@@ -33,7 +34,7 @@ public class MeasureMapper {
         return null;
     }
 
-    private TopMeasure constructTopMeasure(ProductDto.Measure measure){
+    private TopMeasure constructTopMeasure(MeasureDto measure){
         return TopMeasure
                 .builder()
                 .length(measure.getLength())
@@ -43,7 +44,7 @@ public class MeasureMapper {
                 .build();
     }
 
-    private BottomMeasure constructBottomMeasure(ProductDto.Measure measure){
+    private BottomMeasure constructBottomMeasure(MeasureDto measure){
         return BottomMeasure
                 .builder()
                 .length(measure.getLength())
@@ -54,7 +55,7 @@ public class MeasureMapper {
                 .build();
     }
 
-    private SkirtMeasure constructSkirtMeasure(ProductDto.Measure measure){
+    private SkirtMeasure constructSkirtMeasure(MeasureDto measure){
         return SkirtMeasure
                 .builder()
                 .length(measure.getLength())
@@ -63,7 +64,7 @@ public class MeasureMapper {
                 .build();
     }
 
-    private OnepieceMeasure constructOnepieceMeasure(ProductDto.Measure measure){
+    private OnepieceMeasure constructOnepieceMeasure(MeasureDto measure){
         return OnepieceMeasure
                 .builder()
                 .length(measure.getLength())
