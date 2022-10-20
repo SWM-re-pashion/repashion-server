@@ -14,6 +14,7 @@ import rePashion.server.domain.product.repository.ProductAdvanceInfoRepository;
 import rePashion.server.domain.product.repository.ProductImageRepository;
 import rePashion.server.domain.product.repository.ProductRepository;
 import rePashion.server.domain.product.resources.mapper.ProductMapper;
+import rePashion.server.domain.product.resources.mapper.ProductMapperImpl;
 import rePashion.server.domain.user.model.PurchaseStatus;
 import rePashion.server.domain.user.model.User;
 import rePashion.server.domain.user.model.UserProduct;
@@ -34,7 +35,7 @@ public class ProductService {
     private final UserProductRepository userProductRepository;
     private final MeasureRepository measureRepository;
     private final MeasureMapper measureMapper;
-    private final ProductMapper productMapper;
+    private final ProductMapperImpl productMapper;
     public Product save(User user, ProductDto dto){
         ProductFlatDto productFlatDto = productMapper.productDtoToFlatDto(dto);
         Product savedProduct = saveProduct(productFlatDto, user, dto.getImgList().get(0));
@@ -87,11 +88,10 @@ public class ProductService {
         productRepository.deleteById(productId);
     }
 
-//    public ProductRequestBody get(User user, Long productId){
-//        checkUser(user, productId);
-//        Product product = productRepository.findProductEntityGraph(productId).orElseThrow(ProductNotExistedException::new);
-//        return ProductRequestBody.toDto(product);
-//    }
+    public ProductDto get(User user, Long productId){
+        checkUser(user, productId);
+        return productRepository.get(productId);
+    }
 
     private void checkUser(User user, Long productId){
         Product findProduct = productRepository.findById(productId).orElseThrow(ProductNotExistedException::new);

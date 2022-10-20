@@ -37,9 +37,10 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GlobalResponse> get(@PathVariable Long id){
-        //ProductRequestBody dto = productService.get(id);
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<GlobalResponse> get(@AuthenticationPrincipal Long userId, @PathVariable Long id){
+        User user = findUser(userId);
+        ProductDto productDto = productService.get(user, id);
+        return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, productDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
