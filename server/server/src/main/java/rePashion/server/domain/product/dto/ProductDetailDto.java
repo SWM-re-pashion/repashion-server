@@ -1,5 +1,7 @@
 package rePashion.server.domain.product.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
 import rePashion.server.domain.statics.service.StaticsService;
@@ -89,8 +91,11 @@ public class ProductDetailDto {
     private int like;
     private int view;
 
+    @JsonIgnore
+    private String category;
+
     @QueryProjection
-    public ProductDetailDto(Boolean isMe, Boolean status, SellerInfo sellerInfo, Basic basic, SellerNotice sellerNotice, String opinion, int price, boolean isIncludeDelivery, LocalDateTime updatedAt, int like, int view) {
+    public ProductDetailDto(Boolean isMe, Boolean status, SellerInfo sellerInfo, Basic basic, SellerNotice sellerNotice, String opinion, int price, boolean isIncludeDelivery, LocalDateTime updatedAt, int like, int view, String category) {
         this.isMe = isMe;
         this.status = status;
         this.sellerInfo = sellerInfo;
@@ -102,6 +107,7 @@ public class ProductDetailDto {
         this.updatedAt = updatedAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         this.like = like;
         this.view = view;
+        this.category = category;
     }
 
     public void changeMeasure(MeasureDto measureDto){

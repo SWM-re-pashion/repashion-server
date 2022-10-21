@@ -1,6 +1,5 @@
 package rePashion.server.domain.product.repository;
 
-import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import rePashion.server.domain.product.dto.*;
@@ -109,7 +108,8 @@ public class ProductRepositoryImpl implements ProductCustomRepository {
                         product.basicInfo.isIncludeDelivery,
                         product.modifiedDate,
                         product.basicInfo.likes,
-                        product.basicInfo.views
+                        product.basicInfo.views,
+                        product.basicInfo.category
                 ))
                 .from(product)
                 .join(product.advanceInfo, advanceInfo)
@@ -120,21 +120,28 @@ public class ProductRepositoryImpl implements ProductCustomRepository {
 
         if(productDetailDto != null){
             productDetailDto.getSellerInfo().changeImage(getImageList(product));
-            getCategories(product.basicInfo.category);
+            CategoryDto categories = getCategories(productDetailDto.getCategory());
+            productDetailDto.getBasic().changeClassificationAndProductInfo(categories.getGenderCategory(), categories.getParentCategory(), categories.getSubCategory());
         }
-
-//        Category category = queryFactory
-//                .selectFrom(subCategory)
-//                .join(subCategory.parentCategory, parentCategory)
-//                .join(parentCategory.parentCategory, genderCategory)
-//                .where(subCategory.categoryId.eq(product.basicInfo.category.castToNum(Long.class)))
-//                .fetchOne();
-//        if(productDetailDto != null && category != null) productDetailDto.getBasic().changeClassificationAndProductInfo(category.getName(), category.getParentCategory().getName(), category.getParentCategory().getParentCategory().getName());
 
 //        Measure findMeasure = queryFactory.selectFrom(measure).fetchOne();
 //        if(productDetailDto != null && findMeasure != null) productDetailDto.changeMeasure(findMeasure.getMeasureDto());
 
         return productDetailDto;
+    }
+
+    private CategoryDto getCategories(String category) {
+        QCategory genderCategory = new QCategory("genderCategory");
+        QCategory parentCategory = new QCategory("parentCategory");
+        QCategory subCategory = new QCategory("subCategory");
+
+        return queryFactory
+                .select(new QCategoryDto(genderCategory.name, parentCategory.name, subCategory.name))
+                .from(subCategory)
+                .join(subCategory.parentCategory, parentCategory)
+                .join(parentCategory.parentCategory, genderCategory)
+                .where(subCategory.categoryId.eq(Long.parseLong(category)))
+                .fetchOne();
     }
 
     private ArrayList<String> getImageList(QProduct product) {
