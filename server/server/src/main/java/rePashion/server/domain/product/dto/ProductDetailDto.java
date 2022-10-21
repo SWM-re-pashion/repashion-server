@@ -1,6 +1,8 @@
 package rePashion.server.domain.product.dto;
 
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
+import rePashion.server.domain.statics.service.StaticsService;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -13,16 +15,20 @@ public class ProductDetailDto {
 
     private Boolean isMe;
 
-    private String status;
+    private Boolean status;
     @Getter
     public static class SellerInfo{
         private String profileImg;
         private String nickname;
         private ArrayList<String> image;
 
-        public SellerInfo(String profileImg, String nickname, ArrayList<String> image) {
+        @QueryProjection
+        public SellerInfo(String profileImg, String nickname) {
             this.profileImg = profileImg;
             this.nickname = nickname;
+        }
+
+        public void changeImage(ArrayList<String> image){
             this.image = image;
         }
     }
@@ -36,12 +42,17 @@ public class ProductDetailDto {
         private String productInfo;
         private String styleInfo;
 
-        public Basic(String title, String classification, String brand, String productInfo, String styleInfo) {
+        @QueryProjection
+        public Basic(String title, String brand, String size, String material, String color, String style) {
             this.title = title;
-            this.classification = classification;
             this.brand = brand;
-            this.productInfo = productInfo;
-            this.styleInfo = styleInfo;
+            this.productInfo = size;
+            this.styleInfo = material + "/" + color + "/" + StaticsService.lookups.get(style);
+        }
+
+        public void changeClassificationAndProductInfo(String genderCategory, String parentCategory, String subCategory){
+            this.classification = parentCategory + "/" + subCategory;
+            this.productInfo = genderCategory + "/" + this.productInfo;
         }
     }
     private Basic basic;
@@ -50,26 +61,27 @@ public class ProductDetailDto {
     public static class SellerNotice{
         private String condition;
         private String pollution;
-        private String height;
+        private Integer height;
         private String length;
-        private String bodyForm;
+        private String bodyShape;
         private String fit;
         private String purchaseTime;
         private String purchasePlace;
 
-        public SellerNotice(String condition, String pollution, String height, String length, String bodyForm, String fit, String purchaseTime, String purchasePlace) {
-            this.condition = condition;
-            this.pollution = pollution;
+        @QueryProjection
+        public SellerNotice(String condition, String pollution, Integer height, String length, String bodyShape, String fit, String purchaseTime, String purchasePlace) {
+            this.condition = StaticsService.lookups.get(condition);
+            this.pollution = StaticsService.lookups.get(pollution);
             this.height = height;
-            this.length = length;
-            this.bodyForm = bodyForm;
-            this.fit = fit;
+            this.length = StaticsService.lookups.get(length);
+            this.bodyShape = StaticsService.lookups.get(bodyShape);
+            this.fit = StaticsService.lookups.get(fit);
             this.purchaseTime = purchaseTime;
             this.purchasePlace = purchasePlace;
         }
     }
     private SellerNotice sellerNotice;
-    private HashMap<String, Integer> measure;
+    private MeasureDto measure;
     private String opinion;
     private int price;
     private Boolean isIncludeDelivery;
@@ -77,19 +89,22 @@ public class ProductDetailDto {
     private int like;
     private int view;
 
-    @Builder
-    public ProductDetailDto(Boolean isMe, String status, SellerInfo sellerInfo, Basic basic, SellerNotice sellerNotice, HashMap<String, Integer> measure, String opinion, int price, boolean isIncludeDelivery, LocalDateTime updatedAt, int like, int view) {
+    @QueryProjection
+    public ProductDetailDto(Boolean isMe, Boolean status, SellerInfo sellerInfo, Basic basic, SellerNotice sellerNotice, String opinion, int price, boolean isIncludeDelivery, LocalDateTime updatedAt, int like, int view) {
         this.isMe = isMe;
         this.status = status;
         this.sellerInfo = sellerInfo;
         this.basic = basic;
         this.sellerNotice = sellerNotice;
-        this.measure = measure;
         this.opinion = opinion;
         this.price = price;
         this.isIncludeDelivery = isIncludeDelivery;
         this.updatedAt = updatedAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         this.like = like;
         this.view = view;
+    }
+
+    public void changeMeasure(MeasureDto measureDto){
+        this.measure = measureDto;
     }
 }
