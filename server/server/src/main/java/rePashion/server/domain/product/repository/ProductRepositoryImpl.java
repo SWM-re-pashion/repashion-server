@@ -15,6 +15,7 @@ import rePashion.server.domain.user.model.QUserProduct;
 import rePashion.server.domain.user.model.User;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 public class ProductRepositoryImpl implements ProductCustomRepository {
@@ -113,6 +114,7 @@ public class ProductRepositoryImpl implements ProductCustomRepository {
                 ))
                 .from(product)
                 .join(product.advanceInfo, advanceInfo)
+                .join(advanceInfo.measure, measure)
                 .join(product.users, userProduct)
                 .join(userProduct.user, user)
                 .where(product.id.eq(productId), userProduct.purchaseStatus.eq(PurchaseStatus.Seller))
@@ -122,12 +124,14 @@ public class ProductRepositoryImpl implements ProductCustomRepository {
             productDetailDto.getSellerInfo().changeImage(getImageList(product));
             CategoryDto categories = getCategories(productDetailDto.getCategory());
             productDetailDto.getBasic().changeClassificationAndProductInfo(categories.getGenderCategory(), categories.getParentCategory(), categories.getSubCategory());
+            productDetailDto.changeMeasure(getMeasure(measure));
         }
 
-//        Measure findMeasure = queryFactory.selectFrom(measure).fetchOne();
-//        if(productDetailDto != null && findMeasure != null) productDetailDto.changeMeasure(findMeasure.getMeasureDto());
-
         return productDetailDto;
+    }
+
+    private MeasureDto getMeasure(QMeasure measure) {
+        return Objects.requireNonNull(queryFactory.selectFrom(measure).fetchOne()).getMeasureDto();
     }
 
     private CategoryDto getCategories(String category) {
