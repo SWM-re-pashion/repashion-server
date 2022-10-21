@@ -58,6 +58,9 @@ class ProductControllerTest {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private ProductController productController;
+
     @Test
     @Rollback(value = false)
     public void 정상적으로_저장하기() throws Exception {
@@ -294,6 +297,132 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$.data.additionalInfo.purchaseTime", is("2020-04-01")))
                 .andExpect(jsonPath("$.data.measure.length", is(120)))
                 .andExpect(jsonPath("$.data.measure.sleeveLength", is(20)));
+    }
+
+    @Test
+    @Order(5)
+    public void 내가_올린_물건_정상적으로_디테일_정보_가져오기() throws Exception {
+        //given
+
+        // User 만들기 및 accessToken 토큰 만들기
+        User user = new User("test@test.com", "hi");
+        UserAuthority userAuthority1 = new UserAuthority(Role.ROLE_USER);
+        userAuthority1.changeAuthority(user);
+        User savedUser = userRepository.save(user);
+        String parsedAccessToken = accessTokenProvider.parse(savedUser);
+
+        // Request 만들기
+        ArrayList<String> imgList = new ArrayList<>();
+        imgList.add("image1.com");
+        imgList.add("image2.com");
+        imgList.add("image3.com");
+
+        ProductDto.BasicInfo basicInfo = new ProductDto.BasicInfo("나이키 프린팅 티셔츠", "1001001", "나이키");
+        ProductDto.AdditionalInfo additionalInfo = new ProductDto.AdditionalInfo("2020-04-01", "온라인 매장");
+        ProductDto.SellerNote sellerNote = new ProductDto.SellerNote("none", "normal", 130, "chubby", "waist", "normal");
+        ProductDto.Style style = new ProductDto.Style("feminine", "Blue", "fur");
+        MeasureDto measure = new MeasureDto();
+        measure.setLength(120);
+        measure.setShoulderWidth(10);
+        measure.setChestSection(15);
+        measure.setSleeveLength(20);
+
+        ProductDto productDto = new ProductDto(
+                "contact.com",
+                basicInfo,
+                10000,
+                true,
+                "XL",
+                additionalInfo,
+                sellerNote,
+                style,
+                "매우 깨끗한 옷입니다",
+                "top"
+        );
+        productDto.changeImgList(imgList);
+        productDto.changeMeasure(measure);
+        Product savedProduct = productService.save(savedUser, productDto);
+        productController.getDetail(savedUser.getId(), savedProduct.getId());
+        //when
+
+        //then
+        mvc.perform(get("/api/product/detail/" + savedProduct.getId()).header(header, parsedAccessToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.isMe", is(true)))
+                .andExpect(jsonPath("$.data.status", is(false)))
+                .andExpect(jsonPath("$.data.sellerInfo.profileImg", is(savedUser.getProfile())))
+                .andExpect(jsonPath("$.data.sellerInfo.nickname", is("hi")))
+                .andExpect(jsonPath("$.data.basic.title", is("나이키 프린팅 티셔츠")))
+                //.andExpect(jsonPath("$.data.basic.classification", is("나이키 프린팅 티셔츠")))
+                .andExpect(jsonPath("$.data.basic.brand", is("나이키")))
+                //.andExpect(jsonPath("$.data.basic.productInfo", is("나이키 프린팅 티셔츠")))
+                .andExpect(jsonPath("$.data.basic.styleInfo", is("fur/Blue/페미닌")))
+                .andExpect(jsonPath("$.data.sellerNotice.condition", is("거의 없음")))
+                .andExpect(jsonPath("$.data.sellerNotice.pollution", is("보통")))
+                .andExpect(jsonPath("$.data.sellerNotice.height", is(130)))
+                .andExpect(jsonPath("$.data.sellerNotice.length", is("허리")))
+                .andExpect(jsonPath("$.data.sellerNotice.bodyShape", is("통통")))
+                .andExpect(jsonPath("$.data.sellerNotice.fit", is("보통")))
+                .andExpect(jsonPath("$.data.sellerNotice.purchaseTime", is("2020-04-01")))
+                .andExpect(jsonPath("$.data.sellerNotice.purchasePlace", is("온라인 매장")))
+                .andExpect(jsonPath("$.data.opinion", is("매우 깨끗한 옷입니다")))
+                .andExpect(jsonPath("$.data.like", is(0)))
+                .andExpect(jsonPath("$.data.view", is(0)));
+    }
+
+    @Test
+    @Order(6)
+    public void 내가_올리지_않은_물건_정상적으로_디테일_정보_가져오기() throws Exception {
+        //given
+
+        // User 만들기 및 accessToken 토큰 만들기
+        User user = new User("test@test.com", "hi");
+        UserAuthority userAuthority1 = new UserAuthority(Role.ROLE_USER);
+        userAuthority1.changeAuthority(user);
+        User savedUser = userRepository.save(user);
+        String parsedAccessToken = accessTokenProvider.parse(savedUser);
+
+        User seller = new User("buyer@test.com", "hi");
+        User savedSeller = userRepository.save(seller);
+
+        // Request 만들기
+        ArrayList<String> imgList = new ArrayList<>();
+        imgList.add("image1.com");
+        imgList.add("image2.com");
+        imgList.add("image3.com");
+
+        ProductDto.BasicInfo basicInfo = new ProductDto.BasicInfo("나이키 프린팅 티셔츠", "1001001", "나이키");
+        ProductDto.AdditionalInfo additionalInfo = new ProductDto.AdditionalInfo("2020-04-01", "온라인 매장");
+        ProductDto.SellerNote sellerNote = new ProductDto.SellerNote("none", "normal", 130, "chubby", "waist", "normal");
+        ProductDto.Style style = new ProductDto.Style("feminine", "Blue", "fur");
+        MeasureDto measure = new MeasureDto();
+        measure.setLength(120);
+        measure.setShoulderWidth(10);
+        measure.setChestSection(15);
+        measure.setSleeveLength(20);
+
+        ProductDto productDto = new ProductDto(
+                "contact.com",
+                basicInfo,
+                10000,
+                true,
+                "XL",
+                additionalInfo,
+                sellerNote,
+                style,
+                "매우 깨끗한 옷입니다",
+                "top"
+        );
+        productDto.changeImgList(imgList);
+        productDto.changeMeasure(measure);
+        Product savedProduct = productService.save(savedSeller, productDto);
+        productController.getDetail(savedUser.getId(), savedProduct.getId());
+        //when
+
+        //then
+        mvc.perform(get("/api/product/detail/" + savedProduct.getId()).header(header, parsedAccessToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.isMe", is(false)))
     }
 
     @Test
