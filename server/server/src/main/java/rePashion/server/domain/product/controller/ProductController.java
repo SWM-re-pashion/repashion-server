@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import rePashion.server.domain.auth.dto.exception.UserNotExistedException;
+import rePashion.server.domain.product.dto.ProductDetailDto;
 import rePashion.server.domain.product.dto.ProductDto;
 import rePashion.server.domain.product.model.Product;
 import rePashion.server.domain.product.service.ProductService;
@@ -48,6 +49,13 @@ public class ProductController {
         User user = findUser(userId);
         productService.delete(user, id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/detail/{productId}")
+    public ResponseEntity<GlobalResponse> getDetail(@AuthenticationPrincipal Long userId, @PathVariable Long productId){
+        User user = findUser(userId);
+        ProductDetailDto detail = productService.getDetail(user, productId);
+        return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, detail), HttpStatus.OK);
     }
 
     private User findUser(Long userId){
