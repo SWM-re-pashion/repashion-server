@@ -2,6 +2,7 @@ package rePashion.server.domain.product.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import rePashion.server.domain.product.dto.ProductDetailDto;
 import rePashion.server.domain.product.dto.ProductDto;
 import rePashion.server.domain.product.dto.ProductFlatDto;
 import rePashion.server.domain.product.exception.ProductBuyerException;
@@ -71,7 +72,7 @@ public class ProductService {
         Product product = productMapper.flatDtoToProduct(dto);
         product.getBasicInfo().changeThumbNail(image);
         Product savedProduct = productRepository.save(product);
-        UserProduct userProduct = new UserProduct(PurchaseStatus.Buyer);
+        UserProduct userProduct = new UserProduct(PurchaseStatus.Seller);
         userProduct.changeUserAndProduct(user, savedProduct);
         userProductRepository.save(userProduct);
         return savedProduct;
@@ -91,6 +92,10 @@ public class ProductService {
     public ProductDto get(User user, Long productId){
         checkUser(user, productId);
         return productRepository.get(productId);
+    }
+
+    public ProductDetailDto getDetail(User user, Long productId){
+        return productRepository.getDetail(user, productId);
     }
 
     private void checkUser(User user, Long productId){
