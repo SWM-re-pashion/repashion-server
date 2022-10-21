@@ -17,9 +17,9 @@ import rePashion.server.global.common.response.StatusCode;
 public class ProductDetailController {
     private final ProductDetailService productDetailService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<GlobalResponse> getDetails(@PathVariable Long id){
-        ProductDetailDto dto = productDetailService.get(id);
-        return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, dto), HttpStatus.OK);
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<GlobalResponse> getDetails(@PathVariable Long id){
+//        ProductDetailDto dto = productDetailService.get(id);
+//        return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, dto), HttpStatus.OK);
+//    }
 }

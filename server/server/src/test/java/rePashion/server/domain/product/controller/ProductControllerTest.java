@@ -353,6 +353,9 @@ class ProductControllerTest {
                 .andExpect(jsonPath("$.data.sellerInfo.profileImg", is(savedUser.getProfile())))
                 .andExpect(jsonPath("$.data.sellerInfo.nickname", is("hi")))
                 .andExpect(jsonPath("$.data.basic.title", is("나이키 프린팅 티셔츠")))
+                .andExpect(jsonPath("$.data.sellerInfo.image[0]", is("image1.com")))
+                .andExpect(jsonPath("$.data.sellerInfo.image[1]", is("image2.com")))
+                .andExpect(jsonPath("$.data.sellerInfo.image[2]", is("image3.com")))
                 //.andExpect(jsonPath("$.data.basic.classification", is("나이키 프린팅 티셔츠")))
                 .andExpect(jsonPath("$.data.basic.brand", is("나이키")))
                 //.andExpect(jsonPath("$.data.basic.productInfo", is("나이키 프린팅 티셔츠")))
@@ -422,7 +425,7 @@ class ProductControllerTest {
         //then
         mvc.perform(get("/api/product/detail/" + savedProduct.getId()).header(header, parsedAccessToken))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.isMe", is(false)))
+                .andExpect(jsonPath("$.data.isMe", is(false)));
     }
 
     @Test
