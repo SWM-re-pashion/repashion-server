@@ -10,4 +10,6 @@ public interface UserProductRepositoryCustom {
     int getNumberOfPurchasingByUser(Long id);
 
     Optional<User> findProductBuyer(Product product);
+
+    Optional<User> findByProductSeller(Product product);
 }

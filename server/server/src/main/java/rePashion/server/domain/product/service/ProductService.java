@@ -100,7 +100,7 @@ public class ProductService {
 
     private void checkUser(User user, Long productId){
         Product findProduct = productRepository.findById(productId).orElseThrow(ProductNotExistedException::new);
-        User productBuyer = userProductRepository.findProductBuyer(findProduct).orElseThrow(()->new ProductBuyerException(ErrorCode.PRODUCT_BUYER_NOT_EXISTED));
-        if(!productBuyer.getId().equals(user.getId())) throw new ProductBuyerException(ErrorCode.PRODUCT_BUYER_NOT_MATCH);
+        User productBuyer = userProductRepository.findByProductSeller(findProduct).orElseThrow(()->new ProductBuyerException(ErrorCode.PRODUCT_SELLER_NOT_EXISTED));
+        if(!productBuyer.getId().equals(user.getId())) throw new ProductBuyerException(ErrorCode.PRODUCT_SELLER_NOT_MATCH);
     }
 }

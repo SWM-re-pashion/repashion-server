@@ -48,6 +48,8 @@ public enum ErrorCode {
     PRODUCT_NOT_EXISTED(400, "P001", "해당 상품이 존재하지 않습니다"),
     PRODUCT_BUYER_NOT_EXISTED(500, "PRODUCT_BUYER_NOT_EXISTED", "상품 구매자의 정보를 찾을 수 없습니다"),
     PRODUCT_BUYER_NOT_MATCH(403, "PRODUCT_BUYER_NOT_MATCH", "상품 구매자가 아니므로 접근할 수 없습니다"),
+    PRODUCT_SELLER_NOT_EXISTED(500, "PRODUCT_SELLER_NOT_EXISTED", "상품 판매자의 정보를 찾을 수 없습니다"),
+    PRODUCT_SELLER_NOT_MATCH(403, "PRODUCT_SELLER_NOT_MATCH", "상품 판매자가 아니므로 접근할 수 없습니다"),
 
     //파일 업로드
     FILE_CONVERTING_ERROR(400, "F001", "파일 업로드 시에 오류가 발생했습니다"),

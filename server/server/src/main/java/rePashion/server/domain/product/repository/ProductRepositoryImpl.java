@@ -124,7 +124,7 @@ public class ProductRepositoryImpl implements ProductCustomRepository {
             productDetailDto.getSellerInfo().changeImage(getImageList(product));
             CategoryDto categories = getCategories(productDetailDto.getCategory());
             productDetailDto.getBasic().changeClassificationAndProductInfo(categories.getGenderCategory(), categories.getParentCategory(), categories.getSubCategory());
-            productDetailDto.changeMeasure(getMeasure(measure));
+            productDetailDto.changeMeasure(findMeasure(productId));
         }
 
         return productDetailDto;
