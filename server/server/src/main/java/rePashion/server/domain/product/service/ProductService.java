@@ -15,7 +15,6 @@ import rePashion.server.domain.product.repository.ProductAdvanceInfoRepository;
 import rePashion.server.domain.product.repository.ProductImageRepository;
 import rePashion.server.domain.product.repository.ProductRepository;
 import rePashion.server.domain.product.resources.mapper.ProductMapper;
-import rePashion.server.domain.product.resources.mapper.ProductMapperImpl;
 import rePashion.server.domain.user.model.PurchaseStatus;
 import rePashion.server.domain.user.model.User;
 import rePashion.server.domain.user.model.UserProduct;
@@ -36,7 +35,7 @@ public class ProductService {
     private final UserProductRepository userProductRepository;
     private final MeasureRepository measureRepository;
     private final MeasureMapper measureMapper;
-    private final ProductMapperImpl productMapper;
+    private final ProductMapper productMapper;
     public Product save(User user, ProductDto dto){
         ProductFlatDto productFlatDto = productMapper.productDtoToFlatDto(dto);
         Product savedProduct = saveProduct(productFlatDto, user, dto.getImgList().get(0));
