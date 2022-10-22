@@ -2,8 +2,9 @@ package rePashion.server.domain.product.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import rePashion.server.domain.product.dto.ProductDetailDto;
+import rePashion.server.domain.product.dto.ProductDto;
 import rePashion.server.domain.product.dto.ProductFlatDto;
-import rePashion.server.domain.product.dto.ProductRequestBody;
 import rePashion.server.domain.product.exception.ProductBuyerException;
 import rePashion.server.domain.product.exception.ProductNotExistedException;
 import rePashion.server.domain.product.model.*;
@@ -14,6 +15,7 @@ import rePashion.server.domain.product.repository.ProductAdvanceInfoRepository;
 import rePashion.server.domain.product.repository.ProductImageRepository;
 import rePashion.server.domain.product.repository.ProductRepository;
 import rePashion.server.domain.product.resources.mapper.ProductMapper;
+import rePashion.server.domain.product.resources.mapper.ProductMapperImpl;
 import rePashion.server.domain.user.model.PurchaseStatus;
 import rePashion.server.domain.user.model.User;
 import rePashion.server.domain.user.model.UserProduct;
@@ -34,8 +36,8 @@ public class ProductService {
     private final UserProductRepository userProductRepository;
     private final MeasureRepository measureRepository;
     private final MeasureMapper measureMapper;
-    private final ProductMapper productMapper;
-    public Product save(User user, ProductRequestBody dto){
+    private final ProductMapperImpl productMapper;
+    public Product save(User user, ProductDto dto){
         ProductFlatDto productFlatDto = productMapper.productDtoToFlatDto(dto);
         Product savedProduct = saveProduct(productFlatDto, user, dto.getImgList().get(0));
         ProductAdvanceInfo savedProductAdvanceInfo = saveProductAdvanceInfo(productFlatDto, savedProduct);
@@ -60,7 +62,7 @@ public class ProductService {
         return productAdvanceInfoRepository.save(productAdvanceInfo);
     }
 
-    private void saveMeasure(ProductRequestBody body, ProductAdvanceInfo advanceInfo){
+    private void saveMeasure(ProductDto body, ProductAdvanceInfo advanceInfo){
         Measure measure = measureMapper.getMeasure(body);
         measure.setAdvanceInfo(advanceInfo);
         measureRepository.save(measure);
@@ -70,13 +72,13 @@ public class ProductService {
         Product product = productMapper.flatDtoToProduct(dto);
         product.getBasicInfo().changeThumbNail(image);
         Product savedProduct = productRepository.save(product);
-        UserProduct userProduct = new UserProduct(PurchaseStatus.Buyer);
+        UserProduct userProduct = new UserProduct(PurchaseStatus.Seller);
         userProduct.changeUserAndProduct(user, savedProduct);
         userProductRepository.save(userProduct);
         return savedProduct;
     }
 
-    public Long update(User user, Long productId, ProductRequestBody dto){
+    public Long update(User user, Long productId, ProductDto dto){
         delete(user, productId);
         Product savedProduct = save(user, dto);
         return savedProduct.getId();
@@ -87,15 +89,18 @@ public class ProductService {
         productRepository.deleteById(productId);
     }
 
-//    public ProductRequestBody get(User user, Long productId){
-//        checkUser(user, productId);
-//        Product product = productRepository.findProductEntityGraph(productId).orElseThrow(ProductNotExistedException::new);
-//        return ProductRequestBody.toDto(product);
-//    }
+    public ProductDto get(User user, Long productId){
+        checkUser(user, productId);
+        return productRepository.get(productId);
+    }
+
+    public ProductDetailDto getDetail(User user, Long productId){
+        return productRepository.getDetail(user, productId);
+    }
 
     private void checkUser(User user, Long productId){
         Product findProduct = productRepository.findById(productId).orElseThrow(ProductNotExistedException::new);
-        User productBuyer = userProductRepository.findProductBuyer(findProduct).orElseThrow(()->new ProductBuyerException(ErrorCode.PRODUCT_BUYER_NOT_EXISTED));
-        if(!productBuyer.getId().equals(user.getId())) throw new ProductBuyerException(ErrorCode.PRODUCT_BUYER_NOT_MATCH);
+        User productBuyer = userProductRepository.findByProductSeller(findProduct).orElseThrow(()->new ProductBuyerException(ErrorCode.PRODUCT_SELLER_NOT_EXISTED));
+        if(!productBuyer.getId().equals(user.getId())) throw new ProductBuyerException(ErrorCode.PRODUCT_SELLER_NOT_MATCH);
     }
 }

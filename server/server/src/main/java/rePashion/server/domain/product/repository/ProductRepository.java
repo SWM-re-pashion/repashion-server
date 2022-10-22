@@ -9,7 +9,7 @@ import rePashion.server.domain.product.model.Product;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<Product, Long>, ProductCustomRepository {
 
     @Query("select p from Product p join fetch p.advanceInfo where p.id =:id")
     Optional<Product> findProductEntityGraph(@Param("id") Long id);

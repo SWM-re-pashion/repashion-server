@@ -26,8 +26,8 @@ public class ProductFlatDto {
     private String tag;
     private String color;
     private String material;
-    private ProductRequestBody.Style style;
-    private ProductRequestBody.Measure measure;
+    private ProductDto.Style style;
+    private MeasureDto measure;
     private String opinion;
     private String measureType;
 }

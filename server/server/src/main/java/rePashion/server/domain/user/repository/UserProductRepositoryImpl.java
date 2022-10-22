@@ -41,4 +41,16 @@ public class UserProductRepositoryImpl implements UserProductRepositoryCustom{
                 .fetchOne();
         return Optional.ofNullable(findUser);
     }
+
+    @Override
+    public Optional<User> findByProductSeller(Product findProduct) {
+        User findUser = queryFactory
+                .select(user)
+                .from(userProduct)
+                .join(userProduct.product, product)
+                .join(userProduct.user, user)
+                .where(product.eq(findProduct), userProduct.purchaseStatus.eq(PurchaseStatus.Seller))
+                .fetchOne();
+        return Optional.ofNullable(findUser);
+    }
 }

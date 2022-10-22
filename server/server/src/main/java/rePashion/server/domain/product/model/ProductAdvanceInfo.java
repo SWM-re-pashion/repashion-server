@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import rePashion.server.domain.product.dto.ProductRequestBody;
 import rePashion.server.domain.product.model.embedded.SellerNote;
 import rePashion.server.domain.product.model.measure.entity.Measure;
 
@@ -27,15 +26,18 @@ public class ProductAdvanceInfo {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "advanceInfo")
     private Measure measure;
 
+    private String measureType;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "productId")
     private Product product;
 
     @Builder
-    public ProductAdvanceInfo(Long id, SellerNote sellerNote, Measure measure) {
+    public ProductAdvanceInfo(Long id, SellerNote sellerNote, String measureType, Measure measure) {
         this.id = id;
         this.sellerNote = sellerNote;
         this.measure = measure;
+        this.measureType = measureType;
     }
 
     public void changeProduct(Product product) {

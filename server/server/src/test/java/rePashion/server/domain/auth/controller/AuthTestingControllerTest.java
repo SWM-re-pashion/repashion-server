@@ -53,7 +53,7 @@ class AuthTestingControllerTest {
     @Test
     void 정상적인_토큰_테스팅() throws Exception {
         //given
-        User user = new User("test@test.com", "", "test");
+        User user = new User("test@test.com", "test");
         UserAuthority userAuthority = new UserAuthority(Role.ROLE_USER);
         userAuthority.changeAuthority(user);
         User save = userRepository.save(user);
