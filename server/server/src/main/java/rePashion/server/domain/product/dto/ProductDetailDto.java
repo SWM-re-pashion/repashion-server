@@ -17,7 +17,7 @@ public class ProductDetailDto {
 
     private Boolean isMe;
 
-    private Boolean status;
+    private Boolean isSoldOut;
     @Getter
     public static class SellerInfo{
         private String profileImg;
@@ -95,9 +95,9 @@ public class ProductDetailDto {
     private String category;
 
     @QueryProjection
-    public ProductDetailDto(Boolean isMe, Boolean status, SellerInfo sellerInfo, Basic basic, SellerNotice sellerNotice, String opinion, int price, boolean isIncludeDelivery, LocalDateTime updatedAt, int like, int view, String category) {
+    public ProductDetailDto(Boolean isMe, Boolean isSoldOut, SellerInfo sellerInfo, Basic basic, SellerNotice sellerNotice, String opinion, int price, boolean isIncludeDelivery, LocalDateTime updatedAt, int like, int view, String category) {
         this.isMe = isMe;
-        this.status = status;
+        this.isSoldOut = isSoldOut;
         this.sellerInfo = sellerInfo;
         this.basic = basic;
         this.sellerNotice = sellerNotice;
