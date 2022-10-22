@@ -26,6 +26,7 @@ public class ProductRepositoryImpl implements ProductCustomRepository {
     public ProductDto get(Long productId) {
         QProduct product = QProduct.product;
         QProductAdvanceInfo productAdvanceInfo = QProductAdvanceInfo.productAdvanceInfo;
+        QMeasure measure = QMeasure.measure;
 
         ProductDto productDto = queryFactory
                 .select(
@@ -61,11 +62,12 @@ public class ProductRepositoryImpl implements ProductCustomRepository {
                     ))
             .from(product)
             .join(product.advanceInfo, productAdvanceInfo)
+            .join(productAdvanceInfo.measure, measure)
             .where(product.id.eq(productId))
             .fetchOne();
         if(productDto != null) {
-            productDto.changeImgList(findProductImage(productId));
-            productDto.changeMeasure(findMeasure(productId));
+            productDto.changeImgList(getImageList(product));
+            productDto.changeMeasure(getMeasure(measure));
         }
         return productDto;
     }
@@ -124,7 +126,7 @@ public class ProductRepositoryImpl implements ProductCustomRepository {
             productDetailDto.getSellerInfo().changeImage(getImageList(product));
             CategoryDto categories = getCategories(productDetailDto.getCategory());
             productDetailDto.getBasic().changeClassificationAndProductInfo(categories.getGenderCategory(), categories.getParentCategory(), categories.getSubCategory());
-            productDetailDto.changeMeasure(findMeasure(productId));
+            productDetailDto.changeMeasure(getMeasure(measure));
         }
 
         return productDetailDto;
@@ -151,25 +153,5 @@ public class ProductRepositoryImpl implements ProductCustomRepository {
     private ArrayList<String> getImageList(QProduct product) {
         QProductImage productImage = QProductImage.productImage;
         return (ArrayList<String>) queryFactory.select(productImage.imagePath).from(productImage).where(productImage.product.eq(product)).fetch();
-    }
-
-    private ArrayList<String> findProductImage(Long productId){
-        QProductImage productImage = QProductImage.productImage;
-        return new ArrayList<>(queryFactory
-                .select(productImage.imagePath)
-                .from(productImage)
-                .where(productImage.product.id.eq(productId))
-                .fetch());
-    }
-
-    private MeasureDto findMeasure(Long productId){
-        QMeasure measure = QMeasure.measure;
-        QProductAdvanceInfo productAdvanceInfo = new QProductAdvanceInfo("productAdvanceInfo_2");
-        Measure findMeasure = queryFactory
-                .selectFrom(measure)
-                .join(measure.advanceInfo, productAdvanceInfo)
-                .where(measure.advanceInfo.product.id.eq(productId))
-                .fetchOne();
-        return (findMeasure == null)? null : findMeasure.getMeasureDto();
     }
 }
