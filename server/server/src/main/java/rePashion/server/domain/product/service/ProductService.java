@@ -36,7 +36,7 @@ public class ProductService {
     private final UserProductRepository userProductRepository;
     private final MeasureRepository measureRepository;
     private final MeasureMapper measureMapper;
-    private final ProductMapperImpl productMapper;
+    private final ProductMapper productMapper;
     public Product save(User user, ProductDto dto){
         ProductFlatDto productFlatDto = productMapper.productDtoToFlatDto(dto);
         Product savedProduct = saveProduct(productFlatDto, user, dto.getImgList().get(0));
