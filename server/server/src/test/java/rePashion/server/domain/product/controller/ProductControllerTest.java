@@ -62,7 +62,6 @@ class ProductControllerTest {
     private ProductController productController;
 
     @Test
-    @Rollback(value = false)
     public void 정상적으로_저장하기() throws Exception {
         //given
 
