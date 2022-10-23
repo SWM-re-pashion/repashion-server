@@ -17,20 +17,8 @@ public class Preference {
     @Embedded
     PreferenceBasicInfo basicInfo;
 
-    @OneToMany(mappedBy = "preference")
-    private List<PreferStyle> style = new ArrayList<>();
-
-    private String preferredStyle;
-
     @Builder
     public Preference(PreferenceBasicInfo basicInfo) {
         this.basicInfo = basicInfo;
-    }
-    public void choosePreferStyle(List<PreferStyle> ps){
-        this.style = ps;
-    }
-
-    public void changePreferredStyle(String preferredStyle){
-        this.preferredStyle = preferredStyle;
     }
 }

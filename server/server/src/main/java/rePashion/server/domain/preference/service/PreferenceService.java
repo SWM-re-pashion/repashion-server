@@ -23,8 +23,6 @@ import java.util.Optional;
 public class PreferenceService {
 
     private final PreferenceRepository preferenceRepository;
-    private final StyleImageRepository styleImageRepository;
-    private final PreferStyleRepository preferStyleRepository;
 
     /**
      * 사용자의 선호 정보들을 DB에 저장하는 함수
@@ -34,38 +32,6 @@ public class PreferenceService {
      */
     public Optional<Preference> savePreference(PostPreferenceRequestDto dto){
         Preference preference = new Preference(dto.toBasicInfo());
-        insertPreferStyle(preference, dto.getStyles());
-        preference.changePreferredStyle(getPreferredStyle());
         return Optional.of(preferenceRepository.save(preference));
-    }
-
-    private String getPreferredStyle() {
-        return "힙합";
-    }
-
-    private void insertPreferStyle(Preference preference, ArrayList<Long> style){
-        ArrayList<PreferStyle> preferStyle = createPreferStyles(preference, style);
-        preference.choosePreferStyle(preferStyle);
-    }
-
-    private ArrayList<PreferStyle> createPreferStyles(Preference preference, ArrayList<Long> selectedStyle){
-        ArrayList<PreferStyle> preferStyles = new ArrayList<>();
-        for(Long s : selectedStyle){
-            StyleImage styleImage = findStyleImage(s);
-            PreferStyle preferStyle = savePreferStyle(preference, styleImage);
-            preferStyles.add(preferStyle);
-        }
-        return preferStyles;
-    }
-
-    private PreferStyle savePreferStyle(Preference preference, StyleImage styleImage){
-        PreferStyle preferStyle = new PreferStyle(preference, styleImage);
-        return preferStyleRepository.save(preferStyle);
-    }
-
-    private StyleImage findStyleImage(Long id){
-        Optional<StyleImage> foundStyleImage = styleImageRepository.findById(id);
-        foundStyleImage.orElseThrow(() -> new StyleImageNotExistedException(ErrorCode.STYLE_IMAGE_NOT_EXISTED));
-        return foundStyleImage.get();
     }
 }
