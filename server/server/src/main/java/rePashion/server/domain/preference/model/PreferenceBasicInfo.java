@@ -42,8 +42,8 @@ public class PreferenceBasicInfo {
         this.bodyShape = check(bodyShape);
         this.topSize = splitAndCheck(topSize);
         this.bottomSize = splitAndCheck(bottomSize);
-        this.topColors = splitAndCheck(topColors);
-        this.bottomColors = splitAndCheck(bottomColors);
+        this.topColors = topColors;
+        this.bottomColors = bottomColors;
     }
 
     public PreferenceBasicInfo(PostPreferenceRequestDto dto){
@@ -52,8 +52,8 @@ public class PreferenceBasicInfo {
         this.bodyShape = check(dto.getBodyShape());
         this.topSize = splitAndCheck(dto.getTopSize());
         this.bottomSize = splitAndCheck(dto.getBottomSize());
-        this.topColors = splitAndCheck(dto.getTopColors());
-        this.bottomColors = splitAndCheck(dto.getBottomColors());
+        this.topColors = dto.getTopColors();
+        this.bottomColors = dto.getBottomColors();
     }
 
     public String check(String staticValue){
