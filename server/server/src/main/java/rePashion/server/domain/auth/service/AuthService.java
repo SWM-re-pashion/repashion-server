@@ -11,9 +11,10 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import rePashion.server.domain.auth.dto.exception.*;
 import rePashion.server.domain.auth.dto.response.CognitoGetUserInfoResponseDto;
-import rePashion.server.domain.auth.dto.response.TokenResponseDto;
+import rePashion.server.domain.auth.dto.response.Response;
 import rePashion.server.domain.auth.model.RefreshToken;
 import rePashion.server.domain.auth.repository.RefreshTokenRepository;
+import rePashion.server.domain.preference.repository.PreferenceRepository;
 import rePashion.server.domain.user.model.Role;
 import rePashion.server.domain.user.model.User;
 import rePashion.server.domain.user.model.UserAuthority;
@@ -24,7 +25,6 @@ import rePashion.server.global.jwt.impl.AccessTokenProvider;
 import rePashion.server.global.jwt.impl.RefreshTokenProvider;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +38,7 @@ public class AuthService {
     private final RefreshTokenProvider refreshTokenProvider;
 
     private final RefreshTokenRepository refreshTokenRepository;
+    private final PreferenceRepository preferenceRepository;
 
     @Value("${spring.cloud.aws.security.cognito.redirect_url}")
     private String REDIRECT_URL;
@@ -48,9 +49,11 @@ public class AuthService {
     @Value("${spring.cloud.aws.security.cognito.domain}")
     private String COGNITO_DOMAIN;
 
-    public TokenResponseDto login(String cognitoAccessToken) throws JsonProcessingException {
+    public Response.Login login(String cognitoAccessToken) throws JsonProcessingException {
         User user = getUserInfo(cognitoAccessToken);
-        return issueToken(user);
+        Response.Login response = issueToken(user);
+        response.setHasPreference(hasPreferenceInfo(user));
+        return response;
     }
 
     public String reissueRefreshToken(HttpServletRequest request, String refreshToken){
@@ -67,13 +70,16 @@ public class AuthService {
         if(!refreshToken.equals(savedRefreshToken.getValue())) throw new RefreshTokenException(ErrorCode.REFRESH_TOKEN_NOT_MATCH);
     }
 
-    private TokenResponseDto issueToken(User user) {
+    private Response.Login issueToken(User user) {
         String accessToken = accessTokenProvider.parse(user);
         String refreshToken = refreshTokenProvider.parse(user);
         refreshTokenRepository.save(new RefreshToken(user.getId(), refreshToken));
-        return new TokenResponseDto(accessToken, refreshToken);
+        return new Response.Login(accessToken, refreshToken);
     }
 
+    private boolean hasPreferenceInfo(User user){
+        return preferenceRepository.countPreferenceByUser(user) !=0;
+    }
     private User getUserInfo(String cognitoAccessToken) throws JsonProcessingException {
         HttpHeaders headers = getCognitoHeaders(cognitoAccessToken);
         ResponseEntity<String> response = sendRequestToCognito(headers);
