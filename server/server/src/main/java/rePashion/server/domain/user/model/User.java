@@ -4,6 +4,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import rePashion.server.domain.preference.model.Preference;
+import rePashion.server.domain.product.model.ProductAdvanceInfo;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -33,6 +35,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<UserProduct> products = new ArrayList<>();
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
+    private Preference preference;
+
     @Builder
     public User(String email, String nickName) {
         this.email = email;
@@ -54,4 +59,8 @@ public class User {
     }
 
     public void changeNickName(String nickName){this.nickName = nickName;}
+
+    public void changePreference(Preference preference){
+        this.preference = preference;
+    }
 }

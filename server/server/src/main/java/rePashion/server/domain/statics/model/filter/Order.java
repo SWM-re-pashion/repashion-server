@@ -1,7 +1,6 @@
 package rePashion.server.domain.statics.model.filter;
 
 public enum Order {
-
     latest("최신순", "latest"),
     like("인기순", "like"),
     view("최신순", "view"),
