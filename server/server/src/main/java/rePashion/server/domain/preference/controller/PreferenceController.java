@@ -25,7 +25,7 @@ public class PreferenceController {
 
     @PostMapping("preference")
     public ResponseEntity<GlobalResponse> postPreference(@RequestBody @Valid PostPreferenceRequestDto requestDto){
-        Preference preference = preferenceService.savePreference(requestDto).orElseThrow(() -> new PreferenceNotExistedException(ErrorCode.DB_INSERTING_ERROR));
-        return new ResponseEntity<>(GlobalResponse.of(StatusCode.CREATED, preference.getPreferredStyle()), HttpStatus.CREATED);
+        Long savedId = preferenceService.save(requestDto);
+        return new ResponseEntity<>(GlobalResponse.of(StatusCode.CREATED, savedId), HttpStatus.CREATED);
     }
 }
