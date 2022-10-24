@@ -1,6 +1,7 @@
 package rePashion.server.global.common.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -11,15 +12,31 @@ import org.springframework.web.cors.CorsConfiguration;
 import rePashion.server.global.jwt.filter.JwtAuthorizationFilter;
 import rePashion.server.global.jwt.impl.AccessTokenProvider;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private final AccessTokenProvider accessTokenProvider;
 
+    @Value("${auth.jwt.access.header}")
+    private String header;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
+
+        http.cors().configurationSource(request -> {
+            CorsConfiguration config = new CorsConfiguration();
+            config.setAllowCredentials(true);
+            config.setAllowedOrigins(List.of("http://localhost:3001", "https://refashion.link"));
+            config.setAllowedHeaders(List.of("Access-Control-Allow-Headers", header, "Content-Type", "Authorization", "Origin"));
+            config.setAllowedMethods(Arrays.asList("POST", "OPTIONS", "GET", "DELETE", "PUT"));
+            config.setMaxAge(3600L);
+            return config;
+        });
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
