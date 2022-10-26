@@ -1,7 +1,6 @@
 package rePashion.server.domain.user.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,29 +8,20 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
-import rePashion.server.domain.auth.model.RefreshToken;
 import rePashion.server.domain.product.model.Product;
 import rePashion.server.domain.product.model.embedded.BasicInfo;
 import rePashion.server.domain.product.repository.ProductRepository;
 import rePashion.server.domain.user.model.*;
 import rePashion.server.domain.user.repository.UserProductRepository;
 import rePashion.server.domain.user.repository.UserRepository;
-import rePashion.server.domain.user.resources.Request;
-import rePashion.server.global.common.response.GlobalResponse;
 import rePashion.server.global.jwt.impl.AccessTokenProvider;
-
-import javax.servlet.http.Cookie;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -39,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class MyUserControllerTest {
+class UserControllerTest {
 
     @Autowired
     private MockMvc mvc;
@@ -60,7 +50,7 @@ class MyUserControllerTest {
     private ProductRepository productRepository;
 
     @Autowired
-    private MyUserController myUserController;
+    private UserController myUserController;
 
     private ArrayList<Product> productBuyList = new ArrayList<>();
 

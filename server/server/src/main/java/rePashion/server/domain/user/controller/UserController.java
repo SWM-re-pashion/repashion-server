@@ -13,12 +13,10 @@ import rePashion.server.global.common.response.GlobalResponse;
 import rePashion.server.global.common.response.StatusCode;
 import rePashion.server.global.common.util.Util;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/api/user/my")
 @RequiredArgsConstructor
-public class MyUserController {
+public class UserController {
 
     private final Util util;
     private final UserService userService;
