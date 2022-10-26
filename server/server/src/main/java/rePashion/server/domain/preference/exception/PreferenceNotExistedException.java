@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 
 public class PreferenceNotExistedException extends InvalidValueException{
 
-    public PreferenceNotExistedException(ErrorCode errorCode) {
-        super(errorCode);
+    public PreferenceNotExistedException() {
+        super(ErrorCode.PREFERENCE_NOT_EXISTED);
     }
 }
