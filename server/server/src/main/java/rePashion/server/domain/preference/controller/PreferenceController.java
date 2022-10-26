@@ -36,4 +36,11 @@ public class PreferenceController {
         PostPreferenceRequestDto response = preferenceService.get(user);
         return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, response), HttpStatus.OK);
     }
+
+    @PatchMapping("/preference")
+    public ResponseEntity<GlobalResponse> patchPreference(@AuthenticationPrincipal Long userId, @RequestBody @Valid PostPreferenceRequestDto requestDto){
+        User user = userRepository.findById(userId).orElseThrow(UserNotExistedException::new);
+        Long id = preferenceService.update(user, requestDto);
+        return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, id), HttpStatus.OK);
+    }
 }
