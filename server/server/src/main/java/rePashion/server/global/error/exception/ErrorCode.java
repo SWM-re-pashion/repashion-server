@@ -32,6 +32,9 @@ public enum ErrorCode {
     // Preference
     PREFERENCE_NOT_EXISTED(400, "PREFERENCE_NOT_EXISTED", "개인화 추천 입력 정보가 존재하지 않습니다"),
 
+    // User
+    USER_NOT_FOUND(400, "USER_NOT_FOUND", "찾고자 하는 유저가 존재하지 않습니다"),
+
     //코그니토
     COGNITO_ENVIRONMENT_ERROR(500,"COG_ENV_ERROR", "Invalid authentication server environment variable"),
     COGNITO_TOKEN_ERROR(400, "COG_TOKEN_ERROR", "The authentication token information is incorrect"),
