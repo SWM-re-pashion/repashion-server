@@ -13,4 +13,5 @@ public interface PreferenceRepository extends JpaRepository<Preference, Long>, P
 
     int countPreferenceByUser(User user);
 
+    Optional<Preference> findPreferenceByUser(User user);
 }
