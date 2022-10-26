@@ -10,7 +10,7 @@ import rePashion.server.domain.preference.model.PreferenceBasicInfo;
 import rePashion.server.domain.preference.repository.PreferenceRepository;
 import rePashion.server.domain.user.model.User;
 
-import java.util.Optional;
+import javax.transaction.Transactional;
 
 @Getter
 @Service
@@ -34,5 +34,11 @@ public class PreferenceService {
 
     public PostPreferenceRequestDto get(User user){
         return preferenceRepository.get(user).orElseThrow(PreferenceNotExistedException::new);
+    }
+
+    public Long update(User user, PostPreferenceRequestDto dto){
+        Preference preference = preferenceRepository.findPreferenceByUser(user).orElseThrow(PreferenceNotExistedException::new);
+        preferenceRepository.update(preference, dto);
+        return preference.getId();
     }
 }
