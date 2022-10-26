@@ -57,12 +57,14 @@ public class PreferenceBasicInfo {
     }
 
     public String check(String staticValue){
+        if(staticValue == null) return null;
         boolean contain = StaticsService.lookups.containsKey(staticValue);
         if(!contain) throw new StaticVariableNotExisted(ErrorCode.STATIC_VARIABLE_NOT_EXISTED);
         return staticValue;
     }
 
     public String splitAndCheck(String staticValue){
+        if(staticValue == null) return null;
         String[] splitValues = staticValue.split("/");
         Arrays.stream(splitValues).forEach(value->{
             boolean contain = StaticsService.lookups.containsKey(value);
