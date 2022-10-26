@@ -4,10 +4,13 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import rePashion.server.domain.preference.dto.PostPreferenceRequestDto;
+import rePashion.server.domain.preference.exception.PreferenceNotExistedException;
 import rePashion.server.domain.preference.model.Preference;
 import rePashion.server.domain.preference.model.PreferenceBasicInfo;
 import rePashion.server.domain.preference.repository.PreferenceRepository;
 import rePashion.server.domain.user.model.User;
+
+import java.util.Optional;
 
 @Getter
 @Service
@@ -27,5 +30,9 @@ public class PreferenceService {
         Preference preference = new Preference(new PreferenceBasicInfo(dto));
         preference.changeUser(user);
         return preferenceRepository.save(preference).getId();
+    }
+
+    public PostPreferenceRequestDto get(User user){
+        return preferenceRepository.get(user).orElseThrow(PreferenceNotExistedException::new);
     }
 }
