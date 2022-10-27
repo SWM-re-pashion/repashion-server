@@ -18,8 +18,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select u from User u where u.email = :email")
     Optional<User> findUserByEmail(@Param("email") String email);
 
+    @Query("select u from User u where u.id = :id")
+    Optional<User> findById(@Param("id") Long id);
+
     @Transactional
     @Modifying
-    @Query("update User u set u.nickName = :nickName where u.id = :id")
-    void updateUserNickName(@Param("nickName") String nickName, @Param("id") Long id);
+    @Query("update User u set u.nickName = :nickName, u.profile = :profile where u.id = :id")
+    void update(@Param("nickName") String nickName, @Param("profile") String profile, @Param("id") Long id);
 }

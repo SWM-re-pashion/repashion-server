@@ -1,27 +1,29 @@
 package rePashion.server.domain.user.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import rePashion.server.domain.product.model.Product;
 import rePashion.server.domain.product.model.embedded.BasicInfo;
 import rePashion.server.domain.product.repository.ProductRepository;
+import rePashion.server.domain.styleimage.service.S3UploaderService;
 import rePashion.server.domain.user.model.*;
 import rePashion.server.domain.user.repository.UserProductRepository;
 import rePashion.server.domain.user.repository.UserRepository;
 import rePashion.server.global.jwt.impl.AccessTokenProvider;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.hamcrest.core.Is.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -44,6 +46,9 @@ class UserControllerTest {
     private UserProductRepository userProductRepository;
 
     @Autowired
+    private UserController userController;
+
+    @Autowired
     private AccessTokenProvider accessTokenProvider;
 
     @Autowired
@@ -51,6 +56,9 @@ class UserControllerTest {
 
     @Autowired
     private UserController myUserController;
+
+    @MockBean
+    private S3UploaderService s3UploaderService;
 
     private ArrayList<Product> productBuyList = new ArrayList<>();
 
@@ -118,7 +126,7 @@ class UserControllerTest {
     }
 
     @Test
-    public void 정상적인_닉네임_수정() throws Exception {
+    public void 정상적인_닉네임_이미지_수정() throws Exception {
         //given
 
         // User 만들기 및 accessToken 토큰 만들기
@@ -128,18 +136,28 @@ class UserControllerTest {
         User savedUser = userRepository.save(user);
         String parsedAccessToken = accessTokenProvider.parse(savedUser);
 
-        Map<String, String> map = new HashMap<>();
-        map.put("nickName", "changedNickName");
-        String body = new ObjectMapper().writeValueAsString(map);
+        MockMultipartFile request = new MockMultipartFile("employee", null,
+                "application/json", "{\"name\": \"originName\"}".getBytes());
 
         //when
+        when(s3UploaderService.upload(any(), any()))
+                .thenReturn("http://s3.image.test");
+
+        MockMultipartFile employeeJson = new MockMultipartFile("employee", null,
+                "application/json", "{\"name\": \"Emp Name\"}".getBytes());
+
         //then
-        mvc.perform(patch("/api/user/my/nickname").header(header, parsedAccessToken)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(body))
+        mvc.perform(
+                patch("/api/user/my")
+                .header(header, parsedAccessToken)
+                .param("name", "changedName")
+                )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.name", is("changedNickName")))
-                .andExpect(jsonPath("$.data.profileImage", is(savedUser.getProfile())))
-                .andExpect(jsonPath("$.data.totalCount", is(0)));
+                .andExpect(jsonPath("$.data", is(1)));
+
+        User findNewUser = userRepository.findById(savedUser.getId()).get();
+        Assertions.assertThat(findNewUser.getId()).isEqualTo(savedUser.getId());
+        Assertions.assertThat(findNewUser.getProfile()).isEqualTo("http://s3.image.test");
+        Assertions.assertThat(findNewUser.getNickName()).isEqualTo("changedNickName");
     }
 }
