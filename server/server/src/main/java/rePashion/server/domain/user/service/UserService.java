@@ -5,10 +5,7 @@ import org.springframework.stereotype.Service;
 import rePashion.server.domain.user.model.User;
 import rePashion.server.domain.user.repository.UserProductRepository;
 import rePashion.server.domain.user.repository.UserRepository;
-import rePashion.server.domain.user.resources.Request;
 import rePashion.server.domain.user.resources.Response;
-
-import java.util.Optional;
 
 
 @Service
@@ -21,11 +18,5 @@ public class UserService {
     public Response.MyInfoResponse getMyInfo(User user){
         int count = userProductRepository.getNumberOfPurchasingByUser(user.getId());
         return new Response.MyInfoResponse(user.getNickName(), user.getProfile(), count);
-    }
-
-    public Response.MyInfoResponse updateMyNickName(User user, String nickName){
-        userRepository.updateUserNickName(nickName, user.getId());
-        int count = userProductRepository.getNumberOfPurchasingByUser(user.getId());
-        return new Response.MyInfoResponse(nickName, user.getProfile(), count);
     }
 }
