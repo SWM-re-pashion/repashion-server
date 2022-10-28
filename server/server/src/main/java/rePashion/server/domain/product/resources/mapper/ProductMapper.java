@@ -24,8 +24,7 @@ public interface ProductMapper {
     Product flatDtoToProduct(ProductFlatDto productFlatDto);
 
     @Mappings({
-            @Mapping(source = ".", target = "sellerNote"),
-            @Mapping(target = "measure", ignore = true)
+            @Mapping(source = ".", target = "sellerNote")
     })
     ProductAdvanceInfo flatDtoToProductAdvanceIfo(ProductFlatDto productFlatDto);
 }
