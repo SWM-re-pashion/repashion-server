@@ -20,12 +20,15 @@ public class ProductDetailDto {
     private Boolean isSoldOut;
     @Getter
     public static class SellerInfo{
+
+        private Long userId;
         private String profileImg;
         private String nickname;
         private ArrayList<String> image;
 
         @QueryProjection
-        public SellerInfo(String profileImg, String nickname) {
+        public SellerInfo(Long userId, String profileImg, String nickname) {
+            this.userId = userId;
             this.profileImg = profileImg;
             this.nickname = nickname;
         }
@@ -90,12 +93,13 @@ public class ProductDetailDto {
     private String updatedAt;
     private int like;
     private int view;
+    private String contact;
 
     @JsonIgnore
     private String category;
 
     @QueryProjection
-    public ProductDetailDto(Boolean isMe, Boolean isSoldOut, SellerInfo sellerInfo, Basic basic, SellerNotice sellerNotice, String opinion, int price, boolean isIncludeDelivery, LocalDateTime updatedAt, int like, int view, String category) {
+    public ProductDetailDto(Boolean isMe, Boolean isSoldOut, SellerInfo sellerInfo, Basic basic, SellerNotice sellerNotice, String opinion, int price, boolean isIncludeDelivery, LocalDateTime updatedAt, int like, int view, String contact, String category) {
         this.isMe = isMe;
         this.isSoldOut = isSoldOut;
         this.sellerInfo = sellerInfo;
@@ -107,6 +111,7 @@ public class ProductDetailDto {
         this.updatedAt = updatedAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         this.like = like;
         this.view = view;
+        this.contact = contact;
         this.category = category;
     }
 

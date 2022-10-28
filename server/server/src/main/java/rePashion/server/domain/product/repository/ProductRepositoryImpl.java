@@ -81,6 +81,7 @@ public class ProductRepositoryImpl implements ProductCustomRepository {
                         user.id.eq(currentUser.getId()),
                         product.basicInfo.status,
                         new QProductDetailDto_SellerInfo(
+                                user.id,
                                 user.profile,
                                 user.nickName
                         ),
@@ -108,6 +109,7 @@ public class ProductRepositoryImpl implements ProductCustomRepository {
                         product.modifiedDate,
                         product.basicInfo.likes,
                         product.basicInfo.views,
+                        product.basicInfo.contact,
                         product.basicInfo.category
                 ))
                 .from(product)
