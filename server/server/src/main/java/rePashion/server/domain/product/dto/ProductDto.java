@@ -1,9 +1,11 @@
 package rePashion.server.domain.product.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
 import java.util.ArrayList;
 
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductDto {
     @Getter
@@ -72,6 +74,7 @@ public class ProductDto {
     private String contact;
     private BasicInfo basicInfo;
     private int price;
+
     private Boolean isIncludeDelivery;
     private String size;
     private AdditionalInfo additionalInfo;
@@ -105,49 +108,5 @@ public class ProductDto {
 
     public ArrayList<String> getImgList() {
         return imgList;
-    }
-
-    public String getContact() {
-        return contact;
-    }
-
-    public BasicInfo getBasicInfo() {
-        return basicInfo;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public Boolean getIncludeDelivery() {
-        return isIncludeDelivery;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public AdditionalInfo getAdditionalInfo() {
-        return additionalInfo;
-    }
-
-    public SellerNote getSellerNote() {
-        return sellerNote;
-    }
-
-    public Style getStyle() {
-        return style;
-    }
-
-    public MeasureDto getMeasure() {
-        return measure;
-    }
-
-    public String getOpinion() {
-        return opinion;
-    }
-
-    public String getMeasureType() {
-        return measureType;
     }
 }
