@@ -33,7 +33,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
             config.setAllowCredentials(true);
             config.setAllowedOrigins(List.of("http://localhost:3001", "https://refashion.link"));
             config.setAllowedHeaders(List.of("Access-Control-Allow-Headers", header, "Content-Type", "Authorization", "Origin"));
-            config.setAllowedMethods(Arrays.asList("POST", "OPTIONS", "GET", "DELETE", "PUT"));
+            config.setAllowedMethods(Arrays.asList("POST", "OPTIONS", "GET", "DELETE", "PUT", "PATCH"));
             config.setMaxAge(3600L);
             return config;
         });
