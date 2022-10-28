@@ -94,6 +94,7 @@ public class ProductService {
     }
 
     public ProductDetailDto getDetail(User user, Long productId){
+        productRepository.findById(productId).orElseThrow(ProductNotExistedException::new);
         return productRepository.getDetail(user, productId);
     }
 
