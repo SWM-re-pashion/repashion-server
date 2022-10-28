@@ -1,6 +1,7 @@
 package rePashion.server.domain.product.model.measure.entity;
 
 import rePashion.server.domain.product.dto.MeasureDto;
+import rePashion.server.domain.product.model.Product;
 import rePashion.server.domain.product.model.ProductAdvanceInfo;
 
 import javax.persistence.*;
@@ -12,12 +13,12 @@ public abstract class  Measure {
     @Id @GeneratedValue
     private Long id;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "advanceInfoId")
-    private ProductAdvanceInfo advanceInfo;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "productId")
+    private Product product;
 
     public abstract MeasureDto getMeasureDto();
-    public void setAdvanceInfo(ProductAdvanceInfo advanceInfo){
-        this.advanceInfo = advanceInfo;
+    public void changeProduct(Product product){
+        this.product = product;
     }
 }

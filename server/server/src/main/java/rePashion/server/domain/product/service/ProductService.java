@@ -39,8 +39,8 @@ public class ProductService {
     public Product save(User user, ProductDto dto){
         ProductFlatDto productFlatDto = productMapper.productDtoToFlatDto(dto);
         Product savedProduct = saveProduct(productFlatDto, user, dto.getImgList().get(0));
-        ProductAdvanceInfo savedProductAdvanceInfo = saveProductAdvanceInfo(productFlatDto, savedProduct);
-        saveMeasure(dto, savedProductAdvanceInfo);
+        saveProductAdvanceInfo(productFlatDto, savedProduct);
+        saveMeasure(dto, savedProduct);
         saveProductImage(dto.getImgList(), savedProduct);
         return savedProduct;
     }
@@ -61,9 +61,9 @@ public class ProductService {
         return productAdvanceInfoRepository.save(productAdvanceInfo);
     }
 
-    private void saveMeasure(ProductDto body, ProductAdvanceInfo advanceInfo){
+    private void saveMeasure(ProductDto body, Product product){
         Measure measure = measureMapper.getMeasure(body);
-        measure.setAdvanceInfo(advanceInfo);
+        measure.changeProduct(product);
         measureRepository.save(measure);
     }
 
@@ -94,6 +94,7 @@ public class ProductService {
     }
 
     public ProductDetailDto getDetail(User user, Long productId){
+        productRepository.findById(productId).orElseThrow(ProductNotExistedException::new);
         return productRepository.getDetail(user, productId);
     }
 

@@ -20,12 +20,15 @@ public class ProductDetailDto {
     private Boolean isSoldOut;
     @Getter
     public static class SellerInfo{
+
+        private Long userId;
         private String profileImg;
         private String nickname;
         private ArrayList<String> image;
 
         @QueryProjection
-        public SellerInfo(String profileImg, String nickname) {
+        public SellerInfo(Long userId, String profileImg, String nickname) {
+            this.userId = userId;
             this.profileImg = profileImg;
             this.nickname = nickname;
         }
@@ -49,7 +52,7 @@ public class ProductDetailDto {
             this.title = title;
             this.brand = brand;
             this.productInfo = size;
-            this.styleInfo = material + "/" + color + "/" + StaticsService.lookups.get(style);
+            this.styleInfo = material + "/" + color + "/" + StaticsService.lookups.get("Style"+style);
         }
 
         public void changeClassificationAndProductInfo(String genderCategory, String parentCategory, String subCategory){
@@ -72,12 +75,12 @@ public class ProductDetailDto {
 
         @QueryProjection
         public SellerNotice(String condition, String pollution, Integer height, String length, String bodyShape, String fit, String purchaseTime, String purchasePlace) {
-            this.condition = StaticsService.lookups.get(condition);
-            this.pollution = StaticsService.lookups.get(pollution);
+            this.condition = StaticsService.lookups.get("PollutionCondition"+condition);
+            this.pollution = StaticsService.lookups.get("PollutionCondition"+pollution);
             this.height = height;
-            this.length = StaticsService.lookups.get(length);
-            this.bodyShape = StaticsService.lookups.get(bodyShape);
-            this.fit = StaticsService.lookups.get(fit);
+            this.length = StaticsService.lookups.get("Length"+length);
+            this.bodyShape = StaticsService.lookups.get("BodyShape"+bodyShape);
+            this.fit = StaticsService.lookups.get("Fit"+fit);
             this.purchaseTime = purchaseTime;
             this.purchasePlace = purchasePlace;
         }
@@ -90,12 +93,13 @@ public class ProductDetailDto {
     private String updatedAt;
     private int like;
     private int view;
+    private String contact;
 
     @JsonIgnore
     private String category;
 
     @QueryProjection
-    public ProductDetailDto(Boolean isMe, Boolean isSoldOut, SellerInfo sellerInfo, Basic basic, SellerNotice sellerNotice, String opinion, int price, boolean isIncludeDelivery, LocalDateTime updatedAt, int like, int view, String category) {
+    public ProductDetailDto(Boolean isMe, Boolean isSoldOut, SellerInfo sellerInfo, Basic basic, SellerNotice sellerNotice, String opinion, int price, boolean isIncludeDelivery, LocalDateTime updatedAt, int like, int view, String contact, String category) {
         this.isMe = isMe;
         this.isSoldOut = isSoldOut;
         this.sellerInfo = sellerInfo;
@@ -107,6 +111,7 @@ public class ProductDetailDto {
         this.updatedAt = updatedAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         this.like = like;
         this.view = view;
+        this.contact = contact;
         this.category = category;
     }
 

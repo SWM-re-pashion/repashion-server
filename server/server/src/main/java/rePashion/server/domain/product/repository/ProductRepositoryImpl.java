@@ -6,7 +6,6 @@ import rePashion.server.domain.product.dto.*;
 import rePashion.server.domain.product.model.QProduct;
 import rePashion.server.domain.product.model.QProductAdvanceInfo;
 import rePashion.server.domain.product.model.QProductImage;
-import rePashion.server.domain.product.model.measure.entity.Measure;
 import rePashion.server.domain.product.model.measure.entity.QMeasure;
 import rePashion.server.domain.statics.category.model.QCategory;
 import rePashion.server.domain.user.model.PurchaseStatus;
@@ -26,7 +25,6 @@ public class ProductRepositoryImpl implements ProductCustomRepository {
     public ProductDto get(Long productId) {
         QProduct product = QProduct.product;
         QProductAdvanceInfo productAdvanceInfo = QProductAdvanceInfo.productAdvanceInfo;
-        QMeasure measure = QMeasure.measure;
 
         ProductDto productDto = queryFactory
                 .select(
@@ -62,12 +60,11 @@ public class ProductRepositoryImpl implements ProductCustomRepository {
                     ))
             .from(product)
             .join(product.advanceInfo, productAdvanceInfo)
-            .join(productAdvanceInfo.measure, measure)
             .where(product.id.eq(productId))
             .fetchOne();
         if(productDto != null) {
-            productDto.changeImgList(getImageList(product));
-            productDto.changeMeasure(getMeasure(measure));
+            productDto.changeImgList(getImageList(productId));
+            productDto.changeMeasure(getMeasure(productId));
         }
         return productDto;
     }
@@ -78,13 +75,13 @@ public class ProductRepositoryImpl implements ProductCustomRepository {
         QUser user = QUser.user;
         QUserProduct userProduct = QUserProduct.userProduct;
         QProductAdvanceInfo advanceInfo = QProductAdvanceInfo.productAdvanceInfo;
-        QMeasure measure = QMeasure.measure;
 
         ProductDetailDto productDetailDto = queryFactory
                 .select(new QProductDetailDto(
                         user.id.eq(currentUser.getId()),
                         product.basicInfo.status,
                         new QProductDetailDto_SellerInfo(
+                                user.id,
                                 user.profile,
                                 user.nickName
                         ),
@@ -112,28 +109,29 @@ public class ProductRepositoryImpl implements ProductCustomRepository {
                         product.modifiedDate,
                         product.basicInfo.likes,
                         product.basicInfo.views,
+                        product.basicInfo.contact,
                         product.basicInfo.category
                 ))
                 .from(product)
                 .join(product.advanceInfo, advanceInfo)
-                .join(advanceInfo.measure, measure)
                 .join(product.users, userProduct)
                 .join(userProduct.user, user)
                 .where(product.id.eq(productId), userProduct.purchaseStatus.eq(PurchaseStatus.Seller))
                 .fetchOne();
 
         if(productDetailDto != null){
-            productDetailDto.getSellerInfo().changeImage(getImageList(product));
+            productDetailDto.getSellerInfo().changeImage(getImageList(productId));
             CategoryDto categories = getCategories(productDetailDto.getCategory());
             productDetailDto.getBasic().changeClassificationAndProductInfo(categories.getGenderCategory(), categories.getParentCategory(), categories.getSubCategory());
-            productDetailDto.changeMeasure(getMeasure(measure));
+            productDetailDto.changeMeasure(getMeasure(productId));
         }
 
         return productDetailDto;
     }
 
-    private MeasureDto getMeasure(QMeasure measure) {
-        return Objects.requireNonNull(queryFactory.selectFrom(measure).fetchOne()).getMeasureDto();
+    private MeasureDto getMeasure(Long productId) {
+        QMeasure measure = QMeasure.measure;
+        return Objects.requireNonNull(queryFactory.selectFrom(measure).where(measure.product.id.eq(productId)).fetchOne()).getMeasureDto();
     }
 
     private CategoryDto getCategories(String category) {
@@ -150,8 +148,8 @@ public class ProductRepositoryImpl implements ProductCustomRepository {
                 .fetchOne();
     }
 
-    private ArrayList<String> getImageList(QProduct product) {
+    private ArrayList<String> getImageList(Long productId) {
         QProductImage productImage = QProductImage.productImage;
-        return (ArrayList<String>) queryFactory.select(productImage.imagePath).from(productImage).where(productImage.product.eq(product)).fetch();
+        return (ArrayList<String>) queryFactory.select(productImage.imagePath).from(productImage).where(productImage.product.id.eq(productId)).fetch();
     }
 }

@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import rePashion.server.domain.product.model.embedded.BasicInfo;
+import rePashion.server.domain.product.model.measure.entity.Measure;
 import rePashion.server.domain.user.model.UserProduct;
 import rePashion.server.global.common.BaseTimeEntity;
 
@@ -25,7 +26,7 @@ public class Product extends BaseTimeEntity{
     @Embedded
     BasicInfo basicInfo;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "product")
+    @OneToOne(orphanRemoval = true, mappedBy = "product")
     private ProductAdvanceInfo advanceInfo;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "product")
@@ -33,6 +34,11 @@ public class Product extends BaseTimeEntity{
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "product")
     private List<UserProduct> users = new ArrayList<>();
+
+
+    //Measure
+    @OneToOne(orphanRemoval = true, mappedBy = "product")
+    private Measure measure;
 
     @Builder
     public Product(Long id, BasicInfo basicInfo) {

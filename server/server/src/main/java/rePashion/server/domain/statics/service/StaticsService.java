@@ -160,7 +160,7 @@ public class StaticsService implements CommandLineRunner {
         create("Size","bottom","37","37");
 
         statics.forEach(o->{
-            lookups.put(o.getCode(), o.getName());
+            lookups.put(o.getType()+o.getCode(), o.getName());
         });
 
         if(isEmpty()) staticsRepository.saveAll(statics);

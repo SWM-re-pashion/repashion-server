@@ -22,10 +22,6 @@ public class ProductAdvanceInfo {
     @Embedded
     SellerNote sellerNote;
 
-    //Measure
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "advanceInfo")
-    private Measure measure;
-
     private String measureType;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -33,10 +29,9 @@ public class ProductAdvanceInfo {
     private Product product;
 
     @Builder
-    public ProductAdvanceInfo(Long id, SellerNote sellerNote, String measureType, Measure measure) {
+    public ProductAdvanceInfo(Long id, SellerNote sellerNote, String measureType) {
         this.id = id;
         this.sellerNote = sellerNote;
-        this.measure = measure;
         this.measureType = measureType;
     }
 
