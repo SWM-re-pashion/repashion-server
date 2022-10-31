@@ -497,4 +497,47 @@ class ProductFilterRepositoryTest {
         assertThat(content.get(1).getTitle()).isEqualTo("category_2002001");
         assertThat(content.get(2).getTitle()).isEqualTo("category_2001001");
     }
+
+    @Test
+    public void Product_LOE_테스트(){
+        //given
+        Condition.Filter cond = new Condition.Filter();
+        cond.setOrder(Order.low_price);
+        cond.setPriceLoe(200003);
+
+        PageRequest of = PageRequest.of(0, 5);
+
+        //when
+        Page<ProductPreviewDto> dto = productFilterRepository.get(cond, of);
+        List<ProductPreviewDto> content = dto.getContent();
+
+        //then
+        assertThat(content.size()).isEqualTo(4);
+        assertThat(content.get(0).getPrice()).isEqualTo(200000);
+        assertThat(content.get(1).getPrice()).isEqualTo(200001);
+        assertThat(content.get(2).getPrice()).isEqualTo(200002);
+        assertThat(content.get(3).getPrice()).isEqualTo(200003);
+    }
+
+    @Test
+    public void Product_GOE_테스트(){
+        //given
+        Condition.Filter cond = new Condition.Filter();
+        cond.setOrder(Order.low_price);
+        cond.setPriceGoe(200003);
+
+        PageRequest of = PageRequest.of(0, 5);
+
+        //when
+        Page<ProductPreviewDto> dto = productFilterRepository.get(cond, of);
+        List<ProductPreviewDto> content = dto.getContent();
+
+        //then
+        assertThat(content.size()).isEqualTo(5);
+        assertThat(content.get(0).getPrice()).isEqualTo(200003);
+        assertThat(content.get(1).getPrice()).isEqualTo(200004);
+        assertThat(content.get(2).getPrice()).isEqualTo(200004);
+        assertThat(content.get(3).getPrice()).isEqualTo(200004);
+        assertThat(content.get(4).getPrice()).isEqualTo(200004);
+    }
 }
