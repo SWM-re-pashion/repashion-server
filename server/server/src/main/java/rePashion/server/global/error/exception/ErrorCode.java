@@ -56,7 +56,7 @@ public enum ErrorCode {
     PRODUCT_BUYER_NOT_MATCH(403, "PRODUCT_BUYER_NOT_MATCH", "상품 구매자가 아니므로 접근할 수 없습니다"),
     PRODUCT_SELLER_NOT_EXISTED(500, "PRODUCT_SELLER_NOT_EXISTED", "상품 판매자의 정보를 찾을 수 없습니다"),
     PRODUCT_SELLER_NOT_MATCH(403, "PRODUCT_SELLER_NOT_MATCH", "상품 판매자가 아니므로 접근할 수 없습니다"),
-
+    PRODUCT_STATUS_ALREADY_UPDATED(400, "PRODUCT_STATUS_ALREADY_UPDATED", "이미 판매 완료 처리되었습니다"),
     //파일 업로드
     FILE_CONVERTING_ERROR(400, "F001", "파일 업로드 시에 오류가 발생했습니다"),
 

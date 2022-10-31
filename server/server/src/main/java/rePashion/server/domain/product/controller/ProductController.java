@@ -58,6 +58,13 @@ public class ProductController {
         return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, detail), HttpStatus.OK);
     }
 
+    @PatchMapping("/status/{productId}")
+    public ResponseEntity<GlobalResponse> updateStatus(@AuthenticationPrincipal Long userId, @PathVariable Long productId){
+        User user = findUser(userId);
+        productService.updateStatus(user, productId);
+        return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, productId), HttpStatus.OK);
+    }
+
     private User findUser(Long userId){
         return userRepository.findById(userId).orElseThrow(UserNotExistedException::new);
     }
