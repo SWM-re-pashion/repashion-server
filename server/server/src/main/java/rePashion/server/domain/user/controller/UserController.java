@@ -31,7 +31,7 @@ public class UserController {
     @GetMapping("/my")
     public ResponseEntity<GlobalResponse> getMyInfo(@AuthenticationPrincipal Long userId){
         User user = userRepository.findById(userId).orElseThrow(UserNotExistedException::new);
-        Response.MyInfoResponse myInfo = userService.getMyInfo(user);
+        Response.MyInfoResponse myInfo = userService.getMyInfo(true, user);
         return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, myInfo), HttpStatus.OK);
     }
 
@@ -39,7 +39,7 @@ public class UserController {
     public ResponseEntity<GlobalResponse> getOtherInfo(@AuthenticationPrincipal Long userId, @PathVariable Long id){
         userRepository.findById(userId).orElseThrow(UserNotExistedException::new);
         User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
-        Response.MyInfoResponse myInfo = userService.getMyInfo(user);
+        Response.MyInfoResponse myInfo = userService.getMyInfo(false, user);
         return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, myInfo), HttpStatus.OK);
     }
 
