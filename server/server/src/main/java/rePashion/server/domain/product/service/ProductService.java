@@ -7,6 +7,7 @@ import rePashion.server.domain.product.dto.ProductDto;
 import rePashion.server.domain.product.dto.ProductFlatDto;
 import rePashion.server.domain.product.exception.ProductBuyerException;
 import rePashion.server.domain.product.exception.ProductNotExistedException;
+import rePashion.server.domain.product.exception.ProductStatusAlreadyUpdated;
 import rePashion.server.domain.product.model.*;
 import rePashion.server.domain.product.model.measure.MeasureMapper;
 import rePashion.server.domain.product.model.measure.entity.Measure;
@@ -99,13 +100,15 @@ public class ProductService {
     }
 
     public void updateStatus(User user, Long productId){
-        checkUser(user, productId);
+        Product product = checkUser(user, productId);
+        if(product.getBasicInfo().getStatus()) throw new ProductStatusAlreadyUpdated();
         productRepository.updateStatus(productId);
     }
 
-    private void checkUser(User user, Long productId){
+    private Product checkUser(User user, Long productId){
         Product findProduct = productRepository.findById(productId).orElseThrow(ProductNotExistedException::new);
         User productBuyer = userProductRepository.findByProductSeller(findProduct).orElseThrow(()->new ProductBuyerException(ErrorCode.PRODUCT_SELLER_NOT_EXISTED));
         if(!productBuyer.getId().equals(user.getId())) throw new ProductBuyerException(ErrorCode.PRODUCT_SELLER_NOT_MATCH);
+        return findProduct;
     }
 }
