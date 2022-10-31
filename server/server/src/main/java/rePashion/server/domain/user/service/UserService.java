@@ -13,10 +13,10 @@ import rePashion.server.domain.user.resources.Response;
 public class UserService {
 
     private final UserProductRepository userProductRepository;
-    private final UserRepository userRepository;
 
-    public Response.MyInfoResponse getMyInfo(User user){
+    public Response.MyInfoResponse getMyInfo(boolean isMe, User user){
         int count = userProductRepository.getNumberOfPurchasingByUser(user.getId());
-        return new Response.MyInfoResponse(user.getNickName(), user.getProfile(), count);
+        String email = (isMe)? user.getEmail() : null;
+        return new Response.MyInfoResponse(email, user.getNickName(), user.getProfile(), count);
     }
 }
