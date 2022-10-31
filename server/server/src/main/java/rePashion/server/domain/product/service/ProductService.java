@@ -98,6 +98,11 @@ public class ProductService {
         return productRepository.getDetail(user, productId);
     }
 
+    public void updateStatus(User user, Long productId){
+        checkUser(user, productId);
+        productRepository.updateStatus(productId);
+    }
+
     private void checkUser(User user, Long productId){
         Product findProduct = productRepository.findById(productId).orElseThrow(ProductNotExistedException::new);
         User productBuyer = userProductRepository.findByProductSeller(findProduct).orElseThrow(()->new ProductBuyerException(ErrorCode.PRODUCT_SELLER_NOT_EXISTED));
