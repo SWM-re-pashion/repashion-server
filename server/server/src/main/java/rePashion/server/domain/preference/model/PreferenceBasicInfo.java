@@ -37,37 +37,37 @@ public class PreferenceBasicInfo {
 
     @Builder
     public PreferenceBasicInfo(String gender, int height, String bodyShape, String topSize, String bottomSize, String topColors, String bottomColors) {
-        this.gender = check(gender);
+        this.gender = check("Gender",gender);
         this.height = height;
-        this.bodyShape = check(bodyShape);
-        this.topSize = splitAndCheck(topSize);
-        this.bottomSize = splitAndCheck(bottomSize);
+        this.bodyShape = check("BodyShape",bodyShape);
+        this.topSize = splitAndCheck("Size",topSize);
+        this.bottomSize = splitAndCheck("Size",bottomSize);
         this.topColors = topColors;
         this.bottomColors = bottomColors;
     }
 
     public PreferenceBasicInfo(PostPreferenceRequestDto dto){
-        this.gender = check(dto.getGender());
+        this.gender = check("Gender",dto.getGender());
         this.height = dto.getHeight();
-        this.bodyShape = check(dto.getBodyShape());
-        this.topSize = splitAndCheck(dto.getTopSize());
-        this.bottomSize = splitAndCheck(dto.getBottomSize());
+        this.bodyShape = check("BodyShape",dto.getBodyShape());
+        this.topSize = splitAndCheck("Size",dto.getTopSize());
+        this.bottomSize = splitAndCheck("Size",dto.getBottomSize());
         this.topColors = dto.getTopColors();
         this.bottomColors = dto.getBottomColors();
     }
 
-    public String check(String staticValue){
+    public String check(String type, String staticValue){
         if(staticValue == null) return null;
-        boolean contain = StaticsService.lookups.containsKey(staticValue);
+        boolean contain = StaticsService.lookups.containsKey(type+staticValue);
         if(!contain) throw new StaticVariableNotExisted(ErrorCode.STATIC_VARIABLE_NOT_EXISTED);
         return staticValue;
     }
 
-    public String splitAndCheck(String staticValue){
+    public String splitAndCheck(String type, String staticValue){
         if(staticValue == null) return null;
         String[] splitValues = staticValue.split("/");
         Arrays.stream(splitValues).forEach(value->{
-            boolean contain = StaticsService.lookups.containsKey(value);
+            boolean contain = StaticsService.lookups.containsKey(type+value);
             if(!contain) throw new StaticVariableNotExisted(ErrorCode.STATIC_VARIABLE_NOT_EXISTED);
         });
         return staticValue;
