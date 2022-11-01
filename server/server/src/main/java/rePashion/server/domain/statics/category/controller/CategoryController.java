@@ -41,4 +41,13 @@ public class CategoryController {
         CategoryResponseDto dto = new CategoryResponseDto("성별", "gender", collect);
         return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, dto), HttpStatus.OK);
     }
+
+    @GetMapping("/v3/exclude")
+    public ResponseEntity<GlobalResponse> getV3withExcludingEntireAndReco(){
+        List<CategoryResponseDto> collect = categoryService.getV3()
+                .stream().map(CategoryResponseDto::fromEntityWithNoEntireAndRecommend)
+                .collect(Collectors.toList());
+        CategoryResponseDto dto = new CategoryResponseDto("성별", "gender", collect);
+        return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, dto), HttpStatus.OK);
+    }
 }
