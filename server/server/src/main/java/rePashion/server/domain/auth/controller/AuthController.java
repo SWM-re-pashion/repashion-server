@@ -48,7 +48,7 @@ public class AuthController {
                 .path("/")
                 .sameSite("None")
                 .httpOnly(true)
-                //.secure(true)
+                .secure(false)
                 .build();
     }
 }
