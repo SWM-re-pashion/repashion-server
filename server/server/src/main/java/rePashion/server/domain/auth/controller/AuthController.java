@@ -46,6 +46,7 @@ public class AuthController {
         return ResponseCookie.from("refreshToken", refreshToken)
                 .maxAge(7*24*60*60)
                 .path("/")
+                .domain("refashion.link")
                 .sameSite("None")
                 .httpOnly(false)
                 .secure(true)
