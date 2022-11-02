@@ -46,10 +46,9 @@ public class AuthController {
         return ResponseCookie.from("refreshToken", refreshToken)
                 .maxAge(7*24*60*60)
                 .path("/")
-                // secure(true)
                 .sameSite("None")
                 .httpOnly(true)
-                .secure(true)
+                //.secure(true)
                 .build();
     }
 }
