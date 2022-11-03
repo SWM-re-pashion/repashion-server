@@ -61,5 +61,3 @@ jobs:
             docker rmi $(docker images -q)
             docker pull $IMAGE
             docker run -p 8080:8080 -d $IMAGE
-	    docker exec -it $(docker ps -qa) bash
-	    ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
