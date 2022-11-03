@@ -12,6 +12,7 @@ import rePashion.server.global.error.exception.ErrorCode;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.util.Arrays;
+import java.util.Objects;
 
 @Embeddable
 @Getter
@@ -57,14 +58,14 @@ public class PreferenceBasicInfo {
     }
 
     public String check(String type, String staticValue){
-        if(staticValue == null) return null;
+        if(staticValue.equals("")) return null;
         boolean contain = StaticsService.lookups.containsKey(type+staticValue);
         if(!contain) throw new StaticVariableNotExisted(ErrorCode.STATIC_VARIABLE_NOT_EXISTED);
         return staticValue;
     }
 
     public String splitAndCheck(String type, String staticValue){
-        if(staticValue == null) return null;
+        if(staticValue.equals("")) return null;
         String[] splitValues = staticValue.split("/");
         Arrays.stream(splitValues).forEach(value->{
             boolean contain = StaticsService.lookups.containsKey(type+value);
