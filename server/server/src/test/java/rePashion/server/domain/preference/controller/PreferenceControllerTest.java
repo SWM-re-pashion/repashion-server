@@ -1,7 +1,9 @@
 package rePashion.server.domain.preference.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,6 +49,7 @@ class PreferenceControllerTest {
     private PreferenceRepository preferenceRepository;
 
     @Test
+    @Order(0)
     public void 정상적으로_preference_저장하기() throws Exception {
         //given
 
@@ -65,10 +68,13 @@ class PreferenceControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.data", is(1)));
+                .andExpect(jsonPath("$.data", is(1L)));
+
+        preferenceRepository.deleteAll();
     }
 
     @Test
+    @Order(1)
     public void 정상적으로_preference_조회하기() throws Exception {
         //given
 
@@ -95,9 +101,11 @@ class PreferenceControllerTest {
                 .andExpect(jsonPath("$.data.topColors", is("Black/Green")))
                 .andExpect(jsonPath("$.data.bottomColors", is("Black/Green")))
         ;
+        preferenceRepository.deleteAll();
     }
 
     @Test
+    @Order(2)
     public void preference_저장되지_않은채로_조회하기() throws Exception {
         //given
 
@@ -119,6 +127,7 @@ class PreferenceControllerTest {
     }
 
     @Test
+    @Order(3)
     public void 정상적으로_preference_변경하기() throws Exception {
         //given
 
@@ -152,5 +161,99 @@ class PreferenceControllerTest {
         Assertions.assertThat(preference.getBasicInfo().getBottomSize()).isEqualTo("30/31/33");
         Assertions.assertThat(preference.getBasicInfo().getTopColors()).isEqualTo("Green");
         Assertions.assertThat(preference.getBasicInfo().getBottomColors()).isEqualTo("Black");
+
+        preferenceRepository.deleteAll();
+    }
+
+    @Test
+    @Order(4)
+    public void TopSize는_입력받지않고_저장하기() throws Exception {
+        //given
+
+        // User 만들기 및 accessToken 토큰 만들기
+        User user = new User("test@test.com", "hi");
+        UserAuthority userAuthority1 = new UserAuthority(Role.ROLE_USER);
+        userAuthority1.changeAuthority(user);
+        User savedUser = userRepository.save(user);
+        String parsedAccessToken = accessTokenProvider.parse(savedUser);
+
+        PostPreferenceRequestDto dto = new PostPreferenceRequestDto("men", 175, "chubby", "", "22/23/31", "Black/Green", "Black/Green");
+        String body = new ObjectMapper().writeValueAsString(dto);
+        //when
+        //then
+        mvc.perform(post("/api/preference").header(header, parsedAccessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.data", is(1)));
+    }
+
+    @Test
+    @Order(5)
+    public void BottomSize는_입력받지않고_저장하기() throws Exception {
+        //given
+
+        // User 만들기 및 accessToken 토큰 만들기
+        User user = new User("test@test.com", "hi");
+        UserAuthority userAuthority1 = new UserAuthority(Role.ROLE_USER);
+        userAuthority1.changeAuthority(user);
+        User savedUser = userRepository.save(user);
+        String parsedAccessToken = accessTokenProvider.parse(savedUser);
+
+        PostPreferenceRequestDto dto = new PostPreferenceRequestDto("men", 175, "chubby", "S/L", "", "Black/Green", "Black/Green");
+        String body = new ObjectMapper().writeValueAsString(dto);
+        //when
+        //then
+        mvc.perform(post("/api/preference").header(header, parsedAccessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.data", is(1)));
+    }
+
+    @Test
+    @Order(6)
+    public void TopColor는_입력받지않고_저장하기() throws Exception {
+        //given
+
+        // User 만들기 및 accessToken 토큰 만들기
+        User user = new User("test@test.com", "hi");
+        UserAuthority userAuthority1 = new UserAuthority(Role.ROLE_USER);
+        userAuthority1.changeAuthority(user);
+        User savedUser = userRepository.save(user);
+        String parsedAccessToken = accessTokenProvider.parse(savedUser);
+
+        PostPreferenceRequestDto dto = new PostPreferenceRequestDto("men", 175, "chubby", "S/L", "22/23/31", "", "Black/Green");
+        String body = new ObjectMapper().writeValueAsString(dto);
+        //when
+        //then
+        mvc.perform(post("/api/preference").header(header, parsedAccessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.data", is(1)));
+    }
+
+    @Test
+    @Order(7)
+    public void BottomColor는_입력받지않고_저장하기() throws Exception {
+        //given
+
+        // User 만들기 및 accessToken 토큰 만들기
+        User user = new User("test@test.com", "hi");
+        UserAuthority userAuthority1 = new UserAuthority(Role.ROLE_USER);
+        userAuthority1.changeAuthority(user);
+        User savedUser = userRepository.save(user);
+        String parsedAccessToken = accessTokenProvider.parse(savedUser);
+
+        PostPreferenceRequestDto dto = new PostPreferenceRequestDto("men", 175, "chubby", "S/L", "22/23/31", "Black", "");
+        String body = new ObjectMapper().writeValueAsString(dto);
+        //when
+        //then
+        mvc.perform(post("/api/preference").header(header, parsedAccessToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.data", is(1)));
     }
 }
