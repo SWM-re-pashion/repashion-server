@@ -20,6 +20,11 @@ jobs:
           chmod +x gradlew
           ./gradlew clean build -x test
 
+      - name: Change Permission of startup.sh
+	run: |
+	  cd server/server
+	  chmod +x startup.sh  
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
