@@ -108,7 +108,7 @@ public class ProductDetailDto {
         this.opinion = opinion;
         this.price = price;
         this.isIncludeDelivery = isIncludeDelivery;
-        this.updatedAt = updatedAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        this.updatedAt = updatedAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         this.like = like;
         this.view = view;
         this.contact = contact;

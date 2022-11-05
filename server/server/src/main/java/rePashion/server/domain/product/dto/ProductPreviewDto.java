@@ -28,6 +28,6 @@ public class ProductPreviewDto {
         this.like = like;
         this.price = price;
         this.isSoldOut = isSoldOut;
-        this.updatedAt = updatedAt.format(DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss"));
+        this.updatedAt = updatedAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 }
