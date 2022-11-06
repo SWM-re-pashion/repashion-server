@@ -48,7 +48,7 @@ public class AuthController {
                 .path("/")
                 .domain("refashion.link")
                 .sameSite("None")
-                .httpOnly(false)
+                .httpOnly(true)
                 .secure(true)
                 .build();
     }
