@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4a59eb3b-5897-49c3-ac10-89e0160444cb" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/server/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/server/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/gradlew" beforeDir="false" afterPath="$PROJECT_DIR$/server/gradlew" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/rePashion/server/domain/product/model/Measure.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/rePashion/server/domain/product/model/Measure.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/rePashion/server/domain/product/model/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/rePashion/server/domain/product/model/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/rePashion/server/domain/product/service/ProductDetailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/rePashion/server/domain/product/service/ProductDetailService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/rePashion/server/domain/statics/service/StaticService.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/rePashion/server/domain/statics/service/StaticService.java" afterDir="false" />
-    </list>
+    <list default="true" id="4a59eb3b-5897-49c3-ac10-89e0160444cb" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -22,14 +15,14 @@
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/Users/idong-u/Desktop/dev/repashion-server/server"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/idong-u/Desktop/dev/repashion-server/server&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -39,6 +32,7 @@
       <option name="presentableId" value="Default" />
       <updated>1662004294304</updated>
       <workItem from="1662004295405" duration="25000" />
+      <workItem from="1667728016416" duration="41000" />
     </task>
     <servers />
   </component>
