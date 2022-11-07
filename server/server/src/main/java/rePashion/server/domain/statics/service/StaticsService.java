@@ -32,18 +32,6 @@ public class StaticsService implements CommandLineRunner {
         create("Style", "common", "젠더리스", "genderless");
         create("Style", "common", "서브컬쳐", "subculture");
         create("Style", "common", "캐주얼", "casual");
-        create("Style", "common", "힙합", "hiphop");
-        create("Style", "common", "펑크", "punk");
-        create("Style", "common", "모던", "modern");
-        create("Style", "common", "스트리트", "street");
-        create("Style", "common", "키치/키덜트", "kitsch");
-        create("Style", "common", "스포티", "sporty");
-        create("Style", "common", "클래식", "classic");
-        create("Style", "common", "레트로", "retro");
-        create("Style", "common", "아방가르드", "avantgarde");
-        create("Style", "common", "섹시", "sexy");
-        create("Style", "common", "톰보이", "tomboy");
-        create("Style", "common", "프레피", "preppy");
 
         // Color
         create("Color", "top", "Black", "#000");
