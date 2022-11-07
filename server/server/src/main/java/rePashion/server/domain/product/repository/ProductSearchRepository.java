@@ -86,6 +86,6 @@ public class ProductSearchRepository {
     }
 
     private BooleanExpression productHideStatusEq(Boolean status){
-        return (status == null) ? null : product.basicInfo.status.eq(status);
+        return (status == null || !status) ? null : product.basicInfo.status.eq(false);
     }
 }
