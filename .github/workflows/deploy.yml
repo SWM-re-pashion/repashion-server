@@ -59,7 +59,7 @@ jobs:
             docker rm -f $(docker ps -qa)
             docker rmi $(docker images -q)
             docker pull $IMAGE
-            docker run -p 8080:8080 -d $IMAGE
+            docker run -v accessLog:/tmp -p 8080:8080 -d $IMAGE
 
       - name: Deploy to Beta server
         uses: appleboy/ssh-action@master
