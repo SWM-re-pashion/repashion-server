@@ -85,4 +85,18 @@ class AuthTestingControllerTest {
                 .andExpect(jsonPath("$.message", is("token has expired.")))
                 .andExpect(jsonPath("$.code", is("TOKEN_EXPIRED")));
     }
+
+    @Test
+    void 저장되지_않은_유저_조회() throws Exception {
+        //given
+        User user = new User("test@test.com", "test");
+        UserAuthority userAuthority = new UserAuthority(Role.ROLE_USER);
+        userAuthority.changeAuthority(user);
+        String token = accessTokenProvider.parse(user);
+
+        //when
+        //then
+        mvc.perform(get("/auth-verification").header(header, token))
+                .andExpect(status().is4xxClientError());
+    }
 }
