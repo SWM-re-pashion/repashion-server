@@ -38,7 +38,7 @@ public class ShopController {
         return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, response), HttpStatus.OK);
     }
 
-    private Dto.Shop toShopResponseEntity(Page<ProductPreviewDto> response){
+    public static Dto.Shop toShopResponseEntity(Page<ProductPreviewDto> response){
         Dto.Shop.Pagination pagination = new Dto.Shop.Pagination(response.isLast(), response.getTotalElements(), response.getTotalPages());
         return new Dto.Shop(response.getContent(), pagination);
     }
