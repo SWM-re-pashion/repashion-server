@@ -1,6 +1,8 @@
 package rePashion.server.domain.product.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -9,7 +11,10 @@ import org.springframework.web.multipart.MultipartFile;
 import rePashion.server.domain.auth.dto.exception.UserNotExistedException;
 import rePashion.server.domain.product.dto.ProductDetailDto;
 import rePashion.server.domain.product.dto.ProductDto;
+import rePashion.server.domain.product.dto.ProductPreviewDto;
 import rePashion.server.domain.product.model.Product;
+import rePashion.server.domain.product.repository.MyProductRepository;
+import rePashion.server.domain.product.resources.response.Dto;
 import rePashion.server.domain.product.service.ProductService;
 import rePashion.server.domain.styleimage.service.S3UploaderService;
 import rePashion.server.domain.user.model.User;
@@ -30,6 +35,8 @@ public class ProductController {
     private final ProductService productService;
     private final UserRepository userRepository;
     private final S3UploaderService s3UploaderService;
+
+    private final MyProductRepository myProductRepository;
 
     @PostMapping
     public ResponseEntity<GlobalResponse> create(@AuthenticationPrincipal Long userId, @RequestBody ProductDto dto){
@@ -83,6 +90,22 @@ public class ProductController {
         User user = findUser(userId);
         productService.updateStatus(user, productId);
         return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, productId), HttpStatus.OK);
+    }
+
+    @GetMapping("/my/sale")
+    public ResponseEntity<GlobalResponse> getMyProductsWhichOnSale(@AuthenticationPrincipal Long userId, Pageable pageable){
+        User user = findUser(userId);
+        Page<ProductPreviewDto> dto = myProductRepository.getBySeller(user, false, pageable);
+        Dto.Shop shop = ShopController.toShopResponseEntity(dto);
+        return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, shop), HttpStatus.OK);
+    }
+
+    @GetMapping("/my/soldout")
+    public ResponseEntity<GlobalResponse> getMyProductsWhichSoldOut(@AuthenticationPrincipal Long userId, Pageable pageable){
+        User user = findUser(userId);
+        Page<ProductPreviewDto> dto = myProductRepository.getBySeller(user, true, pageable);
+        Dto.Shop shop = ShopController.toShopResponseEntity(dto);
+        return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, shop), HttpStatus.OK);
     }
 
     private User findUser(Long userId){
