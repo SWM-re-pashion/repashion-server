@@ -2,6 +2,7 @@ package rePashion.server.domain.product.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import rePashion.server.domain.auth.dto.exception.UserNotExistedException;
 import rePashion.server.domain.product.dto.ProductDetailDto;
 import rePashion.server.domain.product.dto.ProductDto;
 import rePashion.server.domain.product.dto.ProductFlatDto;
@@ -23,6 +24,9 @@ import rePashion.server.domain.user.repository.UserProductRepository;
 import rePashion.server.global.error.exception.ErrorCode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 
 @Service
@@ -95,8 +99,27 @@ public class ProductService {
     }
 
     public ProductDetailDto getDetail(User user, Long productId){
-        productRepository.findById(productId).orElseThrow(ProductNotExistedException::new);
+        Product product = findProduct(productId);
+        checkExistenceAndIncreaseView(user, product);
         return productRepository.getDetail(user, productId);
+    }
+
+    private Product findProduct(Long productId) {
+        return productRepository.findById(productId).orElseThrow(ProductNotExistedException::new);
+    }
+
+    private void checkExistenceAndIncreaseView(User user, Product product) {
+        if(user == null) return;
+        if(product.getBasicInfo().getVisited().length() == 0 || isUserIdExisted(user.getId(), product.getBasicInfo().getVisited())){
+            String comma = (product.getBasicInfo().getVisited().length() == 0) ? "" : ",";
+            String updatedVisited = product.getBasicInfo().getVisited() + comma  + user.getId();
+            productRepository.updateVisitedAndView(updatedVisited, product.getBasicInfo().getViews()+1, product.getId());
+        }
+    }
+
+    private boolean isUserIdExisted(Long userId, String visited) {
+        String[] split = visited.split(",");
+        return Arrays.stream(split).noneMatch(o -> Long.parseLong(o) == userId);
     }
 
     public void updateStatus(User user, Long productId){
@@ -106,7 +129,7 @@ public class ProductService {
     }
 
     private Product checkUser(User user, Long productId){
-        Product findProduct = productRepository.findById(productId).orElseThrow(ProductNotExistedException::new);
+        Product findProduct = findProduct(productId);
         User productBuyer = userProductRepository.findByProductSeller(findProduct).orElseThrow(()->new ProductBuyerException(ErrorCode.PRODUCT_SELLER_NOT_EXISTED));
         if(!productBuyer.getId().equals(user.getId())) throw new ProductBuyerException(ErrorCode.PRODUCT_SELLER_NOT_MATCH);
         return findProduct;

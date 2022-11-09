@@ -23,6 +23,8 @@ public class BasicInfo{
 
     private int views = 0;
 
+    private String visited = "";
+
     private int likes = 0;
 
     private Boolean status = false;
@@ -47,16 +49,8 @@ public class BasicInfo{
         this.likes++;
     }
 
-    public void decreaseLikes(){
-        this.likes--;
-    }
-
     public void increaseViews(){
         this.views++;
-    }
-
-    public void decreaseViews(){
-        this.views--;
     }
 
     public void changeStatus(){

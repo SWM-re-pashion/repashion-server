@@ -1,5 +1,7 @@
 package rePashion.server.domain.product.repository;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import rePashion.server.domain.product.dto.*;
@@ -78,7 +80,7 @@ public class ProductRepositoryImpl implements ProductCustomRepository {
 
         ProductDetailDto productDetailDto = queryFactory
                 .select(new QProductDetailDto(
-                        user.id.eq(currentUser.getId()),
+                        checkIfUserEqual(user, currentUser),
                         product.basicInfo.status,
                         new QProductDetailDto_SellerInfo(
                                 user.id,
@@ -127,6 +129,11 @@ public class ProductRepositoryImpl implements ProductCustomRepository {
         }
 
         return productDetailDto;
+    }
+
+    private BooleanExpression checkIfUserEqual(QUser user, User currentUser) {
+        if(currentUser == null) return Expressions.asBoolean(false).isTrue();
+        else return user.id.eq(currentUser.getId());
     }
 
     private MeasureDto getMeasure(Long productId) {
