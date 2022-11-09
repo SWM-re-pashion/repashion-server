@@ -47,7 +47,11 @@ public class MyProductRepository {
                 .orderBy(product.modifiedDate.desc())
                 .fetch();
 
-        List<Product> fetchedProduct = queryFactory.selectFrom(product).fetch();
+        List<Product> fetchedProduct = queryFactory
+                .selectFrom(product)
+                .leftJoin(product.users, userProduct)
+                .where(userProduct.purchaseStatus.eq(PurchaseStatus.Seller), userProduct.user.eq(currentUser), whetherSelling(isSoldOut))
+                .fetch();
 
         return new PageImpl<>(content, pageable , fetchedProduct.size());
     }
