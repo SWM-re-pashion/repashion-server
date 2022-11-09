@@ -46,7 +46,7 @@ class AuthTestingControllerTest {
         //when
 
         //then
-        mvc.perform(get("/auth-testing"))
+        mvc.perform(get("/auth-verification"))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -61,7 +61,7 @@ class AuthTestingControllerTest {
 
         //when
         //then
-        mvc.perform(get("/auth-testing").header(header, token))
+        mvc.perform(get("/auth-verification").header(header, token))
                 .andExpect(status().isOk());
     }
 
@@ -80,7 +80,7 @@ class AuthTestingControllerTest {
         //when
 
         //then
-        mvc.perform(get("/auth-testing").header(header, token))
+        mvc.perform(get("/auth-verification").header(header, token))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.message", is("token has expired.")))
                 .andExpect(jsonPath("$.code", is("TOKEN_EXPIRED")));
