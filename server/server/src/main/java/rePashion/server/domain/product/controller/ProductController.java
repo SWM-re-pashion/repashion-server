@@ -73,7 +73,7 @@ public class ProductController {
 
     @GetMapping("/detail/{productId}")
     public ResponseEntity<GlobalResponse> getDetail(@AuthenticationPrincipal Long userId, @PathVariable Long productId){
-        User user = findUser(userId);
+        User user = (userId == null) ? null : findUser(userId);
         ProductDetailDto detail = productService.getDetail(user, productId);
         return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, detail), HttpStatus.OK);
     }
