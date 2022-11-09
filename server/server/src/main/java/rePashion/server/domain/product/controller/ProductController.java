@@ -100,6 +100,14 @@ public class ProductController {
         return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, shop), HttpStatus.OK);
     }
 
+    @GetMapping("/my/soldout")
+    public ResponseEntity<GlobalResponse> getMyProductsWhichSoldOut(@AuthenticationPrincipal Long userId, Pageable pageable){
+        User user = findUser(userId);
+        Page<ProductPreviewDto> dto = myProductRepository.getBySeller(user, true, pageable);
+        Dto.Shop shop = ShopController.toShopResponseEntity(dto);
+        return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, shop), HttpStatus.OK);
+    }
+
     private User findUser(Long userId){
         return userRepository.findById(userId).orElseThrow(UserNotExistedException::new);
     }
