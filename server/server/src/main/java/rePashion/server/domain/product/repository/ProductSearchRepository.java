@@ -54,7 +54,11 @@ public class ProductSearchRepository {
                 .orderBy(productOrderIs(cond.getOrder()))
                 .fetch();
 
-        List<Product> fetchedProduct = queryFactory.selectFrom(product).fetch();
+        List<Product> fetchedProduct = queryFactory
+                .selectFrom(product)
+                .leftJoin(product.advanceInfo, advanceInfo)
+                .where(productTitleOrContentContains(cond.getValue()), productHideStatusEq(cond.getHideSold()))
+                .fetch();
 
         return new PageImpl<>(content, pageable , fetchedProduct.size());
     }
