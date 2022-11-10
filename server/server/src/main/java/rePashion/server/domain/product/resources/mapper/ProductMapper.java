@@ -21,6 +21,7 @@ public interface ProductMapper {
     ProductFlatDto productDtoToFlatDto(ProductDto body);
 
     @Mapping(source = ".", target = "basicInfo")
+    @Mapping(source = "measureType", target = "basicInfo.type")
     Product flatDtoToProduct(ProductFlatDto productFlatDto);
 
     @Mappings({

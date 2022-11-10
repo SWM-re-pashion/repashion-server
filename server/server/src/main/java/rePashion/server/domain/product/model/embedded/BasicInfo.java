@@ -21,16 +21,14 @@ public class BasicInfo{
     private boolean isIncludeDelivery;
     private String size;
 
+    private String type;
     private int views = 0;
-
     private String visited = "";
-
     private int likes = 0;
-
     private Boolean status = false;
 
     @Builder
-    public BasicInfo(String title, String contact, String category, String brand, String thumbnailImage, int price, boolean isIncludeDelivery, String size) {
+    public BasicInfo(String title, String contact, String category, String brand, String thumbnailImage, int price, boolean isIncludeDelivery, String size, String type) {
         this.title = title;
         this.contact = contact;
         this.category = category;
@@ -39,6 +37,7 @@ public class BasicInfo{
         this.price = price;
         this.isIncludeDelivery = isIncludeDelivery;
         this.size = size;
+        this.type = type;
     }
 
     public void changeThumbNail(String thumbnailImage){
