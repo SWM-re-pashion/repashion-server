@@ -42,20 +42,19 @@ public class ProductRecommendCustomRepository {
                 .selectFrom(productRecommend)
                 .leftJoin(productRecommend.product, product).fetchJoin()
                 .leftJoin(productRecommend.association, association).fetchJoin()
-                .where(productHideStatusEq(cond.getHideSold()))
+                .where(productHideStatusEq(cond.getHideSold()), productGenderEq(cond.getGender()))
                 .fetch();
         return new PageImpl<>(content, pageable, fetchedProductCommend.size());
     }
 
     private BooleanBuilder productGenderEq(Byte gender) {
         BooleanBuilder booleanBuilder = new BooleanBuilder();
-        if (gender == 1 || gender == 2){
+        if(gender == null) return null;
+        else if (gender == 1 || gender == 2){
             String prefix = String.valueOf(gender);
-            booleanBuilder.and(product.basicInfo.category.startsWith(prefix));
-            booleanBuilder.and(association.basicInfo.category.startsWith(prefix));
+            booleanBuilder.and(product.basicInfo.category.startsWith(prefix).or(product.basicInfo.category.startsWith("3")));   // 공용 데이터도 추가
+            booleanBuilder.and(association.basicInfo.category.startsWith(prefix).or(association.basicInfo.category.startsWith("3")));   // 공용 데이터도 추가
         }
-        booleanBuilder.or(product.basicInfo.category.startsWith("3"));      // 공용 데이터도 추가한다
-        booleanBuilder.or(association.basicInfo.category.startsWith("3"));
         return booleanBuilder;
     }
     private OrderSpecifier<?> productOrderIs(Order order) {
