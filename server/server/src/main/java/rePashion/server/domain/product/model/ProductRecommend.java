@@ -27,4 +27,9 @@ public class ProductRecommend {
 
     @CreatedDate
     private LocalDateTime createdAt;
+
+    public ProductRecommend(Product product, Product association) {
+        this.product = product;
+        this.association = association;
+    }
 }
