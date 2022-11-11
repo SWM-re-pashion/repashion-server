@@ -1,6 +1,8 @@
 package rePashion.server.domain.product.repository;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +35,7 @@ public class ProductRecommendCustomRepository {
                 .leftJoin(productRecommend.association, association).fetchJoin()
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .where(productHideStatusEq(cond.getHideSold()))
+                .where(productHideStatusEq(cond.getHideSold()), productGenderEq(cond.getGender()))
                 .orderBy(productOrderIs(cond.getOrder()))
                 .fetch();
         List<ProductRecommend> fetchedProductCommend = queryFactory
@@ -45,6 +47,17 @@ public class ProductRecommendCustomRepository {
         return new PageImpl<>(content, pageable, fetchedProductCommend.size());
     }
 
+    private BooleanBuilder productGenderEq(Byte gender) {
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+        if (gender == 1 || gender == 2){
+            String prefix = String.valueOf(gender);
+            booleanBuilder.and(product.basicInfo.category.startsWith(prefix));
+            booleanBuilder.and(association.basicInfo.category.startsWith(prefix));
+        }
+        booleanBuilder.or(product.basicInfo.category.startsWith("3"));      // 공용 데이터도 추가한다
+        booleanBuilder.or(association.basicInfo.category.startsWith("3"));
+        return booleanBuilder;
+    }
     private OrderSpecifier<?> productOrderIs(Order order) {
         switch (order){
             case low_price:

@@ -14,6 +14,7 @@ public class Condition {
 
     @Data
     public static class Recommend{
+        private Byte gender;
         private Order order;
         private Boolean hideSold;
     }
