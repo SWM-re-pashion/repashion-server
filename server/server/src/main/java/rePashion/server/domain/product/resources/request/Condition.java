@@ -13,6 +13,13 @@ public class Condition {
     }
 
     @Data
+    public static class Recommend{
+        private Byte gender;
+        private Order order;
+        private Boolean hideSold;
+    }
+
+    @Data
     public static class Filter{
         private String category;
         private String style;

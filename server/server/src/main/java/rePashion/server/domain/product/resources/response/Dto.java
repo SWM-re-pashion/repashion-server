@@ -26,10 +26,10 @@ public class Dto {
             }
         }
 
-        List<ProductPreviewDto> items;
+        Object items;
         Pagination pagination;
 
-        public Shop(List<ProductPreviewDto> items, Pagination pagination) {
+        public Shop(Object items, Pagination pagination) {
             this.items = items;
             this.pagination = pagination;
         }
