@@ -35,14 +35,14 @@ public class ProductRecommendCustomRepository {
                 .leftJoin(productRecommend.association, association).fetchJoin()
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .where(productHideStatusEq(cond.getHideSold()), productGenderEq(cond.getGender()))
+                .where(productHideStatusEq(cond.getHideSold()), productGenderEq(cond.getCategory()))
                 .orderBy(productOrderIs(cond.getOrder()))
                 .fetch();
         List<ProductRecommend> fetchedProductCommend = queryFactory
                 .selectFrom(productRecommend)
                 .leftJoin(productRecommend.product, product).fetchJoin()
                 .leftJoin(productRecommend.association, association).fetchJoin()
-                .where(productHideStatusEq(cond.getHideSold()), productGenderEq(cond.getGender()))
+                .where(productHideStatusEq(cond.getHideSold()), productGenderEq(cond.getCategory()))
                 .fetch();
         return new PageImpl<>(content, pageable, fetchedProductCommend.size());
     }

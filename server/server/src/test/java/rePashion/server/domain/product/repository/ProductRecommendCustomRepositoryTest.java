@@ -175,7 +175,7 @@ class ProductRecommendCustomRepositoryTest {
         //given
         Condition.Recommend cond = new Condition.Recommend();
         cond.setOrder(Order.latest);
-        cond.setGender((byte) 1);
+        cond.setCategory((byte) 1);
         cond.setHideSold(false);
         PageRequest of = PageRequest.of(0, 3);
         //when
@@ -195,7 +195,7 @@ class ProductRecommendCustomRepositoryTest {
         //given
         Condition.Recommend cond = new Condition.Recommend();
         cond.setOrder(Order.latest);
-        cond.setGender((byte) 2);
+        cond.setCategory((byte) 2);
         cond.setHideSold(false);
         PageRequest of = PageRequest.of(0, 3);
         //when
