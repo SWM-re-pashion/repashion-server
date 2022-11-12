@@ -40,6 +40,7 @@ public class BasicInfo{
         this.type = type;
     }
 
+    public void changeType(String type){this.type = type;}
     public void changeThumbNail(String thumbnailImage){
         this.thumbnailImage = thumbnailImage;
     }

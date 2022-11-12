@@ -74,6 +74,7 @@ public class ProductService {
 
     private Product saveProduct(ProductFlatDto dto, User user, String image) {
         Product product = productMapper.flatDtoToProduct(dto);
+        product.getBasicInfo().changeType(dto.getMeasureType());
         product.getBasicInfo().changeThumbNail(image);
         Product savedProduct = productRepository.save(product);
         UserProduct userProduct = new UserProduct(PurchaseStatus.Seller);
