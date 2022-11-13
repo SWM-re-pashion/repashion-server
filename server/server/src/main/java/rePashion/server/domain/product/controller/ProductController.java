@@ -65,6 +65,14 @@ public class ProductController {
         return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, updatedId), HttpStatus.OK);
     }
 
+    @GetMapping("/my")
+    public ResponseEntity<GlobalResponse> getMyProducts(@AuthenticationPrincipal Long userId, Pageable pageable, String status){
+        User user = findUser(userId);
+        Page<ProductPreviewDto> dto = myProductRepository.getBySeller(user, setState(status), pageable);
+        Dto.Shop shop = ShopController.toShopResponseEntity(dto);
+        return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, shop), HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<GlobalResponse> get(@AuthenticationPrincipal Long userId, @PathVariable Long id){
         User user = findUser(userId);
@@ -93,15 +101,8 @@ public class ProductController {
         return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, productId), HttpStatus.OK);
     }
 
-    @GetMapping("/my/{status}")
-    public ResponseEntity<GlobalResponse> getMyProducts(@AuthenticationPrincipal Long userId, Pageable pageable, @PathVariable String status){
-        User user = findUser(userId);
-        Page<ProductPreviewDto> dto = myProductRepository.getBySeller(user, setState(status), pageable);
-        Dto.Shop shop = ShopController.toShopResponseEntity(dto);
-        return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, shop), HttpStatus.OK);
-    }
-
     private boolean setState(String status) {
+        if(status == null) return false;
         if(status.equals("sale")) return false;
         else if(status.equals("soldout")) return true;
         else return true;
