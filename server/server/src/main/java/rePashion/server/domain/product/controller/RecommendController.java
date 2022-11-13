@@ -19,7 +19,11 @@ import rePashion.server.domain.product.resources.response.Dto;
 import rePashion.server.global.common.response.GlobalResponse;
 import rePashion.server.global.common.response.StatusCode;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @RestController
@@ -31,11 +35,25 @@ public class RecommendController {
     private final ProductRecommendRepository productRecommendRepository;
     private final ProductRepository productRepository;
 
+    private LocalDate lastEntered = LocalDate.now();
+    private ProductRecommendDto todayRecommend;
+
     @GetMapping
     public ResponseEntity<GlobalResponse> getShop(Condition.Recommend cond, Pageable pageable){
         Page<ProductRecommend> productRecommends = productRecommendCustomRepository.get(cond, pageable);
         Dto.Shop response = toDto(productRecommends);
         return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, response), HttpStatus.OK);
+    }
+
+    @GetMapping("/today")
+    public ResponseEntity<GlobalResponse> getTodayRecommend(){
+        long totalCount = productRecommendRepository.count();
+        if(lastEntered.isBefore(LocalDate.now()) || todayRecommend == null){
+            int random = new Random().nextInt((int) totalCount);
+            ProductRecommend productRecommend = productRecommendRepository.findById((long) random).get();
+            todayRecommend = new ProductRecommendDto(productRecommend);
+        }
+        return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, todayRecommend), HttpStatus.OK);
     }
 
     private Dto.Shop toDto(Page<ProductRecommend> productRecommends) {
