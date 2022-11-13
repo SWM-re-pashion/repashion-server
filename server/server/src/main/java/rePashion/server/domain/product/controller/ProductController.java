@@ -1,5 +1,6 @@
 package rePashion.server.domain.product.controller;
 
+import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -92,20 +93,18 @@ public class ProductController {
         return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, productId), HttpStatus.OK);
     }
 
-    @GetMapping("/my/sale")
-    public ResponseEntity<GlobalResponse> getMyProductsWhichOnSale(@AuthenticationPrincipal Long userId, Pageable pageable){
+    @GetMapping("/my/{status}")
+    public ResponseEntity<GlobalResponse> getMyProducts(@AuthenticationPrincipal Long userId, Pageable pageable, @PathVariable String status){
         User user = findUser(userId);
-        Page<ProductPreviewDto> dto = myProductRepository.getBySeller(user, false, pageable);
+        Page<ProductPreviewDto> dto = myProductRepository.getBySeller(user, setState(status), pageable);
         Dto.Shop shop = ShopController.toShopResponseEntity(dto);
         return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, shop), HttpStatus.OK);
     }
 
-    @GetMapping("/my/soldout")
-    public ResponseEntity<GlobalResponse> getMyProductsWhichSoldOut(@AuthenticationPrincipal Long userId, Pageable pageable){
-        User user = findUser(userId);
-        Page<ProductPreviewDto> dto = myProductRepository.getBySeller(user, true, pageable);
-        Dto.Shop shop = ShopController.toShopResponseEntity(dto);
-        return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, shop), HttpStatus.OK);
+    private boolean setState(String status) {
+        if(status.equals("sale")) return false;
+        else if(status.equals("soldout")) return true;
+        else return true;
     }
 
     private User findUser(Long userId){
