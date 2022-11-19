@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import rePashion.server.domain.product.dto.ProductPreviewDto;
 import rePashion.server.domain.product.dto.ProductRecommendBody;
 import rePashion.server.domain.product.dto.ProductRecommendDto;
 import rePashion.server.domain.product.exception.ProductNotExistedException;
@@ -20,9 +21,7 @@ import rePashion.server.global.common.response.GlobalResponse;
 import rePashion.server.global.common.response.StatusCode;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -42,6 +41,13 @@ public class RecommendController {
     public ResponseEntity<GlobalResponse> getShop(Condition.Recommend cond, Pageable pageable){
         Page<ProductRecommend> productRecommends = productRecommendCustomRepository.get(cond, pageable);
         Dto.Shop response = toDto(productRecommends);
+        return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, response), HttpStatus.OK);
+    }
+
+    @GetMapping("/{productId}")
+    public ResponseEntity<GlobalResponse> getAssociationsByProductId(@PathVariable Long productId){
+        List<ProductRecommend> productRecommends = productRecommendCustomRepository.getAssociationsByProductId(productId);
+        List<ProductPreviewDto> response = productRecommends.stream().map(productRecommend -> ProductPreviewDto.fromEntity(productRecommend.getAssociation())).collect(Collectors.toList());
         return new ResponseEntity<>(GlobalResponse.of(StatusCode.SUCCESS, response), HttpStatus.OK);
     }
 

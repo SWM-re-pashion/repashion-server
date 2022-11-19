@@ -1,6 +1,8 @@
 package rePashion.server.domain.product.repository;
 
+import com.querydsl.core.Tuple;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -36,12 +38,13 @@ class ProductRecommendCustomRepositoryTest {
     private ProductRecommendCustomRepository productRecommendCustomRepository;
 
     private List<ProductRecommend> recommends = new ArrayList<>();
+    private List<Product> products;
 
     @BeforeEach
     public void initDB(){
         ArrayList<BasicInfo> basicInfos = makeBasicInfos();
-        List<Product> products = getProducts(basicInfos);
-        makeProductRecommends(products);
+        products = getProducts(basicInfos);       // 상품 5개 만들기
+        makeProductRecommends(products);                        // 추천 정보 5개 만들기
     }
 
     @Test
@@ -208,15 +211,30 @@ class ProductRecommendCustomRepositoryTest {
         assertThat(content.get(1).getProduct().getBasicInfo()).extracting("title").isEqualTo("title0");
         assertThat(content.get(1).getAssociation().getBasicInfo()).extracting("title").isEqualTo("title2");
     }
+
+    @Test
+    @DisplayName("0번과 연관된 상품들을 점수 순으로 조회하기")
+    public void getAssociationsByProductIdSortedByScore(){
+        //given
+        Long selectedId = products.get(0).getId();
+        //when
+        List<ProductRecommend> associations = productRecommendCustomRepository.getAssociationsByProductId(selectedId);
+        //then
+        assertThat(associations.get(0).getAssociation().getBasicInfo().getTitle()).isEqualTo("title2");
+        assertThat(associations.get(1).getAssociation().getBasicInfo().getTitle()).isEqualTo("title1");
+    }
+
     private void makeProductRecommends(List<Product> products) {
         int [][] collections = {{0,1}, {0,2}, {1,3}, {3,4}, {2,3}}; // {공용,남성} {공용,여성} {남성,공용}, {공용,남성}, {여성,공용}
         for(int i =0; i < 5; i++){
-            saveRecommendPair(products.get(collections[i][0]), products.get(collections[i][1]));
+            saveRecommendPair(products.get(collections[i][0]), products.get(collections[i][1]), i);
         }
     }
 
-    private void saveRecommendPair(Product product1, Product product2){
-        productRecommendRepository.save(productRecommendRepository.save(new ProductRecommend(product1, product2)));
+    private void saveRecommendPair(Product product1, Product product2, Integer i){
+        ProductRecommend productRecommend = new ProductRecommend(product1, product2);
+        productRecommend.changeScore(i*10);
+        productRecommendRepository.save(productRecommend);
     }
 
     private List<Product> getProducts(ArrayList<BasicInfo> basicInfos) {

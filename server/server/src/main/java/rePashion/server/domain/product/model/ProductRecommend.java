@@ -3,10 +3,8 @@ package rePashion.server.domain.product.model;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -25,11 +23,14 @@ public class ProductRecommend {
     @JoinColumn(name = "association_id")
     private Product association;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
+    private Integer score;
 
     public ProductRecommend(Product product, Product association) {
         this.product = product;
         this.association = association;
+    }
+
+    public void changeScore(Integer score){
+        this.score = score;
     }
 }

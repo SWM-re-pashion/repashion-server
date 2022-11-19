@@ -2,7 +2,6 @@ package rePashion.server.domain.product.repository;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +10,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import rePashion.server.domain.product.exception.UndefinedOrderException;
+import rePashion.server.domain.product.model.Product;
 import rePashion.server.domain.product.model.ProductRecommend;
 import rePashion.server.domain.product.model.QProduct;
 import rePashion.server.domain.product.model.QProductRecommend;
@@ -18,6 +18,7 @@ import rePashion.server.domain.product.resources.request.Condition;
 import rePashion.server.domain.statics.model.filter.Order;
 
 import java.util.List;
+
 
 @Repository
 @RequiredArgsConstructor
@@ -45,6 +46,16 @@ public class ProductRecommendCustomRepository {
                 .where(productHideStatusEq(cond.getHideSold()), productGenderEq(cond.getCategory()))
                 .fetch();
         return new PageImpl<>(content, pageable, fetchedProductCommend.size());
+    }
+
+    public List<ProductRecommend> getAssociationsByProductId(Long productId){
+        return queryFactory
+                .selectFrom(productRecommend)
+                .leftJoin(productRecommend.association, association).fetchJoin()
+                .where(productRecommend.product.id.eq(productId))
+                .orderBy(productRecommend.score.desc())
+                .limit(5)
+                .fetch();
     }
 
     private BooleanBuilder productGenderEq(Byte gender) {
