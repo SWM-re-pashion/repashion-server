@@ -29,4 +29,8 @@ public class ProductRecommend {
         this.product = product;
         this.association = association;
     }
+
+    public void changeScore(Integer score){
+        this.score = score;
+    }
 }
